@@ -1,0 +1,11 @@
+.Definitions {
+  display: none;
+}
+
+.Icon {
+  vertical-align: middle;
+  height: 1em;
+  width: 1em;
+  display: inline-block;
+  fill: currentcolor;
+}

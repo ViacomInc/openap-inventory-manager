@@ -1,0 +1,50 @@
+.Pop {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s ease-in-out 150ms, opacity 150ms ease-in-out 0ms;
+  background: #fff;
+  box-shadow: 0 4px 11px 0px hsla(0, 0%, 0%, 0.2);
+  padding: 1em 1.5em;
+  box-sizing: border-box;
+}
+
+.Pop::after {
+  position: absolute;
+  display: block;
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 10px 0 0;
+  border-color: #ffffff transparent transparent transparent;
+  transform: rotate(45deg);
+  box-shadow: -2px -2px 2px 0 hsla(0, 0%, 0%, 0.03);
+}
+
+.NE::after {
+  top: -5px;
+  left: 15px;
+}
+
+.N {
+  transform: translateX(-50%);
+}
+.N::after {
+  top: -5px;
+  left: 50%;
+  margin-left: -5px;
+}
+
+.NW {
+  transform: translateX(-100%);
+}
+.NW::after {
+  top: -5px;
+  right: 15px;
+}
+
+.Pop.Active {
+  visibility: visible;
+  opacity: 1;
+}

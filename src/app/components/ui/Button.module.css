@@ -1,0 +1,142 @@
+.Button {
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-variant-caps: inherit;
+  font-weight: inherit;
+  font-stretch: inherit;
+  line-height: inherit;
+  white-space: nowrap;
+  max-width: fit-content;
+  outline: none;
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.65em 1em 0.5em;
+  transition: color ease-in-out 150ms, border ease-in-out 150ms,
+    background ease-in-out 150ms;
+}
+
+.Button + .Button {
+  margin-left: 1em;
+}
+
+.Button svg {
+  margin-top: -0.125em;
+  margin-left: 0.6em;
+}
+
+.Primary {
+  border-color: #0069d2;
+  background: #0069d2;
+  color: #fff;
+}
+.Primary:focus,
+.Primary:hover {
+  border-color: #004d99;
+  background: #004d99;
+}
+.Primary:active {
+  border-color: #004080;
+  background: #004080;
+}
+.Primary:disabled {
+  border-color: #adb5b8;
+  background: #adb5b8;
+}
+
+.Destructive {
+  border-color: #db241a;
+  background: #db241a;
+  color: #fff;
+}
+.Destructive:focus,
+.Destructive:hover {
+  border-color: #ad1c15;
+  background: #ad1c15;
+}
+.Destructive:active {
+  border-color: #891610;
+  background: #891610;
+}
+.Destructive:disabled {
+  border-color: #adb5b8;
+  background: #adb5b8;
+}
+
+.Secondary {
+  border-color: #0069d2;
+  background: #fff;
+  color: #0069d2;
+}
+.Secondary:focus,
+.Secondary:hover {
+  border-color: #004d99;
+  background-color: #004d99;
+  color: #ffffff;
+}
+.Secondary:active {
+  border-color: #004080;
+  background-color: #004080;
+  color: #ffffff;
+}
+.Secondary:disabled {
+  color: #adb5b8;
+  border-color: #adb5b8;
+  background-color: #ffffff;
+}
+
+.Secondary.Destructive {
+  border-color: #db241a;
+  background: #fff;
+  color: #db241a;
+}
+.Secondary.Destructive:focus,
+.Secondary.Destructive:hover {
+  border-color: #ad1c15;
+  background-color: #ad1c15;
+  color: #ffffff;
+}
+.Secondary.Destructive:active {
+  border-color: #891610;
+  background-color: #891610;
+  color: #ffffff;
+}
+
+.Borderless {
+  border: none;
+  background: transparent;
+  color: #006ad2;
+}
+.Borderless:focus,
+.Borderless:hover {
+  color: #004d99;
+}
+.Borderless:active {
+  color: #004080;
+}
+.Borderless:disabled {
+  color: #adb5b8;
+}
+
+.Glyphed {
+  border: none;
+  background: transparent;
+  padding: 0.25em;
+}
+.Glyphed > svg {
+  transform: scale(0.9);
+  margin: 0;
+}
+.Glyphed:focus,
+.Glyphed:active,
+.Glyphed:hover {
+}
+.Glyphed:disabled {
+  color: #adb5b8;
+}

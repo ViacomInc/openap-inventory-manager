@@ -1,0 +1,38 @@
+mutation ImportItems($input: ImportItemsInput!) {
+  importItems(input: $input) {
+    ... on ImportItemsConflicts {
+      total
+      conflicts
+      titles {
+        name
+        itemsCount
+      }
+    }
+    ... on InventoryItems {
+      items {
+        ...InventoryItemReturnFields
+      }
+    }
+  }
+}
+
+fragment InventoryItemReturnFields on InventoryItem {
+  id
+  name
+  projectionsDemographics
+  projectedImpressions
+  startDatetime
+  endDatetime
+  validUntil
+  status
+  networkId
+  units
+  rate
+  rateKey
+  rateType
+  publisherId
+  createdAt
+  createdBy
+  updatedAt
+  updatedBy
+}

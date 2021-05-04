@@ -1,0 +1,9 @@
+.gitignore
+.next
+deployment/terraform
+deployment/values*
+node_modules
+README.md
+VMNfile
+.env
+.env.*

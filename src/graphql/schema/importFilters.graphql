@@ -1,0 +1,38 @@
+enum ImportFilterType {
+  Clamp
+  Include
+  Exclude
+}
+
+input ImportFilterInput {
+  type: ImportFilterType!
+  field: String!
+  values: [String!]!
+}
+
+input ImportFilterUpdateInput {
+  type: ImportFilterType
+  field: String
+  values: [String!]
+}
+
+type ImportFilter {
+  id: Int!
+  type: ImportFilterType!
+  field: String!
+  values: [String!]!
+  createdAt: DateTime
+  createdBy: String
+  updatedAt: DateTime
+  updatedBy: String
+}
+
+extend type Query {
+  importFilters: [ImportFilter!]!
+}
+
+extend type Mutation {
+  createImportFilter(input: [ImportFilterInput!]!): ImportFilter!
+  updateImportFilter(id: Int!, filter: ImportFilterUpdateInput!): ImportFilter!
+  removeImportFilter(id: Int!): ImportFilter!
+}

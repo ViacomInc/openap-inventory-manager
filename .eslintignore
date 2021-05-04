@@ -1,0 +1,4 @@
+openap-inventory-manager-react/
+openap-inventory-manager-server/
+src/graphql/__generated__/*
+node_modules/

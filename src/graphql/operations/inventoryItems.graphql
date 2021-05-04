@@ -1,0 +1,71 @@
+query GetAllInventoryItems($publisherId: Int!) {
+  inventoryItems(publisherId: $publisherId) {
+    ...InventoryItemReturnFields
+  }
+}
+
+query GetInventoryItem($id: Int!) {
+  inventoryItem(id: $id) {
+    ...InventoryItemReturnFields
+  }
+}
+
+mutation CreateInventoryItems($inventoryItems: [InventoryItemInput!]!) {
+  createInventoryItems(inventoryItems: $inventoryItems) {
+    ...InventoryItemReturnFields
+  }
+}
+
+mutation UpdateInventoryItem(
+  $id: Int!
+  $inventoryItem: InventoryItemUpdateInput!
+) {
+  updateInventoryItem(id: $id, inventoryItem: $inventoryItem) {
+    ...InventoryItemReturnFields
+  }
+}
+
+mutation RemoveInventoryItem($id: Int!) {
+  removeInventoryItem(id: $id) {
+    ...InventoryItemReturnFields
+  }
+}
+
+mutation RestoreInventoryItem($id: Int!) {
+  restoreInventoryItem(id: $id) {
+    ...InventoryItemReturnFields
+  }
+}
+
+mutation SubmitInventoryItems($publisherId: Int!) {
+  submitInventoryItems(publisherId: $publisherId) {
+    ...InventoryItemReturnFields
+  }
+}
+
+mutation FlushInventoryItems($from: Date!, $to: Date!) {
+  flushInventoryItems(from: $from, to: $to) {
+    ...InventoryItemReturnFields
+  }
+}
+
+fragment InventoryItemReturnFields on InventoryItem {
+  id
+  name
+  projectionsDemographics
+  projectedImpressions
+  startDatetime
+  endDatetime
+  validUntil
+  status
+  networkId
+  units
+  rate
+  rateKey
+  rateType
+  publisherId
+  createdAt
+  createdBy
+  updatedAt
+  updatedBy
+}

@@ -1,0 +1,42 @@
+.Fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 1em 0;
+}
+
+.FieldsetLabel {
+  font-size: 1.2em;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+.InlineRadioInput {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #f4f5f6;
+  padding: 0.75em 1em;
+  margin-right: 1em;
+  margin-bottom: 1em;
+}
+
+.InlineRadioInput > input {
+  width: 2em;
+  height: 2em;
+  margin-right: 1em;
+}
+
+.InlineRadioInput > span {
+  color: #798386;
+}
+
+.InlineRadioInput em {
+  font-style: normal;
+  font-weight: bold;
+  color: #000;
+  display: block;
+}
+
+.HiddenFileInput {
+  display: none;
+}

@@ -1,0 +1,23 @@
+.loaderIcon {
+  transform-origin: center center;
+  animation: spin 0.8s linear infinite;
+  color: ;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.S {
+  width: 1.1em;
+  height: 1.1em;
+  stroke-width: 20px;
+}
+
+.M {
+  width: 49px;
+  height: 49px;
+  stroke-width: 10px;
+}

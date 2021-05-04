@@ -1,0 +1,134 @@
+.Container {
+  position: relative;
+  display: inline-block;
+}
+
+.Error {
+  outline: 2px solid #f24c36;
+}
+
+.Calendar {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-width: 20em;
+  padding: 0.5em;
+  box-sizing: border-box;
+  font: inherit;
+  background: #fff;
+}
+
+.Calendar a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.CalendarHeader {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5em;
+}
+
+.CalendarBack,
+.CalendarMode,
+.CalendarForward {
+  display: block;
+  text-align: center;
+}
+
+.CalendarBack {
+  padding-right: 0.5em;
+  width: 14.28%;
+}
+
+.CalendarForward {
+  padding-left: 0.5em;
+  width: 14.28%;
+}
+
+.CalendarMode {
+  flex-grow: 1;
+}
+
+.CalendarDisplay {
+  box-sizing: border-box;
+  width: 100%;
+  height: 13.5em;
+  display: flex;
+  justify-content: center;
+}
+
+.CalendarDisplay > ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.CalendarDisplay > ul + ul {
+  margin-left: 1em;
+}
+
+.CalendarDisplay li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2em;
+}
+
+.CalendarWeeks {
+  width: 3em;
+  min-width: 3em;
+  position: relative;
+  justify-content: flex-start;
+  align-content: flex-start;
+}
+
+.CalendarWeeks > li {
+  font-size: 0.75em;
+  font-weight: 500;
+  width: 100%;
+  height: 2.67em;
+  white-space: nowrap;
+  opacity: 0.5;
+  justify-content: flex-start;
+}
+
+.CalendarWeeks > li:first-child {
+  height: 2em;
+}
+
+.CalendarViewDays {
+  align-self: flex-start;
+}
+
+.CalendarViewDays > li {
+  width: 14.28%;
+}
+
+.CalendarWeekDays {
+  font-size: 0.75em;
+  font-weight: 500;
+}
+
+.CalendarWeekend {
+  opacity: 0.5;
+}
+
+.CalendarViewMonths > li {
+  width: 25%;
+}
+
+.CalendarViewYears > li {
+  width: 20%;
+}
+
+.CalendarSelected {
+  color: #004d99;
+  font-weight: bold;
+  opacity: 1;
+}

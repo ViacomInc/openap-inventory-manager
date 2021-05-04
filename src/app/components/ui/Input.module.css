@@ -1,0 +1,27 @@
+.Input {
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  border: 1px solid #e3e7e8;
+  border-radius: 4px;
+  background: #fff;
+  box-sizing: border-box;
+  padding: 0.65em 1em 0.5em;
+  outline: none;
+  width: 100%;
+  margin: 0;
+}
+
+.Input:disabled {
+  opacity: 0.5;
+}
+
+.InputInt,
+.InputFloat {
+  width: 5em;
+  text-align: right;
+}
+
+.InputString {
+  /*width: 120px;*/
+}

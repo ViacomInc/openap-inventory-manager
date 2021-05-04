@@ -1,0 +1,71 @@
+.HTMLOpen {
+}
+
+.BodyOpen {
+}
+
+.Portal {
+}
+
+.Overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+}
+
+.OverlayDidOpen {
+  opacity: 1;
+}
+
+.OverlayWillClose {
+  opacity: 0;
+}
+
+.Content {
+  padding: 2em 2em 2.25em 2em;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  position: relative;
+  transform: translateY(40px);
+  transition: transform 300ms ease-in-out;
+  box-shadow: 0 4px 11px 0px hsla(0, 0%, 0%, 0.2);
+}
+
+.ContentDidOpen {
+  transform: translateY(0px);
+}
+
+.ContentWillClose {
+  transform: translateY(-40px);
+}
+
+.Content:focus {
+  outline: none;
+}
+
+.CloseButton {
+  position: absolute;
+  top: 0.275em;
+  right: 0.25em;
+}
+
+.Title {
+  margin-top: 0;
+  font-size: 1.25em;
+  margin-bottom: 1.5em;
+}
+
+.Content p {
+  margin-top: 0;
+}

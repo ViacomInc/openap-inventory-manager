@@ -1,0 +1,42 @@
+.Container {
+  border-spacing: 3px;
+  border-collapse: separate;
+}
+
+.Head,
+.Foot {
+  text-align: left;
+}
+
+.Delete {
+  background: transparent;
+  border: none;
+  outline: none;
+  height: 3em;
+  width: 3em;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+  display: inline-block;
+  transition: color 150ms ease-in-out;
+}
+
+.Delete:hover {
+  color: #db241a;
+}
+
+.Delete:disabled {
+  color: #adb5b8;
+}
+
+.Select {
+  width: 6em;
+}
+
+.Error {
+  outline: 2px solid #f24c36;
+}
+
+.Value {
+  width: 5em;
+}

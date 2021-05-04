@@ -1,0 +1,61 @@
+.Tabs {
+}
+
+.TabList {
+  padding: 0;
+  margin: 0;
+}
+
+.Tab {
+  display: inline-block;
+  position: relative;
+  list-style: none;
+  cursor: pointer;
+  white-space: nowrap;
+  outline: none;
+  border-radius: 2px;
+  margin: 0 1em 0.5em 1em;
+}
+
+.Tab::before {
+  content: "";
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  border-radius: 2px;
+  background: transparent;
+  bottom: -0.5em;
+}
+
+.Tab:focus {
+  box-shadow: rgb(153, 204, 255) 0px 0px 0px 2px;
+}
+
+.Tab:hover {
+}
+
+.TabSelected {
+}
+
+.TabSelected::before {
+  background: #0069d2;
+}
+.Tab:hover::before {
+  background: #004d99;
+}
+
+.TabDisabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.TabDisabled:hover::before,
+.TabDisabled::before {
+  background: transparent;
+}
+
+.TabPanel {
+}
+
+.TabPanelSelected {
+}

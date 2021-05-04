@@ -1,0 +1,100 @@
+.Tabs {
+  margin-top: 2em;
+}
+
+.TabContainer {
+  margin-top: -2.5px;
+  border: 1px solid #f4f5f6;
+  padding: 2em 0.75em;
+  /*position: relative;*/
+}
+
+.NoItems {
+  margin: 2em auto 1em;
+  border: 1px solid #f4f5f6;
+}
+
+.NoItemsMessage {
+  text-align: center;
+  max-width: 100% !important;
+}
+
+.Toolbar {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+  margin: 32px 8px;
+  background: #f9f9f9;
+  box-shadow: 0 1px 6px 0 rgba(21, 28, 30, 0.1);
+  padding: 16px;
+}
+
+.ToolbarButtons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  flex-grow: 1;
+  flex-shrink: 1;
+  justify-content: flex-end;
+}
+
+.Filter {
+  flex-grow: 2;
+  margin-top: 1px;
+  margin-right: 2em;
+  min-width: 28em;
+}
+
+.StatusPanel {
+  position: absolute;
+  right: 2.5em;
+  margin-top: -3.9em;
+  display: flex;
+}
+
+.StatusPanel > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1.5em;
+  border: none;
+  background: transparent;
+  font-size: 1em;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.StatusPanel > button > svg {
+  margin-right: 8px;
+  margin-top: -0.15em;
+}
+
+.StatusNew {
+  color: #3bcc33;
+}
+.StatusUpdated {
+  color: #006ad2;
+}
+.StatusConflict {
+  color: #f06c00;
+}
+.StatusRemoved {
+  color: #f24c36;
+}
+
+.InfoTip {
+  color: #798386;
+  margin: auto 1em;
+  cursor: pointer;
+}
+
+.InfoTipContent {
+  max-width: 21em;
+  text-align: center;
+}
+
+.InfoTipContent a {
+  color: #0069d2;
+}

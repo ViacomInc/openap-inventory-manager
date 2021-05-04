@@ -1,0 +1,8 @@
+.Table {
+  width: 100%;
+  margin-bottom: 2em;
+}
+
+.Table th {
+  text-align: left;
+}

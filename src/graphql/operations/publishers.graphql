@@ -1,0 +1,14 @@
+query GetPublishers {
+  publishers {
+    ...PublisherReturnFields
+  }
+}
+
+fragment PublisherReturnFields on Publisher {
+  id
+  name
+  networks {
+    id
+    name
+  }
+}

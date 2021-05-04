@@ -1,0 +1,31 @@
+overwrite: true
+schema:
+  - "./src/graphql/schema/*.graphql"
+documents:
+  - "./src/graphql/operations/*.graphql"
+generates:
+  ./src/graphql/__generated__/schema.graphql:
+    plugins:
+      - schema-ast
+  ./src/graphql/__generated__/types.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-resolvers"
+    config:
+      scalars:
+        DateTime: string
+        Date: string
+  ./src/graphql/__generated__/queries.d.ts:
+    plugins:
+      - "typescript-graphql-files-modules"
+config:
+  strict: true
+  contextType: ../context#Context
+  noNamespaces: true
+  useIndexSignature: true
+  operationResultSuffix: "Result"
+  enumValues: ../enumValues
+hooks:
+  afterAllFileWrite:
+    - prettier --write

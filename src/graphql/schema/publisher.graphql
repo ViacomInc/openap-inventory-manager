@@ -1,0 +1,14 @@
+type Network {
+  id: Int!
+  name: String!
+}
+
+type Publisher {
+  id: Int!
+  name: String!
+  networks: [Network!]!
+}
+
+extend type Query {
+  publishers: [Publisher!]!
+}

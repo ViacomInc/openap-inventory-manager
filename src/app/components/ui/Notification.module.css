@@ -1,0 +1,47 @@
+.Container {
+  display: flex;
+  padding: 1.5em 1em 1.5em 1.25em;
+  font-size: 0.88em;
+  box-sizing: border-box;
+  border-radius: 2px;
+  border-width: 1px;
+  border-style: solid;
+  margin-bottom: 1em;
+}
+
+.Container p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.Container p + p {
+  margin-top: 1em;
+}
+
+.Icon {
+  margin: 0.25em 1em 0 0;
+}
+
+.Info {
+  background: #cce6ff;
+  color: #006ad2;
+  border-color: #006ad2;
+}
+
+.Success {
+  background: #d5f8d3;
+  color: #20a31a;
+  border-color: #20a31a;
+}
+
+.Warning {
+  background: #ffe3cc;
+  color: #bd5500;
+  border-color: #bd5500;
+}
+
+.Error {
+  background: #fad3d1;
+  color: #db241a;
+  border-color: #db241a;
+}

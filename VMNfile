@@ -1,0 +1,18 @@
+vmnPipeline('docker') {
+  dockerfilePath 'Dockerfile'
+  dockerPath './'
+
+  approveStage 'qa', true
+
+  deployWith('helm') {
+    helmRepository 'vmn-prod'
+    chart {
+      name 'vmn-generic'
+      version '0.1.57'
+    }
+    values 'deployment/values.yaml'
+    envValues 'qa', 'deployment/values-qa.yaml'
+    envValues 'stage', 'deployment/values-stage.yaml'
+    envValues 'prod', 'deployment/values-prod.yaml'
+  }
+}

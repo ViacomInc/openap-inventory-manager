@@ -1,0 +1,53 @@
+.Container {
+  padding: 1.5em 0;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  height: 7em;
+  background-color: #f0f8ff;
+  font-size: 1em;
+}
+
+.Bar {
+  display: flex;
+  flex-grow: 1;
+  margin: 0 2em;
+}
+
+.BarItem {
+  display: flex;
+  align-items: center;
+}
+
+.BarItem + .BarItem {
+  margin-left: 1.5em;
+}
+
+.BarItemStretch {
+  flex-grow: 1;
+}
+
+.Logo {
+  color: #003366;
+}
+
+.Header {
+  font-size: 1.25em;
+  font-weight: 500;
+  color: #003366;
+  margin: 0;
+}
+
+.Account {
+  color: #003366;
+  white-space: nowrap;
+}
+
+.AccountIcon {
+  margin: -0.2em 0.5em 0 0;
+}
+
+.User {
+  /*to align with button text*/
+  margin-top: 0.1em;
+}

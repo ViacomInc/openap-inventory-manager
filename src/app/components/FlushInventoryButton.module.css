@@ -1,0 +1,16 @@
+.DateStart,
+.DateEnd {
+  width: 8em;
+}
+
+.DateStart {
+  margin-right: 0.5em;
+}
+
+.DateEnd {
+  margin-left: 0.5em;
+}
+
+.DateSelect {
+  margin: 0.5em 0 1em;
+}

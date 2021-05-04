@@ -1,0 +1,110 @@
+scalar DateTime
+scalar Date
+
+input InventoryItemInput {
+  name: String!
+  projectionsDemographics: String!
+  projectedImpressions: Float!
+  startDatetime: DateTime!
+  endDatetime: DateTime!
+  validUntil: Date!
+  networkId: Int!
+  units: Float!
+  rate: Float!
+  rateType: RateType!
+  publisherId: Int!
+}
+
+input InventoryItemUpdateInput {
+  name: String
+  projectionsDemographics: String
+  projectedImpressions: Float
+  startDatetime: DateTime
+  endDatetime: DateTime
+  validUntil: Date
+  networkId: Int
+  units: Float
+  rate: Float
+  rateType: RateType
+}
+
+type Query {
+  inventoryItems(publisherId: Int!): [InventoryItem!]!
+  inventoryItem(id: Int!): InventoryItem!
+}
+
+type Mutation {
+  createInventoryItems(
+    inventoryItems: [InventoryItemInput!]!
+  ): [InventoryItem!]!
+  updateInventoryItem(
+    id: Int!
+    inventoryItem: InventoryItemUpdateInput!
+  ): [InventoryItem!]!
+  removeInventoryItem(id: Int!): InventoryItem!
+  restoreInventoryItem(id: Int!): InventoryItem!
+  submitInventoryItems(publisherId: Int!): [InventoryItem!]!
+  flushInventoryItems(from: Date!, to: Date!): [InventoryItem!]!
+}
+
+type InventoryItem {
+  id: Int!
+  name: String!
+  projectionsDemographics: String!
+  projectedImpressions: Float!
+  startDatetime: DateTime!
+  endDatetime: DateTime!
+  validUntil: Date!
+  status: InventoryItemStatus!
+  networkId: Int!
+  units: Float!
+  rate: Float!
+  rateKey: String
+  rateType: RateType!
+  publisherId: Int!
+  createdAt: DateTime
+  createdBy: String
+  updatedAt: DateTime
+  updatedBy: String
+}
+
+enum InventoryItemStatus {
+  Draft
+  New
+  Updated
+  Removed
+  Deleted
+  Committed
+}
+
+enum RateType {
+  SCATTER
+  UPFRONT
+}
+
+enum Demographics {
+  P2PLUS
+  P18PLUS
+  P21PLUS
+  P12_24
+  P12_34
+  P18_34
+  P18_49
+  P25_49
+  P25_54
+  P35_64
+  F12_24
+  F12_34
+  F18_34
+  F18_49
+  F25_49
+  F25_54
+  F35_64
+  M12_24
+  M12_34
+  M18_34
+  M18_49
+  M25_49
+  M25_54
+  M35_64
+}

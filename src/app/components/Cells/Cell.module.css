@@ -1,0 +1,28 @@
+.Container {
+  margin-left: -0.5em;
+  margin-right: -0.5em;
+}
+
+.Projections {
+  height: 3.08em;
+  border: 1px solid #e3e7e8;
+  background: #fff;
+  padding: 0 0.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.New {
+  color: #3bcc33;
+}
+.Removed {
+  color: #f24c36;
+}
+.Conflicted {
+  color: #f06c00;
+}
+.Updated {
+  color: #006ad2;
+}

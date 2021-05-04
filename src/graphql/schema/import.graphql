@@ -1,0 +1,30 @@
+enum ImportMode {
+  Ignore
+  ImportAll
+}
+
+input ImportItemsInput {
+  publisherId: Int!
+  mode: ImportMode
+}
+
+type ImportItemsConflict {
+  name: String!
+  itemsCount: Int!
+}
+
+type ImportItemsConflicts {
+  total: Int!
+  conflicts: Int!
+  titles: [ImportItemsConflict!]!
+}
+
+type InventoryItems {
+  items: [InventoryItem!]!
+}
+
+union ImportItemsResult = InventoryItems | ImportItemsConflicts
+
+extend type Mutation {
+  importItems(input: ImportItemsInput!): ImportItemsResult!
+}

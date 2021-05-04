@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+require("dotenv-flow").config({ silent: true });
+require("node-pg-migrate/bin/node-pg-migrate");
