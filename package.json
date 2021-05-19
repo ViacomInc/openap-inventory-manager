@@ -11,7 +11,7 @@
   "scripts": {
     "analyze-bundle": "env ANALYZE=true WEBPACK_STATS=true next build",
     "prebuild": "rimraf ./openap-inventory-manager-react ./openap-inventory-manager-server",
-    "build": "npm run clean:build && npm run generate-types && rollup -c",
+    "build": "npm run generate-types && rollup -c",
     "compile": "tsc --project tsconfig.json --noEmit",
     "compile:watch": "npm run compile -- --watch",
     "generate-types": "graphql-codegen --config codegen.yml",
@@ -25,7 +25,14 @@
     "format:staged": "git-format-staged -f 'prettier --ignore-unknown --loglevel error --stdin --stdin-filepath \"{}\"' .",
     "dev:package:react": "cd openap-inventory-manager-react && npm pack && mv openap-inventory-manager-react-*.tgz openap-inventory-manager-react-latest.tgz",
     "dev:package:server": "cd openap-inventory-manager-server && npm pack && mv openap-inventory-manager-server-*.tgz openap-inventory-manager-server-latest.tgz",
-    "dev:package": "npm run build && npm run dev:package:react && npm run dev:package:server"
+    "dev:package": "npm run build && npm run dev:package:react && npm run dev:package:server",
+    "license-check:prod": "license-checker --production",
+    "license-check:prod:summary": "license-checker --production --summary",
+    "license-check:prod:unknown": "license-checker --production --onlyunknown --summary"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ViacomInc/openap-inventory-manager.git"
   },
   "sideEffects": false,
   "dependencies": {
@@ -131,6 +138,7 @@
     "husky": "^6.0.0",
     "jest": "26.6.3",
     "jest-transform-graphql": "2.1.0",
+    "license-checker": "25.0.1",
     "nock": "13.0.11",
     "postcss": "^8.2.10",
     "postcss-modules": "^4.0.0",
