@@ -4,7 +4,7 @@ import {
   Interval,
   getBroadcastWeeksInRange,
   parseIntervalFromISO,
-} from "broadcast-calendar";
+} from "@viacomcbs/broadcast-calendar";
 import {
   formatWeekHeader,
   formatDay,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import classnames from "classnames";
 import { DateTime, Info } from "luxon";
-import { getBroadcastQuarterWeek } from "broadcast-calendar";
+import { getBroadcastQuarterWeek } from "@viacomcbs/broadcast-calendar";
 
 import Styles from "./InputDateTime.module.css";
 

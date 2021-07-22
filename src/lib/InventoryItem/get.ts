@@ -1,5 +1,8 @@
 import { sql } from "slonik";
-import { StringInterval } from "broadcast-calendar";
+import {
+  StringInterval,
+  BroadcastTimeZone,
+} from "@viacomcbs/broadcast-calendar";
 
 import getPool from "../../db/client";
 import { table } from "../../db/helpers";
@@ -68,7 +71,7 @@ function getAllForPubisherQuery({
   `;
 
   if (noPastItems) {
-    query = sql`${query} AND start_datetime::date >= NOW()`;
+    query = sql`${query} AND (start_datetime AT TIME ZONE ${BroadcastTimeZone})::date >= (NOW() AT TIME ZONE ${BroadcastTimeZone})`;
   }
 
   if (!(statuses && statuses.length)) {
@@ -114,8 +117,12 @@ function getAllForDateRangeQuery({
       ${inventoryItemQuery}
     FROM
       ${table("inventory_items")}
-    WHERE start_datetime::date >= ${dateRange[0]}
-      AND end_datetime::date <= ${dateRange[1]}
+    WHERE (start_datetime AT TIME ZONE ${BroadcastTimeZone})::date >= ${
+    dateRange[0]
+  }
+      AND (end_datetime AT TIME ZONE ${BroadcastTimeZone})::date <= ${
+    dateRange[1]
+  }
       AND status = ANY(${sql.array(statuses, sql`varchar[]`)})
   `;
 
@@ -152,7 +159,7 @@ function getAllForDateQuery({
     FROM
       ${table("inventory_items")}
     WHERE publisher_id = ${publisherId}
-    AND start_datetime::date = ${date}
+    AND (start_datetime AT TIME ZONE ${BroadcastTimeZone})::date = ${date}
     AND status = ANY(${sql.array(statuses, sql`varchar[]`)})
   `;
 }

@@ -1,4 +1,4 @@
-import { DateTime } from "broadcast-calendar";
+import { DateTime } from "@viacomcbs/broadcast-calendar";
 
 export type DateOrString = DateTime | string;
 

@@ -22,8 +22,9 @@ function getAuthorizationHeader() {
       process.env.OPENAP_API_CODE || ""
     }`
   );
-  logger.debug(`Buffer in getAuthorizationHeader ${buff.toString("base64")}`);
-  return `Basic ${buff.toString("base64")}`;
+  const header = buff.toString("base64");
+  logger.debug(`Authorization: Basic ${header}`);
+  return `Basic ${header}`;
 }
 
 async function authenticate(): Promise<void> {
@@ -39,9 +40,9 @@ async function authenticate(): Promise<void> {
       "Content-Type": "application/x-www-form-urlencoded",
     },
   });
-  logger.debug(response);
 
   tokens = response.body;
+  logger.debug(tokens, `Access Token ${tokens.access_token}`);
   // save the expiration date - 10 seconds
   tokens.expires_by = Date.now() + tokens.expires_in * 1000 - 10000;
 }
@@ -65,10 +66,25 @@ async function setAuthorizationHeaderWhenNeeded(options: NormalizedOptions) {
   }
 }
 
+async function logRequest({
+  url,
+  method,
+  headers,
+  body,
+  json,
+  form,
+}: NormalizedOptions) {
+  logger.debug(
+    { headers, method, body, json, form },
+    `OpenAP request ${url.toString()}`
+  );
+}
+
 function normalizeResponseErrors(error: RequestError) {
   const { response } = error;
   if (response) {
-    error.message = `${response.statusCode}`;
+    const errorBody = response.rawBody.toString("utf8");
+    error.message = `${response.statusCode}: "${errorBody}"`;
   }
 
   return error;
@@ -78,7 +94,7 @@ const openApClient = got.extend({
   prefixUrl: process.env.OPENAP_API_URL,
   responseType: "json",
   hooks: {
-    beforeRequest: [setAuthorizationHeaderWhenNeeded],
+    beforeRequest: [setAuthorizationHeaderWhenNeeded, logRequest],
     beforeError: [normalizeResponseErrors],
   },
 });

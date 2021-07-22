@@ -7,20 +7,18 @@ import {
 } from "./constants";
 
 import { DateOrString } from "./types";
-import { DateTime } from "broadcast-calendar";
+import { DateTime, BroadcastTimeZone } from "@viacomcbs/broadcast-calendar";
 export { DateTime } from "luxon";
 
 const datePattern = /^(20\d{2})-([0]\d|1[0-2])-([0-2]\d|3[01])$/;
 const dateTimePattern = /^(20\d{2})-([0]\d|1[0-2])-([0-2]\d|3[01]).(\d{1,2}):(\d{2}):(\d{2})(\.\d{3})?(Z)?$/;
 
-export const newYorkTimeZone = "America/New_York";
-
 export function getNow(): DateTime {
-  return DateTime.local().setZone("America/New_York");
+  return DateTime.local().setZone(BroadcastTimeZone);
 }
 
 export function getNowString(): string {
-  return DateTime.local().setZone("America/New_York").toSQLDate();
+  return DateTime.local().setZone(BroadcastTimeZone).toSQLDate();
 }
 
 export function fileTimestamp(): string {
@@ -64,7 +62,7 @@ function parseUTCDateTime(dateTimeStr: string): number | null {
 
 export function createTZDateFromUTC(
   dateStr: string,
-  timezone = newYorkTimeZone
+  timezone = BroadcastTimeZone
 ): DateTime | null {
   const ts = parseUTCDate(dateStr);
   if (!ts) {
@@ -76,7 +74,7 @@ export function createTZDateFromUTC(
 
 export function createTZDateTimeFromUTC(
   dateTimeStr: string,
-  timezone = newYorkTimeZone
+  timezone = BroadcastTimeZone
 ): DateTime | null {
   const ts = parseUTCDateTime(dateTimeStr);
   if (!ts) {
@@ -92,19 +90,19 @@ export const openAPDateTime = (date: DateTime): string =>
   date.toFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 export function getOpenAPDateFromDatabase(date: string): string {
-  return openAPDate(DateTime.fromSQL(date, { zone: newYorkTimeZone }));
+  return openAPDate(DateTime.fromSQL(date, { zone: BroadcastTimeZone }));
 }
 
 export function getOpenAPDateTimeFromDatabase(date: string): string {
-  return openAPDateTime(DateTime.fromSQL(date, { zone: newYorkTimeZone }));
+  return openAPDateTime(DateTime.fromSQL(date, { zone: BroadcastTimeZone }));
 }
 
 export const makeFormatter = (format: string) => (
   dateConfig: DateOrString
 ): string =>
   typeof dateConfig === "string"
-    ? DateTime.fromSQL(dateConfig).setZone(newYorkTimeZone).toFormat(format)
-    : dateConfig.setZone(newYorkTimeZone).toFormat(format);
+    ? DateTime.fromSQL(dateConfig).setZone(BroadcastTimeZone).toFormat(format)
+    : dateConfig.setZone(BroadcastTimeZone).toFormat(format);
 
 // UI Date Helpers
 export const formatDate = makeFormatter(DISPLAY_DATE_FORMAT);
@@ -128,7 +126,7 @@ export function parseNYDate(date?: string): DateTime | null {
   }
 
   return DateTime.fromISO(`${d[1]}-${d[2]}-${d[3]}`, {
-    zone: newYorkTimeZone,
+    zone: BroadcastTimeZone,
   });
 }
 
@@ -144,37 +142,37 @@ export function parseNYDateTime(date?: string): DateTime | null {
 
   return DateTime.fromISO(
     `${dt[1]}-${dt[2]}-${dt[3]}T${dt[4].padStart(2, "0")}:${dt[5]}:${dt[6]}`,
-    { zone: newYorkTimeZone }
+    { zone: BroadcastTimeZone }
   );
 }
 
 export function getIsoDateFromInput(date: DateOrString): string {
   return typeof date === "string"
-    ? DateTime.fromISO(date, { zone: newYorkTimeZone }).toISODate()
+    ? DateTime.fromISO(date, { zone: BroadcastTimeZone }).toISODate()
     : date.toISODate();
 }
 
 export function getIsoDateFromSql(date: DateOrString): string {
   return typeof date === "string"
-    ? DateTime.fromSQL(date, { zone: newYorkTimeZone }).toISODate()
+    ? DateTime.fromSQL(date, { zone: BroadcastTimeZone }).toISODate()
     : date.toISODate();
 }
 
 export function getIsoDateTimeFromInput(date: DateOrString): string {
   return typeof date === "string"
-    ? DateTime.fromISO(date, { zone: newYorkTimeZone }).toISO()
+    ? DateTime.fromISO(date, { zone: BroadcastTimeZone }).toISO()
     : date.toISO();
 }
 
 export function getSqlDateTimeFromIsoInput(date: DateOrString): string {
   return typeof date === "string"
-    ? DateTime.fromISO(date, { zone: newYorkTimeZone }).toSQL()
+    ? DateTime.fromISO(date, { zone: BroadcastTimeZone }).toSQL()
     : date.toSQL();
 }
 
 export function getSqlDateTimeFromSql(date: DateOrString): string {
   return typeof date === "string"
-    ? DateTime.fromSQL(date, { zone: newYorkTimeZone }).toSQL()
+    ? DateTime.fromSQL(date, { zone: BroadcastTimeZone }).toSQL()
     : date.toSQL();
 }
 

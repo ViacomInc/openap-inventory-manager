@@ -1,5 +1,8 @@
 import { UnknownRecord, TypeC, Type, type, string, number } from "io-ts";
-import { getBroadcastWeekStart, parseDateFromSQL } from "broadcast-calendar";
+import {
+  getBroadcastWeekStart,
+  parseDateFromSQL,
+} from "@viacomcbs/broadcast-calendar";
 
 import { Publisher, Network } from "../graphql";
 

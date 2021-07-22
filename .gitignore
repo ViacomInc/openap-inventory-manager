@@ -51,5 +51,4 @@ __generated__/
 dist/
 
 # ignore build folder
-openap-inventory-manager-react/
-openap-inventory-manager-server/
+@viacomcbs/

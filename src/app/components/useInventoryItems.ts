@@ -4,7 +4,7 @@ import {
   isYearQuarter,
   formatBroadcastDateRange,
   getBroadcastQuarterRangeFromYearQuarter,
-} from "broadcast-calendar";
+} from "@viacomcbs/broadcast-calendar";
 import { useSelector } from "../store";
 import { Filter, FilterValue, FilterType } from "../store/types";
 import {

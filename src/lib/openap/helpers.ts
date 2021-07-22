@@ -1,4 +1,4 @@
-import { StringInterval } from "broadcast-calendar";
+import { StringInterval } from "@viacomcbs/broadcast-calendar";
 import {
   InventoryItem,
   InventoryItemInput,

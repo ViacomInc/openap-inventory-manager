@@ -63,7 +63,6 @@ export function createImportResolver(importFunction?: ImportItemsFunction) {
       }
 
       logger.info(
-        { items: itemsWithoutRate },
         `No rates found for the ${itemsWithoutRate.length} of ${newItems.length} CBS items`
       );
 

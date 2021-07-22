@@ -1,5 +1,5 @@
 {
-  "name": "openap-inventory-manager",
+  "name": "@viacomcbs/openap-inventory-manager",
   "version": "0.0.10",
   "description": "Open AP Inventory Management",
   "author": "ViacomCBS",
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "analyze-bundle": "env ANALYZE=true WEBPACK_STATS=true next build",
-    "prebuild": "rimraf ./openap-inventory-manager-react ./openap-inventory-manager-server",
+    "prebuild": "rimraf ./@viacomcbs",
     "build": "npm run generate-types && rollup -c",
     "compile": "tsc --project tsconfig.json --noEmit",
     "compile:watch": "npm run compile -- --watch",
@@ -37,7 +37,7 @@
   "sideEffects": false,
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^5.15.0",
-    "broadcast-calendar": "git+ssh://git@stash.mtvi.com/vaa/broadcast-calendar.git",
+    "@viacomcbs/broadcast-calendar": "^1.0.0",
     "classnames": "^2.3.1",
     "debounce": "^1.2.1",
     "form-urlencoded": "^6.0.0",

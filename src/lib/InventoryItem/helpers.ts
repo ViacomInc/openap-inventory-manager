@@ -3,7 +3,8 @@ import {
   Interval,
   StringInterval,
   parseDateFromSQL,
-} from "broadcast-calendar";
+  BroadcastTimeZone,
+} from "@viacomcbs/broadcast-calendar";
 import { partition } from "fp-ts/lib/Array";
 import {
   InventoryItem,
@@ -17,7 +18,6 @@ import {
   differenceInHours,
   addWeeks,
   getIsoDateFromSql,
-  newYorkTimeZone,
 } from "../dateHelpers";
 
 function getDateRangeReducer(
@@ -57,7 +57,7 @@ export function isFutureItem(item: ItemDateTimeRange): boolean {
   const validUntilDate = DateTime.fromSQL(item.validUntil).startOf("day");
 
   return (
-    startDate >= DateTime.utc().setZone(newYorkTimeZone).startOf("day") &&
+    startDate >= DateTime.utc().setZone(BroadcastTimeZone).startOf("day") &&
     startDate >= validUntilDate
   );
 }

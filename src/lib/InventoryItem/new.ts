@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+import { BroadcastTimeZone } from "@viacomcbs/broadcast-calendar";
 import {
   RateType,
   InventoryItemInput,
@@ -8,7 +10,6 @@ import { DateOrString } from "../types";
 import {
   parseNYDate,
   parseNYDateTime,
-  newYorkTimeZone,
   getSqlDateTimeFromIsoInput,
   getIsoDateFromSql,
 } from "../dateHelpers";
@@ -17,7 +18,6 @@ import {
   DEFAULT_VALID_UNTIL_DAYS,
   DEFAULT_ITEM_DURATION_HOURS,
 } from "../constants";
-import { DateTime } from "luxon";
 
 const getStartDateTime = (date: DateTime): DateTime =>
   date.plus({ days: DEFAULT_VALID_UNTIL_DAYS });
@@ -48,7 +48,7 @@ export function createNewInventoryItem(
   const startDatetime = DateTime.isDateTime(item.startDatetime)
     ? item.startDatetime
     : parseNYDateTime(item.startDatetime) ||
-      getStartDateTime(DateTime.local().setZone(newYorkTimeZone));
+      getStartDateTime(DateTime.local().setZone(BroadcastTimeZone));
 
   const endDatetime = DateTime.isDateTime(item.endDatetime)
     ? item.endDatetime

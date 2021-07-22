@@ -4,7 +4,7 @@ import {
   formatBroadcastDateRange,
   StringInterval,
   parseDateFromSQL,
-} from "broadcast-calendar";
+} from "@viacomcbs/broadcast-calendar";
 import { isMonday } from "../dateHelpers";
 
 import { InventoryItemStatus } from "../../graphql/__generated__/types";

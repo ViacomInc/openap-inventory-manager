@@ -3,7 +3,7 @@ import {
   getBroadcastYearsQuarters,
   parseIntervalFromSQL,
   YearQuarters,
-} from "broadcast-calendar";
+} from "@viacomcbs/broadcast-calendar";
 import { useSelector, useDispatch } from "../store";
 
 import { selectGetAllInventoryItemsRequest } from "../api/inventoryItems";

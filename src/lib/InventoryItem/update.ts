@@ -1,4 +1,5 @@
 import { sql } from "slonik";
+import { BroadcastTimeZone } from "@viacomcbs/broadcast-calendar";
 
 import {
   InventoryItem,
@@ -14,7 +15,9 @@ import { inventoryItemQuery, inventoryItemRateQuery } from "./";
 function updateRateQuery(userId: string, id: number, rate: number) {
   return sql`
     WITH item AS (
-      SELECT * FROM ${table("inventory_items")} WHERE ID = ${id}
+      SELECT name, rate, start_datetime FROM ${table(
+        "inventory_items"
+      )} WHERE ID = ${id}
     )
     UPDATE ${table("inventory_items")} AS items
     SET
@@ -29,8 +32,19 @@ function updateRateQuery(userId: string, id: number, rate: number) {
     WHERE
       items.name = item.name AND
       items.rate = item.rate AND
-      items.start_datetime::date >= date_trunc('week', item.start_datetime)::date AND
-      items.start_datetime::date < (date_trunc('week', item.start_datetime) + '1 week'::interval)
+      (
+        (items.start_datetime AT TIME ZONE ${BroadcastTimeZone}) - '6 hours'::interval
+      )::date >=
+      date_trunc('week', (
+        (item.start_datetime AT TIME ZONE ${BroadcastTimeZone}) - '6 hours'::interval
+      ))::date
+      AND
+      (
+        (items.start_datetime AT TIME ZONE ${BroadcastTimeZone}) - '6 hours'::interval
+      )::date <
+      date_trunc('week', (
+        ((item.start_datetime AT TIME ZONE ${BroadcastTimeZone}) - '6 hours'::interval) + '1 week'::interval
+      ))
     RETURNING
       ${inventoryItemRateQuery}
   `;
@@ -156,7 +170,7 @@ function updateStatusForDateQuery(
       status,
       updated_by: userId,
     })}
-    WHERE start_datetime::date = ${date}
+    WHERE (start_datetime AT TIME ZONE ${BroadcastTimeZone})::date = ${date}
   `;
 }
 

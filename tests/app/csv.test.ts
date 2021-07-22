@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import { BroadcastTimeZone } from "@viacomcbs/broadcast-calendar";
 import { isRight, isLeft } from "fp-ts/lib/Either";
 import {
   CsvRowFromPublisher,
@@ -7,7 +8,6 @@ import {
 import { NetworkFromString } from "../../src/app/csv/types";
 import { errorReporter, getErrorMessages } from "../../src/app/csv/error";
 import { OAPPublisher } from "../../src/lib/openap/types";
-import { newYorkTimeZone } from "../../src/lib/dateHelpers";
 import { inventoryItemFactory } from "../factories";
 
 const notAString = 1;
@@ -102,14 +102,14 @@ describe("Csv Row", () => {
       expect(
         decoded.right["start date time"].equals(
           DateTime.fromISO("2020-01-01T19:00:00.000Z", {
-            zone: newYorkTimeZone,
+            zone: BroadcastTimeZone,
           })
         )
       ).toBeTruthy();
       expect(
         decoded.right["end date time"].equals(
           DateTime.fromISO("2020-02-01T19:00:00.000Z", {
-            zone: newYorkTimeZone,
+            zone: BroadcastTimeZone,
           })
         )
       ).toBeTruthy();
@@ -118,7 +118,7 @@ describe("Csv Row", () => {
         expect(
           decoded.right["valid until"].equals(
             DateTime.fromISO("2021-01-01", {
-              zone: newYorkTimeZone,
+              zone: BroadcastTimeZone,
             })
           )
         );

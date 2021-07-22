@@ -1,4 +1,4 @@
-import { Interval } from "broadcast-calendar";
+import { Interval } from "@viacomcbs/broadcast-calendar";
 import {
   GetAllInventoryItems,
   CreateInventoryItems,

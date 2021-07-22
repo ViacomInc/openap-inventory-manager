@@ -60,8 +60,8 @@ export async function submit(
 
   logger.info(
     {
-      ratesDates: ratesDates.values(),
-      broadcatsDates: broadcatsDates.values(),
+      ratesDates: Array.from(ratesDates),
+      broadcatsDates: Array.from(broadcatsDates),
     },
     "Submitting to OpenAP..."
   );

@@ -1,4 +1,3 @@
-openap-inventory-manager-react/
-openap-inventory-manager-server/
+@viacomcbs/
 src/graphql/__generated__/*
 node_modules/
