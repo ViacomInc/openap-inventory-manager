@@ -35,4 +35,5 @@ const Authenticated: React.FC<AuthenticatedProps> = ({
 
   return <>{children}</>;
 };
+
 export default Authenticated;
