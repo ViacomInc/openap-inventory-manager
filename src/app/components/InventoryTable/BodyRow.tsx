@@ -10,7 +10,7 @@ import {
   RowClickHandler,
 } from "./types";
 
-import { isExpired } from "../../lib/InventoryItem/helpers";
+import { isExpired } from "../../../lib/InventoryItem/helpers";
 
 import BodyCell from "./BodyCell";
 import Styles from "./InventoryTable.module.css";
