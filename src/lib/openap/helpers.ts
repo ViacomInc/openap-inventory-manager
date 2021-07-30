@@ -8,10 +8,10 @@ import { OAPRate, OAPInventoryItem } from "./types";
 import { NewRate } from "../../db/types";
 import {
   getOpenAPDateFromDatabase,
-  getOpenAPDateTimeFromDatabase,
   getIsoDateFromSql,
   getMondayIsoDate,
   openAPDate,
+  openAPDateTime,
   parseDateTime,
 } from "../dateHelpers";
 
@@ -80,10 +80,25 @@ export function createOAPRate(rate: NewRate): OAPRate {
   };
 }
 
+export function createOAPStartEndDatetime(
+  item: Pick<InventoryItem, "startDatetime" | "endDatetime">
+): Pick<OAPInventoryItem, "startDatetime" | "endDatetime"> {
+  const startDatetime = parseDateTime(item.startDatetime);
+  let endDatetime = parseDateTime(item.endDatetime);
+
+  if (startDatetime.day !== endDatetime.day) {
+    endDatetime = endDatetime.minus({ days: 1 });
+  }
+
+  return {
+    startDatetime: openAPDateTime(startDatetime),
+    endDatetime: openAPDateTime(endDatetime),
+  };
+}
+
 export function createOAPInventoryItem(item: InventoryItem): OAPInventoryItem {
   return {
-    startDatetime: getOpenAPDateTimeFromDatabase(item.startDatetime),
-    endDatetime: getOpenAPDateTimeFromDatabase(item.endDatetime),
+    ...createOAPStartEndDatetime(item),
     validUntil: getOpenAPDateFromDatabase(item.validUntil),
     networkIds: [item.networkId],
     units: `${item.units}`,
