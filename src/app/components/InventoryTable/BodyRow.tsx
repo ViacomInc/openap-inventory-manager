@@ -10,6 +10,8 @@ import {
   RowClickHandler,
 } from "./types";
 
+import { isExpired } from "../../lib/InventoryItem/helpers";
+
 import BodyCell from "./BodyCell";
 import Styles from "./InventoryTable.module.css";
 
@@ -31,7 +33,7 @@ interface BodyRowProps {
 
 export default function BodyRow({ row, onClick }: BodyRowProps): JSX.Element {
   // status will be undefined for the grouped rows.
-  const status = row.values["status"] as InventoryItemStatus;
+  const { status, validUntil } = row.original;
   return (
     <tr
       id={row.id}
@@ -40,6 +42,7 @@ export default function BodyRow({ row, onClick }: BodyRowProps): JSX.Element {
         [Styles.RowEdit]: row.isSelected,
         [Styles.RowGrouped]: row.isGrouped,
         [Styles.RowExpanded]: row.isExpanded,
+        [Styles.RowExpired]: isExpired({ validUntil }),
       })}
       {...row.getRowProps()}
     >

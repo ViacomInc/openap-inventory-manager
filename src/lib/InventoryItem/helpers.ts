@@ -18,6 +18,7 @@ import {
   differenceInHours,
   addWeeks,
   getIsoDateFromSql,
+  getNowString,
 } from "../dateHelpers";
 
 function getDateRangeReducer(
@@ -103,4 +104,9 @@ export function hasConflicts(item: InventoryItem): boolean {
     item.status !== InventoryItemStatus.Removed &&
     (item.rate <= 0 || item.projectedImpressions <= 0 || item.units <= 0)
   );
+}
+
+export function isExpired(item: Pick<InventoryItem, "validUntil">): boolean {
+  const today = getNowString();
+  return item.validUntil < today;
 }
