@@ -18,43 +18,46 @@ import { DEFAULT_NOTIFICATION_TIMEOUT } from "../../config";
 
 import { NotificationType } from "../types";
 
-export const setNewInventoryItem = (
-  items: InventoryItemReturnFieldsFragment[]
-) => (dispatch: Dispatch, getState: () => State): void => {
-  dispatch(deleteInventoryItem(DraftInventoryItemId));
-  dispatch(setInventoryItems(items));
+export const setNewInventoryItem =
+  (items: InventoryItemReturnFieldsFragment[]) =>
+  (dispatch: Dispatch, getState: () => State): void => {
+    dispatch(deleteInventoryItem(DraftInventoryItemId));
+    dispatch(setInventoryItems(items));
 
-  const tableState = getTableStateForItem(getState(), items[0].id);
-  dispatch(setTable(tableState));
-};
+    const tableState = getTableStateForItem(getState(), items[0].id);
+    dispatch(setTable(tableState));
+  };
 
-export const setInventoryItemsWithNotification = (message: string) => (
-  items: InventoryItemReturnFieldsFragment[]
-) => (dispatch: Dispatch): void => {
-  dispatch(setInventoryItems(items));
+export const setInventoryItemsWithNotification =
+  (message: string) =>
+  (items: InventoryItemReturnFieldsFragment[]) =>
+  (dispatch: Dispatch): void => {
+    dispatch(setInventoryItems(items));
 
-  if (items.length !== 1) {
+    if (items.length !== 1) {
+      dispatch(
+        addNotification({
+          type:
+            items.length === 0
+              ? NotificationType.Warning
+              : NotificationType.Success,
+          message: `${items.length} ${message}`,
+          timeout: DEFAULT_NOTIFICATION_TIMEOUT,
+        })
+      );
+    }
+  };
+
+export const createInventoryItem =
+  (
+    item: Partial<InventoryItemInput> & Pick<InventoryItemInput, "publisherId">
+  ) =>
+  (dispatch: Dispatch): void => {
     dispatch(
-      addNotification({
-        type:
-          items.length === 0
-            ? NotificationType.Warning
-            : NotificationType.Success,
-        message: `${items.length} ${message}`,
-        timeout: DEFAULT_NOTIFICATION_TIMEOUT,
+      setInventoryItem({
+        ...createNewInventoryItem(item),
+        id: DraftInventoryItemId,
+        status: InventoryItemStatus.Draft,
       })
     );
-  }
-};
-
-export const createInventoryItem = (
-  item: Partial<InventoryItemInput> & Pick<InventoryItemInput, "publisherId">
-) => (dispatch: Dispatch): void => {
-  dispatch(
-    setInventoryItem({
-      ...createNewInventoryItem(item),
-      id: DraftInventoryItemId,
-      status: InventoryItemStatus.Draft,
-    })
-  );
-};
+  };

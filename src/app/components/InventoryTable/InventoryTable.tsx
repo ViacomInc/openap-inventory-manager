@@ -157,7 +157,7 @@ export default function InventoryTable({
           {visibleRows.map((row) => {
             prepareRow(row);
             // Work around to fix type issues with React Table and plugins
-            const typedRow = (row as unknown) as InventoryTableRow;
+            const typedRow = row as unknown as InventoryTableRow;
             return (
               <BodyRow
                 key={typedRow.id}

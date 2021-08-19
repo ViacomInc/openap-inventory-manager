@@ -26,8 +26,10 @@ export const requestSlice = createSlice({
 });
 
 export const actions = requestSlice.actions;
-export const selectRequest = (key: string) => (state: State): Request =>
-  state.requests[key];
+export const selectRequest =
+  (key: string) =>
+  (state: State): Request =>
+    state.requests[key];
 
 export default requestSlice.reducer;
 

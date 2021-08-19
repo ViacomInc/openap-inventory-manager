@@ -139,7 +139,7 @@ export function addErrors(e1: RowErrors, e2: RowErrors): RowErrors {
 
 export function getErrorMessages(errors: RowErrors): string[] {
   return Array.from(errors.entries()).flatMap<string>(([error, cells]) => {
-    const code = (error as unknown) as CSVError;
+    const code = error as unknown as CSVError;
     return ErrorMessages[code](cells);
   });
 }

@@ -47,8 +47,8 @@ export default function BodyRow({ row, onClick }: BodyRowProps): JSX.Element {
       {...row.getRowProps()}
     >
       {row.cells.map((cell) => {
-        const typedCell = (cell as unknown) as InventoryTableCell;
-        const typedColumn = (cell.column as unknown) as InventoryTableColumn;
+        const typedCell = cell as unknown as InventoryTableCell;
+        const typedColumn = cell.column as unknown as InventoryTableColumn;
         return (
           // disable plugin because key property is coming from getCellProps
           // eslint-disable-next-line react/jsx-key

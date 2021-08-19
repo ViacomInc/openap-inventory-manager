@@ -46,16 +46,14 @@ export default function InventoryViewToolbar({
 }: InventoryViewToolbarProps): JSX.Element {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  const {
-    canAddNewItems,
-    canSubmitItems,
-    canUseFilters,
-  } = useInventoryUIStatus();
+  const { canAddNewItems, canSubmitItems, canUseFilters } =
+    useInventoryUIStatus();
 
   const { allOptions, selectedOptions } = useFilters(publisher);
-  const groupedOptions = useMemo(() => getGroupedOptions(allOptions), [
-    allOptions,
-  ]);
+  const groupedOptions = useMemo(
+    () => getGroupedOptions(allOptions),
+    [allOptions]
+  );
 
   return (
     <div className={Styles.Toolbar}>

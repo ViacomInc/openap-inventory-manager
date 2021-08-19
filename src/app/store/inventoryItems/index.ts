@@ -29,9 +29,10 @@ export const inventoryItemsSlice = createSlice({
 
 export const actions = inventoryItemsSlice.actions;
 
-export const selectInventoryItem = (id: number) => (
-  state: State
-): InventoryItemReturnFieldsFragment => state.inventoryItems[id];
+export const selectInventoryItem =
+  (id: number) =>
+  (state: State): InventoryItemReturnFieldsFragment =>
+    state.inventoryItems[id];
 
 export const selectInventoryItems = (state: State): InventoryItemsSliceState =>
   state.inventoryItems;

@@ -23,7 +23,7 @@ export default function HeaderRow({ row }: HeaderRowProps): JSX.Element {
     <tr {...row.getHeaderGroupProps()}>
       {row.headers.map((column: HeaderGroup<InventoryItem>) => {
         // Work around to fix type issues with React Table and plugins
-        const typedColumn = (column as unknown) as InventoryTableColumn;
+        const typedColumn = column as unknown as InventoryTableColumn;
         const noSortBy = DO_NOT_SORT_BY.includes(column.id);
 
         return (

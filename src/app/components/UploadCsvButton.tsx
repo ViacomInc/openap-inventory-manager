@@ -44,10 +44,8 @@ export default function UploadCsvButton({
 }: UploadCsvButtonProps): JSX.Element {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [
-    imperssionUnits,
-    setImperssionUnits,
-  ] = useState<ImperssionUnits | null>(null);
+  const [imperssionUnits, setImperssionUnits] =
+    useState<ImperssionUnits | null>(null);
   const refInput = useRef<HTMLInputElement>(null);
 
   function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {

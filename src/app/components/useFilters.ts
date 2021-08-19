@@ -18,9 +18,10 @@ import { FilterType, Filter, Option } from "../store/types";
 
 import { DemographicsOptions, InventoryItemStatusOptions } from "../options";
 
-export default function useFilters(
-  publisher: Publisher
-): { allOptions: Option[]; selectedOptions: Option[] } {
+export default function useFilters(publisher: Publisher): {
+  allOptions: Option[];
+  selectedOptions: Option[];
+} {
   const dispatch = useDispatch();
   const { data: items, loading } = useSelector(
     selectGetAllInventoryItemsRequest

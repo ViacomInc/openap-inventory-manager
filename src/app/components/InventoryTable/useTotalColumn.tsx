@@ -30,19 +30,19 @@ function TotalColumnCell(cell: InventoryTableCell): JSX.Element {
 type FormatFn = (v: string | number) => string;
 export const useTotalColumn: (
   fn: FormatFn | undefined
-) => PluginHook<InventoryItem> = (
-  format = (v: string | number) => String(v)
-) => (hooks) => {
-  hooks.allColumns.push((columns) => [
-    ...columns,
-    {
-      id: "total",
-      Header: "Total",
-      Cell: TotalColumnCell,
-      align: Alignment.Trailing,
-      format,
-    },
-  ]);
-};
+) => PluginHook<InventoryItem> =
+  (format = (v: string | number) => String(v)) =>
+  (hooks) => {
+    hooks.allColumns.push((columns) => [
+      ...columns,
+      {
+        id: "total",
+        Header: "Total",
+        Cell: TotalColumnCell,
+        align: Alignment.Trailing,
+        format,
+      },
+    ]);
+  };
 
 export default useTotalColumn;

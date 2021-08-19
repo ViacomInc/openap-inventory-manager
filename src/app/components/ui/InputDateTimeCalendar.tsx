@@ -173,10 +173,10 @@ function CalendarQuarterWeeks({
   displayValue,
   weeks,
 }: CalendarWeeksProps): JSX.Element {
-  const quarterWeeks = useMemo(() => getQuarterWeeks(displayValue, weeks), [
-    displayValue,
-    weeks,
-  ]);
+  const quarterWeeks = useMemo(
+    () => getQuarterWeeks(displayValue, weeks),
+    [displayValue, weeks]
+  );
 
   return (
     <ul className={Styles.CalendarWeeks}>

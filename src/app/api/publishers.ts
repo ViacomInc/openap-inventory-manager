@@ -21,9 +21,9 @@ export const getPublishersRequest = (): ((dispatch: Dispatch) => void) =>
     dispatchTo: setPublishers,
   });
 
-export const selectGetPublishersRequest = () => (
-  state: State
-): RequestWithData<PublishersSlice> => ({
-  ...state.requests[`getPublishers`],
-  data: state.publishers,
-});
+export const selectGetPublishersRequest =
+  () =>
+  (state: State): RequestWithData<PublishersSlice> => ({
+    ...state.requests[`getPublishers`],
+    data: state.publishers,
+  });

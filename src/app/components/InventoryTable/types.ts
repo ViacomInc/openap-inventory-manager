@@ -70,12 +70,13 @@ export type InventoryTableOptions = TableOptions<InventoryItem> &
     initialState: Partial<InventoryTableSate>;
   };
 
-export type InventoryTableColumnOptions = InventoryTableOptions["columns"][number] &
-  UseSortByColumnOptions<InventoryItem> &
-  UseGroupByColumnOptions<InventoryItem> &
-  WithPlaceholderRenderer & {
-    format?: (v: string | number) => string;
-  };
+export type InventoryTableColumnOptions =
+  InventoryTableOptions["columns"][number] &
+    UseSortByColumnOptions<InventoryItem> &
+    UseGroupByColumnOptions<InventoryItem> &
+    WithPlaceholderRenderer & {
+      format?: (v: string | number) => string;
+    };
 
 export type EmptyType = Record<string, unknown>;
 

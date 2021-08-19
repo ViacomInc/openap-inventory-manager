@@ -26,10 +26,10 @@ export default function useInventoryItems(): InventoryItemReturnFieldsFragment[]
     [itemsState]
   );
   const filters = useSelector(selectTableFilters);
-  const items = useMemo(() => filterItems(allItems, filters), [
-    allItems,
-    filters,
-  ]);
+  const items = useMemo(
+    () => filterItems(allItems, filters),
+    [allItems, filters]
+  );
 
   return items;
 }

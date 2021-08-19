@@ -39,9 +39,11 @@ export default function Index(): JSX.Element | null {
 
   // get all publishers
   useEffect(() => dispatch(getPublishersRequest()), []);
-  const { loading, data: publishers, errors } = useSelector(
-    selectGetPublishersRequest()
-  );
+  const {
+    loading,
+    data: publishers,
+    errors,
+  } = useSelector(selectGetPublishersRequest());
 
   if (useRedirectToLogin(errors)) {
     return null;
@@ -106,10 +108,10 @@ function PublishersTabs({
 }: PublishersTabsProps): JSX.Element {
   //publisher tabs
   const { publisher } = useSelector(selectTableState);
-  const tabIndex = useMemo(() => getPublisherIndex(publishers, publisher), [
-    publishers,
-    publisher,
-  ]);
+  const tabIndex = useMemo(
+    () => getPublisherIndex(publishers, publisher),
+    [publishers, publisher]
+  );
   const setTabIndex = useCallback(
     (index: number, lastIndex: number) => {
       if (index === lastIndex) {
