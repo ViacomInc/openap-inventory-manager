@@ -3,7 +3,7 @@
   display: flex;
   align-items: flex-start;
   position: relative;
-  height: 7em;
+  height: 9em;
   background-color: #f0f8ff;
   font-size: 1em;
 }
@@ -38,7 +38,7 @@
   margin: 0;
 }
 
-.Account {
+.BarItemAccount {
   color: #003366;
   white-space: nowrap;
 }

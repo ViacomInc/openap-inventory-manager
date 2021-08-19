@@ -12,9 +12,14 @@ import Styles from "./NavBar.module.css";
 export interface NavBarProps {
   logout?: () => void;
   logo?: React.FC<{ className: string }>;
+  title?: string;
 }
 
-export default function NavBar({ logout, logo }: NavBarProps): JSX.Element {
+export default function NavBar({
+  logout,
+  logo,
+  title,
+}: NavBarProps): JSX.Element {
   const Logo = logo || OpenAPLogo;
   const user = useSelector(selectUser);
 
@@ -25,10 +30,12 @@ export default function NavBar({ logout, logo }: NavBarProps): JSX.Element {
           <Logo className={Styles.Logo} />
         </div>
         <div className={classnames(Styles.BarItem, Styles.BarItemStretch)}>
-          <h1 className={Styles.Header}>Open AP Marketplace Inventory</h1>
+          <h1 className={Styles.Header}>
+            {title || "Open AP Inventory Manager"}
+          </h1>
         </div>
         {user && user.id && (
-          <div className={classnames(Styles.BarItem, Styles.Account)}>
+          <div className={classnames(Styles.BarItem, Styles.BarItemAccount)}>
             <Icon className={Styles.AccountIcon} icon={Icons.Account} />{" "}
             <span className={Styles.User}>
               {user.firstName} {user.lastName}
