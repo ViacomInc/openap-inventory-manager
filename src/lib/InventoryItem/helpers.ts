@@ -11,7 +11,7 @@ import {
   InventoryItemInput,
   InventoryItemStatus,
 } from "../../graphql/__generated__/types";
-import { ItemDateTimeRange } from "../types";
+import type { ItemDateTimeRange } from "../types";
 import {
   getIsoDateFromInput,
   getIsoDateTimeFromInput,

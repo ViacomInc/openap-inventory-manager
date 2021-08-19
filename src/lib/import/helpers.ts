@@ -7,8 +7,6 @@ import {
   InventoryItems,
 } from "../../graphql/__generated__/types";
 
-import { getImportFilters, Filters } from "./filters";
-
 export const separateWithNoRate = partition<InventoryItemInput>(
   (item) => item.rate === 0
 );
@@ -25,23 +23,7 @@ export function isImportItemsConflicts(
   return "total" in result;
 }
 
-export async function applyImportFilters(
-  items: InventoryItemInput[]
-): Promise<InventoryItemInput[]> {
-  const filters = await getImportFilters();
-  if (!filters.length) {
-    return items;
-  }
-
-  return filters.reduce((items, { type, field, values }) => {
-    const filterFunction = Filters[type];
-    return items
-      .map((i) => filterFunction(i, field, values))
-      .filter(isInventoryItemInput);
-  }, items);
-}
-
-function isInventoryItemInput(
+export function isInventoryItemInput(
   item: InventoryItemInput | null | undefined
 ): item is InventoryItemInput {
   return Boolean(item);

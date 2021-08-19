@@ -22,38 +22,38 @@ import {
   isImportItemsConflicts,
 } from "../../lib/import/helpers";
 
-export const importItemsRequest = (input: ImportItemsInput) => (
-  dispatch: Dispatch
-): void => {
-  graphqlRequest<
-    ImportItemsMutationResult,
-    ImportItemsMutationVariables,
-    "importItems"
-  >({
-    key: ImportItemsRequestKey,
-    result: "importItems",
-    document: ImportItems,
-    variables: { input },
-    dispatchTo: setImportResult,
-  })(dispatch);
-};
+export const importItemsRequest =
+  (input: ImportItemsInput) =>
+  (dispatch: Dispatch): void => {
+    graphqlRequest<
+      ImportItemsMutationResult,
+      ImportItemsMutationVariables,
+      "importItems"
+    >({
+      key: ImportItemsRequestKey,
+      result: "importItems",
+      document: ImportItems,
+      variables: { input },
+      dispatchTo: setImportResult,
+    })(dispatch);
+  };
 
-export const setImportResult = (result: ImportItemsResult) => (
-  dispatch: Dispatch
-): void => {
-  if (isInventoryItems(result)) {
-    dispatch(resetImportConflicts());
-    dispatch(
-      setInventoryItemsWithNotification("items were created")(result.items)
-    );
-    return;
-  }
+export const setImportResult =
+  (result: ImportItemsResult) =>
+  (dispatch: Dispatch): void => {
+    if (isInventoryItems(result)) {
+      dispatch(resetImportConflicts());
+      dispatch(
+        setInventoryItemsWithNotification("items were created")(result.items)
+      );
+      return;
+    }
 
-  if (isImportItemsConflicts(result)) {
-    dispatch(setImportConflicts(result));
-    return;
-  }
-};
+    if (isImportItemsConflicts(result)) {
+      dispatch(setImportConflicts(result));
+      return;
+    }
+  };
 
 export const clearImportItemsRequest = (): RequestAction =>
   clearRequest(ImportItemsRequestKey);
@@ -61,5 +61,7 @@ export const clearImportItemsRequest = (): RequestAction =>
 export const selectIsLoadingImportItemsRequest = (state: State): boolean =>
   (state.requests[ImportItemsRequestKey] || {}).loading;
 
-export const selectImportItemsRequest = () => (state: State): Request =>
-  state.requests[ImportItemsRequestKey] || {};
+export const selectImportItemsRequest =
+  () =>
+  (state: State): Request =>
+    state.requests[ImportItemsRequestKey] || {};

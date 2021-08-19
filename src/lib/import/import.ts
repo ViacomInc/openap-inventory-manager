@@ -13,7 +13,8 @@ import { separateWithNoRate } from "./helpers";
 import { createNewOnly } from "../InventoryItem";
 import logger from "../logger";
 
-import { applyImportFilters } from "./helpers";
+import { isInventoryItemInput } from "./helpers";
+import { Filters, getImportFilters } from "./filters";
 
 export type ImportItemsFunction = (
   publisher: OAPPublisher
@@ -46,9 +47,8 @@ export function createImportResolver(importFunction?: ImportItemsFunction) {
       return { items: [] };
     }
 
-    const { left: itemsWithRate, right: itemsWithoutRate } = separateWithNoRate(
-      newItems
-    );
+    const { left: itemsWithRate, right: itemsWithoutRate } =
+      separateWithNoRate(newItems);
 
     if (itemsWithoutRate.length) {
       if (mode === undefined || mode === null) {
@@ -75,6 +75,22 @@ export function createImportResolver(importFunction?: ImportItemsFunction) {
     const items = await createNewOnly(userId, newItems);
     return { items };
   };
+}
+
+async function applyImportFilters(
+  items: InventoryItemInput[]
+): Promise<InventoryItemInput[]> {
+  const filters = await getImportFilters();
+  if (!filters.length) {
+    return items;
+  }
+
+  return filters.reduce((items, { type, field, values }) => {
+    const filterFunction = Filters[type];
+    return items
+      .map((i) => filterFunction(i, field, values))
+      .filter(isInventoryItemInput);
+  }, items);
 }
 
 function collectConflicts(

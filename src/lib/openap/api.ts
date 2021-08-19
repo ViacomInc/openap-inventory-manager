@@ -99,7 +99,7 @@ const openApClient = got.extend({
   },
 });
 
-export type OAPResponse = {
+type OAPResponse = {
   itemCount: number;
   warnings: string[];
 };

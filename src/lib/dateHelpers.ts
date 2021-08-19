@@ -11,7 +11,8 @@ import { DateTime, BroadcastTimeZone } from "@viacomcbs/broadcast-calendar";
 export { DateTime } from "luxon";
 
 const datePattern = /^(20\d{2})-([0]\d|1[0-2])-([0-2]\d|3[01])$/;
-const dateTimePattern = /^(20\d{2})-([0]\d|1[0-2])-([0-2]\d|3[01]).(\d{1,2}):(\d{2}):(\d{2})(\.\d{3})?(Z)?$/;
+const dateTimePattern =
+  /^(20\d{2})-([0]\d|1[0-2])-([0-2]\d|3[01]).(\d{1,2}):(\d{2}):(\d{2})(\.\d{3})?(Z)?$/;
 
 export function getNow(): DateTime {
   return DateTime.local().setZone(BroadcastTimeZone);
@@ -32,12 +33,14 @@ function parseUTCDate(dateStr: string): number | null {
     return null;
   }
 
-  const aDateTime = DateTime.fromObject({
-    year: parseInt(matchedDate[1], 10),
-    month: parseInt(matchedDate[2], 10),
-    day: parseInt(matchedDate[3], 10),
-    zone: "utc",
-  });
+  const aDateTime = DateTime.fromObject(
+    {
+      year: parseInt(matchedDate[1], 10),
+      month: parseInt(matchedDate[2], 10),
+      day: parseInt(matchedDate[3], 10),
+    },
+    { zone: "utc" }
+  );
 
   return aDateTime.toMillis();
 }
@@ -49,15 +52,17 @@ function parseUTCDateTime(dateTimeStr: string): number | null {
     return null;
   }
 
-  return DateTime.fromObject({
-    year: parseInt(matchedDateTime[1], 10),
-    month: parseInt(matchedDateTime[2], 10),
-    day: parseInt(matchedDateTime[3], 10),
-    hour: parseInt(matchedDateTime[4], 10),
-    minute: parseInt(matchedDateTime[5], 10),
-    second: parseInt(matchedDateTime[6], 10),
-    zone: "utc",
-  }).toMillis();
+  return DateTime.fromObject(
+    {
+      year: parseInt(matchedDateTime[1], 10),
+      month: parseInt(matchedDateTime[2], 10),
+      day: parseInt(matchedDateTime[3], 10),
+      hour: parseInt(matchedDateTime[4], 10),
+      minute: parseInt(matchedDateTime[5], 10),
+      second: parseInt(matchedDateTime[6], 10),
+    },
+    { zone: "utc" }
+  ).toMillis();
 }
 
 export function createTZDateFromUTC(
@@ -97,12 +102,12 @@ export function getOpenAPDateTimeFromDatabase(date: string): string {
   return openAPDateTime(DateTime.fromSQL(date, { zone: BroadcastTimeZone }));
 }
 
-export const makeFormatter = (format: string) => (
-  dateConfig: DateOrString
-): string =>
-  typeof dateConfig === "string"
-    ? DateTime.fromSQL(dateConfig).setZone(BroadcastTimeZone).toFormat(format)
-    : dateConfig.setZone(BroadcastTimeZone).toFormat(format);
+export const makeFormatter =
+  (format: string) =>
+  (dateConfig: DateOrString): string =>
+    typeof dateConfig === "string"
+      ? DateTime.fromSQL(dateConfig).setZone(BroadcastTimeZone).toFormat(format)
+      : dateConfig.setZone(BroadcastTimeZone).toFormat(format);
 
 // UI Date Helpers
 export const formatDate = makeFormatter(DISPLAY_DATE_FORMAT);

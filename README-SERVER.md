@@ -15,7 +15,7 @@ This package is responsible for managing:
   OpenAP and the UI.
 - [Background Worker](#background-worker): a background worker that handles
   syncing between your data and OpenAP.
-- [OpenAP Migration Manager](#openap-migration-manager): a migration script
+- [OpenAP Manager Migrate script](#openap-migrate-manager): a migration script
   (`openap-migrate`) that is used for migrating this lib's tables and schema.
 - [Migrate Script](#migrate-script): a migrate script (`migrate`) that exposes
   [node-pg-migrate](https://salsita.github.io/node-pg-migrate) with
@@ -183,7 +183,7 @@ their `id` passed into the `withAuth` context.
 Once you've installed the library, you can run the DB migrations needed by:
 
 ```bash
-./node_modules/.bin/openap-migration-manager
+./node_modules/.bin/openap-migrate-manager
 ```
 
 If you'd like you can add it as a script to your `package.json`:
@@ -191,7 +191,7 @@ If you'd like you can add it as a script to your `package.json`:
 ```json
 ...
   "scripts": {
-    "openap-migrate": "openap-migration-manager"
+    "openap-migrate": "openap-migrate-manager"
   },
 ...
 ```

@@ -14,8 +14,7 @@ import generatePackageJson from "rollup-plugin-generate-package-json";
 import autoprefixer from "autoprefixer";
 
 const ANALYZE = false;
-
-const noModules = ({ id }) => !id.startsWith("/node_modules");
+const analyzeFilter = ({ id }) => !id.startsWith("/node_modules");
 
 const pkg = require("./package.json");
 
@@ -68,7 +67,7 @@ export default [
       }),
       ANALYZE &&
         analyze({
-          filter: noModules,
+          filter: analyzeFilter,
         }),
     ],
   },
@@ -125,7 +124,8 @@ export default [
       }),
       ANALYZE &&
         analyze({
-          filter: noModules,
+          showExports: true,
+          filter: analyzeFilter,
         }),
     ],
   },

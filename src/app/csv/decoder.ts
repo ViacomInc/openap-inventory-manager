@@ -1,5 +1,6 @@
+import { isNumber } from "util";
 import { isLeft } from "fp-ts/lib/Either";
-import { Publisher, InventoryItemInput } from "../graphql";
+import type { Publisher, InventoryItemInput } from "../graphql";
 import {
   CsvRowFromPublisher,
   CsvObject,
@@ -7,7 +8,6 @@ import {
   validateItemDates,
 } from "./validator";
 import { InventoryItemInputWihtIndex } from "./types";
-import { isNumber } from "util";
 import { Error } from "../store/types";
 import { createNewInventoryItem } from "../../lib/InventoryItem/new";
 

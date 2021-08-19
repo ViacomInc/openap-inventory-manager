@@ -1,4 +1,4 @@
-import { RateType } from "../../graphql/__generated__/types";
+import type { RateType } from "../../graphql/__generated__/types";
 
 export type OAPNetwork = {
   id: number;

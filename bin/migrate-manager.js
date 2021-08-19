@@ -4,7 +4,7 @@ const path = require("path");
 const yargs = require("yargs");
 const runMigration = require("node-pg-migrate").default;
 
-const dbSchema = process.env.OPENAP_SCHEMA || "openap";
+const dbSchema = process.env.OPENAP_SCHEMA || "manager";
 
 const args = yargs(process.argv.slice(2)).option("direction", {
   describe: "Which direction to run the migrations: 'up' or 'down'",

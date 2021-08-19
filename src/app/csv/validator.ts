@@ -4,7 +4,7 @@ import {
   parseDateFromSQL,
 } from "@viacomcbs/broadcast-calendar";
 
-import { Publisher, Network } from "../graphql";
+import type { Publisher, Network } from "../graphql";
 
 import {
   isFutureItem,
