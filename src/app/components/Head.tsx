@@ -8,7 +8,7 @@ export interface HeadProps {
 export default function Head({ title, appTitle }: HeadProps): JSX.Element {
   return (
     <>
-      <title>{title || "OpenAP Marketplace Inventory"}</title>
+      <title>{title || "OpenAP Marketplace Inventory Manager"}</title>
       <link
         rel="apple-touch-icon"
         sizes="180x180"
@@ -30,12 +30,9 @@ export default function Head({ title, appTitle }: HeadProps): JSX.Element {
       <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#003366" />
       <meta
         name="apple-mobile-web-app-title"
-        content={appTitle || "OpenAP Marketplace"}
+        content={appTitle || "OpenAP Manager"}
       />
-      <meta
-        name="application-name"
-        content={appTitle || "OpenAP Marketplace"}
-      />
+      <meta name="application-name" content={appTitle || "OpenAP Manager"} />
       <meta name="msapplication-TileColor" content="#003366" />
       <meta name="theme-color" content="#ffffff" />
     </>
