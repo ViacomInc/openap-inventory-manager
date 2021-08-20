@@ -2,6 +2,7 @@
   margin: 0 2em 2em;
 }
 
+.Loading,
 .Centered {
   padding: 5em 0;
   display: flex;

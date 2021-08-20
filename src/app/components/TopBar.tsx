@@ -2,26 +2,26 @@ import React from "react";
 import classnames from "classnames";
 
 import { Icon, Icons, Button } from "./ui";
-import { useSelector } from "../store";
-import { selectUser } from "../store/user";
-
+import { User } from "../store/types";
 import OpenAPLogo from "./OpenAPLogo";
 
-import Styles from "./NavBar.module.css";
+import Styles from "./TopBar.module.css";
 
 export interface NavBarProps {
-  logout?: () => void;
+  auth: {
+    user?: User | null;
+    logout?: () => void;
+  };
   logo?: React.FC<{ className: string }>;
   title?: string;
 }
 
 export default function NavBar({
-  logout,
+  auth: { user, logout },
   logo,
   title,
 }: NavBarProps): JSX.Element {
   const Logo = logo || OpenAPLogo;
-  const user = useSelector(selectUser);
 
   return (
     <div className={Styles.Container}>

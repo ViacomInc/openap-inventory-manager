@@ -25,7 +25,6 @@ import { selectTableState } from "../store/table";
 import Page from "../components/Page";
 import InventoryView from "../components/InventoryView";
 import ErrorNotification from "../components/ErrorNotification";
-import { BoxLoader } from "../components/ui";
 import useRedirectToLogin from "../components/useRedirectToLogin";
 import useSyncUrlState, {
   UseSyncUrlState,
@@ -50,7 +49,7 @@ export default function Index(): JSX.Element | null {
   }
 
   const pageProps = loading
-    ? {}
+    ? { loading: true }
     : publishers && publishers.length > 1
     ? { withTabs: true }
     : { withToolbar: true };
@@ -58,12 +57,8 @@ export default function Index(): JSX.Element | null {
   return (
     <Page {...pageProps}>
       <ErrorNotification errors={errors} />
-      {loading ? (
-        <BoxLoader />
-      ) : (
-        Boolean(publishers && publishers.length) && (
-          <Publishers publishers={publishers} />
-        )
+      {publishers && publishers.length && (
+        <Publishers publishers={publishers} />
       )}
     </Page>
   );
