@@ -57,7 +57,7 @@ export default function Index(): JSX.Element | null {
   return (
     <Page {...pageProps}>
       <ErrorNotification errors={errors} />
-      {publishers && publishers.length && (
+      {Boolean(publishers && publishers.length) && (
         <Publishers publishers={publishers} />
       )}
     </Page>
