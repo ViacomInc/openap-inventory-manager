@@ -4,7 +4,7 @@ import getPool from "../../db/client";
 import { table } from "../../db/helpers";
 import { Rate, NewRate } from "../../db/types";
 
-import { rateQuery } from "./";
+import { rateQuery } from "./queries";
 
 function createQuery(userId: string, rates: NewRate[]) {
   return sql`

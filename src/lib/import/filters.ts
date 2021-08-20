@@ -13,7 +13,7 @@ import {
 
 import { clamp } from "../helpers";
 
-import { filterQuery } from "./";
+import { filterQuery } from "./queries";
 
 type FilterFunction = (
   item: InventoryItemInput & { [index: string]: unknown },

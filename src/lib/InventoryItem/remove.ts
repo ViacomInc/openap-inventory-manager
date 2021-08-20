@@ -6,7 +6,7 @@ import {
   InventoryItem,
   InventoryItemStatus,
 } from "../../graphql/__generated__/types";
-import { inventoryItemQuery } from ".";
+import { inventoryItemQuery } from "./queries";
 
 function removeQuery(userId: string, id: number) {
   return sql`

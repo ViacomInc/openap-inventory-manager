@@ -10,7 +10,7 @@ import getPool from "../../db/client";
 import { sqlSet, table } from "../../db/helpers";
 import { isEmpty } from "../helpers";
 
-import { inventoryItemQuery, inventoryItemRateQuery } from "./";
+import { inventoryItemQuery, inventoryItemRateQuery } from "./queries";
 
 function updateRateQuery(userId: string, id: number, rate: number) {
   return sql`

@@ -11,7 +11,7 @@ import {
 
 import { getAllForDateRange } from "./get";
 import { getDateRange } from "./helpers";
-import { inventoryItemQuery } from "./";
+import { inventoryItemQuery } from "./queries";
 import { isDateTimeEqual } from "../dateHelpers";
 
 function createQuery(userId: string, items: InventoryItemInput[]) {

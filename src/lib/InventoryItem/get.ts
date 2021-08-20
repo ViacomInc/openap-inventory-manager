@@ -12,7 +12,7 @@ import {
   InventoryItem,
 } from "../../graphql/__generated__/types";
 
-import { inventoryItemQuery } from "./";
+import { inventoryItemQuery } from "./queries";
 
 function getQuery(id: number) {
   return sql`
