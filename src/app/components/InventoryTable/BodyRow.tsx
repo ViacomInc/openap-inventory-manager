@@ -32,8 +32,8 @@ interface BodyRowProps {
 }
 
 export default function BodyRow({ row, onClick }: BodyRowProps): JSX.Element {
-  // status will be undefined for the grouped rows.
-  const { status, validUntil } = row.original;
+  // original will be undefined for the grouped rows.
+  const { status, validUntil } = row.original || {};
   return (
     <tr
       id={row.id}
