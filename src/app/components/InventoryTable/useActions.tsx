@@ -19,7 +19,7 @@ import {
   removeInventoryItemRequest,
   restoreInventoryItemRequest,
   updateInventoryItemRequest,
-  selectInventoryItemTransation,
+  selectInventoryItemTransaction,
 } from "../../api/inventoryItems";
 
 import { InventoryItem, InventoryItemStatus } from "../../graphql";
@@ -56,7 +56,9 @@ function ActionsCell({ row, selectedFlatRows }: InventoryTableCell) {
 
   const repeatNumber = useSelector(selectRepeatUntilNumber);
   const { id, status } = row.original;
-  const { isUpdating, errors } = useSelector(selectInventoryItemTransation(id));
+  const { isUpdating, errors } = useSelector(
+    selectInventoryItemTransaction(id)
+  );
   const isDraft = status === InventoryItemStatus.Draft;
   const dispatch = useDispatch();
 

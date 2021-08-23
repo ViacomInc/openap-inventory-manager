@@ -1,4 +1,4 @@
-import { selectInventoryItemTransation } from "../../api/inventoryItems";
+import { selectInventoryItemTransaction } from "../../api/inventoryItems";
 import { useSelector } from "../../store";
 
 import { InventoryItem } from "../../graphql";
@@ -36,7 +36,7 @@ export default function useCellData<V>(
   }
 
   const { isUpdating, item, errors } = useSelector(
-    selectInventoryItemTransation(row.original.id)
+    selectInventoryItemTransaction(row.original.id)
   );
 
   return {
