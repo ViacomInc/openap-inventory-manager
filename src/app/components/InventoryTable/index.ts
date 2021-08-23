@@ -53,20 +53,15 @@ export function hasActions(item?: InventoryItem): boolean {
 }
 
 export function biggerThanZero(value: string | number): boolean {
-  return value > 0;
+  return Number(value) > 0;
 }
 
 export function isEditable(item?: InventoryItem): boolean {
-  if (!item) {
-    return false;
-  }
-
-  if (
-    item.status === InventoryItemStatus.Removed ||
-    item.status === InventoryItemStatus.Deleted
-  ) {
-    return false;
-  }
-
-  return true;
+  return Boolean(
+    item &&
+      !(
+        item.status === InventoryItemStatus.Removed ||
+        item.status === InventoryItemStatus.Deleted
+      )
+  );
 }
