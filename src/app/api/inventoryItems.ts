@@ -115,7 +115,7 @@ export const createInventoryItemRequest =
       variables: {
         inventoryItems,
       },
-      willDispatchTo: clearTransaction,
+      didDispatchTo: clearTransaction,
       dispatchTo: setNewInventoryItem,
     })(dispatch);
   };
@@ -241,18 +241,18 @@ export const selectUpdateInventoryItemRequest =
     data: state.inventoryItems[id],
   });
 
-type SelectInventoryItemTransation = {
+type SelectInventoryItemTransaction = {
   isUpdating: boolean;
   item?: InventoryItem;
   errors?: Error[];
 };
 
-export const selectInventoryItemTransation =
+export const selectInventoryItemTransaction =
   (id: number) =>
-  ({ requests, transaction }: State): SelectInventoryItemTransation => {
+  ({ requests, transaction }: State): SelectInventoryItemTransaction => {
     const removeRequest = requests[makeRemoveKey(id)];
     const updateRequest = requests[makeUpdateKey(id)];
-    const res: SelectInventoryItemTransation = {
+    const res: SelectInventoryItemTransaction = {
       isUpdating: removeRequest?.loading || updateRequest?.loading,
     };
 
