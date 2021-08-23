@@ -139,7 +139,7 @@
     "jest": "^27.0.0",
     "jest-transform-graphql": "2.1.0",
     "license-checker": "25.0.1",
-    "nock": "13.1.1",
+    "nock": "^13.1.1",
     "postcss": "^8.2.10",
     "postcss-modules": "^4.0.0",
     "prettier": "^2.3.2",
@@ -156,23 +156,5 @@
     "ts-jest": "^27.0.4",
     "ts-node": "^10.0.0",
     "typescript": "^4.2.3"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "roots": [
-      "<rootDir>/tests"
-    ],
-    "transform": {
-      "^.+\\.(gql|graphql)$": "jest-transform-graphql"
-    },
-    "setupFiles": [
-      "<rootDir>/tests/setup-env.ts"
-    ],
-    "testEnvironment": "node",
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "tsconfig.jest.json"
-      }
-    }
   }
 }
