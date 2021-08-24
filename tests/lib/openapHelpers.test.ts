@@ -7,7 +7,7 @@ import {
 import { isMonday } from "../../src/lib/dateHelpers";
 import items from "../fixtures/inventoryItems.json";
 
-describe("openap helpers", () => {
+describe("Open AP Helpers", () => {
   test("Gets rates dates and makes sure they are all mondays", () => {
     const ratesDates = (items as InventoryItem[]).reduce(
       collectRatesDates,

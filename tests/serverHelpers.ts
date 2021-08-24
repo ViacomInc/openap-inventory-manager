@@ -2,10 +2,7 @@ import { createServer, Server } from "http";
 export type { Server } from "http";
 import { ApolloServer, AuthenticationError } from "apollo-server-micro";
 import { NextApiResponse, NextApiRequest } from "next";
-import {
-  apiResolver,
-  __ApiPreviewProps,
-} from "next/dist/next-server/server/api-utils";
+import { apiResolver, __ApiPreviewProps } from "next/dist/server/api-utils";
 
 import schema from "../src/graphql/__generated__/schema.graphql";
 import createResolvers, { CreateResolvers } from "../src/graphql/resolvers";
@@ -36,17 +33,18 @@ export async function startGraphQLServer({
   port,
   importItems,
 }: StartGraphQLServer): Promise<Server> {
+  const apolloServer = new ApolloServer({
+    typeDefs: [schema],
+    resolvers: createResolvers({ importItems }),
+    context: withAuth,
+  });
+
+  await apolloServer.start();
+  const handler = apolloServer.createHandler({ path });
+  const graphQLHandler = mockAutheticated(handler) as HandlerWithConfig;
+  graphQLHandler.config = { api: { bodyParser: false } };
+
   return new Promise((resolve) => {
-    const apolloServer = new ApolloServer({
-      typeDefs: [schema],
-      resolvers: createResolvers({ importItems }),
-      context: withAuth,
-    });
-
-    const handler = apolloServer.createHandler({ path });
-    const graphQLHandler = mockAutheticated(handler) as HandlerWithConfig;
-    graphQLHandler.config = { api: { bodyParser: false } };
-
     const server = createServer((req, res) => {
       if (req.url === path) {
         void apiResolver(

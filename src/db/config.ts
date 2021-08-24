@@ -29,5 +29,5 @@ type ManagerDBConfig = {
 };
 
 export const managerDBConfig: ManagerDBConfig = {
-  schema: process.env.OPENAP_SCHEMA || "openap",
+  schema: process.env.OPENAP_SCHEMA || "manager",
 };
