@@ -13,7 +13,7 @@ export interface WithAuth {
 export type Handler = (
   req: NextApiRequest & WithAuth,
   res: NextApiResponse
-) => Promise<void>;
+) => Promise<false | undefined>;
 
 export interface NextContext {
   req: NextApiRequest & WithAuth;
