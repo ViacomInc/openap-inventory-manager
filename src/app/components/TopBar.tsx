@@ -7,8 +7,8 @@ import OpenAPLogo from "./OpenAPLogo";
 
 import Styles from "./TopBar.module.css";
 
-export interface NavBarProps {
-  auth: {
+export interface TopBarProps {
+  auth?: {
     user?: User | null;
     logout?: () => void;
   };
@@ -16,11 +16,11 @@ export interface NavBarProps {
   title?: string;
 }
 
-export default function NavBar({
-  auth: { user, logout },
+export default function TopBar({
+  auth: { user, logout } = {},
   logo,
   title,
-}: NavBarProps): JSX.Element {
+}: TopBarProps): JSX.Element {
   const Logo = logo || OpenAPLogo;
 
   return (
