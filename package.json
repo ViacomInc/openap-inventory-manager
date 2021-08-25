@@ -37,6 +37,7 @@
     "type": "git",
     "url": "git+https://github.com/ViacomInc/openap-inventory-manager.git"
   },
+  "private": false,
   "sideEffects": false,
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^5.15.0",
