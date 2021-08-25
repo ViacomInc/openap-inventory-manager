@@ -1,6 +1,6 @@
 {
   "name": "@viacomcbs/openap-inventory-manager",
-  "version": "0.0.11",
+  "version": "0.9.0",
   "description": "Open AP Inventory Management",
   "author": "ViacomCBS",
   "license": "Apache-2.0",
@@ -28,7 +28,10 @@
     "dev:package": "npm run build && npm run dev:package:react && npm run dev:package:server",
     "license-check:prod": "license-checker --production",
     "license-check:prod:summary": "license-checker --production --summary",
-    "license-check:prod:unknown": "license-checker --production --onlyunknown --summary"
+    "license-check:prod:unknown": "license-checker --production --onlyunknown --summary",
+    "release:react": "cd @viacomcbs/openap-inventory-manager-react && release-it --dry-run",
+    "release:server": "cd @viacomcbs/openap-inventory-manager-server && release-it --dry-run",
+    "release": "npm run build && npm run release:react && npm run release:server"
   },
   "repository": {
     "type": "git",
@@ -143,6 +146,7 @@
     "postcss": "^8.2.10",
     "postcss-modules": "^4.0.0",
     "prettier": "^2.3.2",
+    "release-it": "^14.11.5",
     "rimraf": "^3.0.2",
     "rollup": "^2.42.3",
     "rollup-plugin-analyzer": "^4.0.0",

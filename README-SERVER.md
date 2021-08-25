@@ -16,9 +16,10 @@ This package is responsible for managing:
 - [Background Worker](#background-worker): a background worker that handles
   syncing between your data and OpenAP.
 - [OpenAP Manager Migrate script](#openap-migrate-manager): a migration script
-  (`openap-migrate`) that is used for migrating this lib's tables and schema.
-- [Migrate Script](#migrate-script): a migrate script (`migrate`) that exposes
-  [node-pg-migrate](https://salsita.github.io/node-pg-migrate) with
+  (`openap-migrate-manage`) that is used for migrating this lib's tables and
+  schema.
+- [Migrate Script](#migrate-script): a migrate script (`openap-migrate`) that
+  exposes [node-pg-migrate](https://salsita.github.io/node-pg-migrate) with
   [dotenv-flow](https://github.com/kerimdzhanov/dotenv-flow). You can use this
   to run migrations against your own custom tables in another schema if you need
   additional functionality or customization for your app
@@ -32,7 +33,7 @@ found here:
 
 ## GraphQL
 
-### Creating your GraphQL Handler (optional)
+### Creating your GraphQL Handler
 
 You'll need to create a GraphQL handler and expose it via a Next JS
 `/api/graphql` route that can handle API requests. Meaning you'll need to create
@@ -136,16 +137,9 @@ follows the necessary type interface. Using the example above, it would look
 something like this (we've inlined the library types for convenience):
 
 ```typescript
-interface User {
-  id?: string | null;
-  firstName?: string;
-  lastName?: string;
-  groups?: string[];
-  isAdmin?: boolean;
-}
-
-interface Auth extends User {
+interface Auth {
   id: string;
+  isAdmin: boolean;
 }
 
 interface WithAuth {
@@ -162,11 +156,11 @@ export default function myAuthMiddleware(handler: Handler): Handler {
     req: NextApiRequestWithAuth,
     res: NextApiResponse
   ): Promise<void> => {
-    // My authentication logic here: check cookies, tokens, headers, etc.
+    // Your authentication logic here: check cookies, tokens, headers, etc.
 
     req.auth = {
       id: someIDLikeAnEmail,
-      isAdmin: booleanIndicatingIfThisUserAdmin,
+      isAdmin: booleanIndicatingIfThisUserIsAdmin,
     };
 
     return handler(req, res);
@@ -183,7 +177,7 @@ their `id` passed into the `withAuth` context.
 Once you've installed the library, you can run the DB migrations needed by:
 
 ```bash
-./node_modules/.bin/openap-migrate-manager
+./node_modules/.bin/openap-migrate-manage
 ```
 
 If you'd like you can add it as a script to your `package.json`:
@@ -191,7 +185,7 @@ If you'd like you can add it as a script to your `package.json`:
 ```json
 ...
   "scripts": {
-    "openap-migrate": "openap-migrate-manager"
+    "migrate-manager": "openap-migrate-manage"
   },
 ...
 ```
@@ -200,7 +194,7 @@ And you can also pass a optional direction `-d` to the script to migrate up or
 down (defaults to `up`). E.g.:
 
 ```bash
-$ npm run openap-migrate -- -d down
+$ npm run migrate-manager -- -d down
 ```
 
 ## Migration Script

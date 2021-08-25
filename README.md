@@ -24,13 +24,13 @@ for use:
 To install the front-end lib:
 
 ```
-$ npm install openap-inventory-manager-react
+$ npm install @viacomcbs/openap-inventory-manager-react
 ```
 
 To install the server lib:
 
 ```
-$ npm install openap-inventory-manager-server
+$ npm install @viacomcbs/openap-inventory-manager-server
 ```
 
 For more details on how to use each package, importing components, etc., see the
@@ -73,17 +73,17 @@ _All environments_
 ### Setting up the Database
 
 > **IMPORTANT**: We _highly_ recommend you run this migration command as part of
-> your deploy pipeline so your `openap` schema is kept up to date after any
+> your deploy pipeline so your `manager` schema is kept up to date after any
 > library upgrades.
 
 This library maintains it's own database tables it needs to function under it's
-own DB Schema. It defaults to `openap`, but if you'd like to customize it, you
+own DB Schema. It defaults to `manager`, but if you'd like to customize it, you
 can set an env var: `OPENAP_SCHEMA`.
 
 Once you've installed the library, you can run the DB migrations needed by:
 
 ```bash
-./node_modules/.bin/migrate-manager
+./node_modules/.bin/openap-migrate-manager
 ```
 
 If you'd like you can add it as a script to your `package.json`:
@@ -91,7 +91,7 @@ If you'd like you can add it as a script to your `package.json`:
 ```json
 ...
   "scripts": {
-    "migrate:manager": "migrate-manager"
+    "migrate:manager": "openap-migrate-manager"
   },
 ...
 ```
