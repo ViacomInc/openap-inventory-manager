@@ -29,8 +29,8 @@
     "license-check:prod": "license-checker --production",
     "license-check:prod:summary": "license-checker --production --summary",
     "license-check:prod:unknown": "license-checker --production --onlyunknown --summary",
-    "release:react": "cd @viacomcbs/openap-inventory-manager-react && release-it --dry-run",
-    "release:server": "cd @viacomcbs/openap-inventory-manager-server && release-it --dry-run",
+    "release:react": "cd @viacomcbs/openap-inventory-manager-react && release-it",
+    "release:server": "cd @viacomcbs/openap-inventory-manager-server && release-it",
     "release": "npm run build && npm run release:react && npm run release:server"
   },
   "repository": {
