@@ -1,6 +1,6 @@
 {
   "name": "@viacomcbs/openap-inventory-manager",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Open AP Inventory Management",
   "author": "ViacomCBS",
   "license": "Apache-2.0",
@@ -31,7 +31,7 @@
     "license-check:prod:unknown": "license-checker --production --onlyunknown --summary",
     "release:react": "cd @viacomcbs/openap-inventory-manager-react && release-it",
     "release:server": "cd @viacomcbs/openap-inventory-manager-server && release-it",
-    "release": "npm run build && npm run release:react && npm run release:server"
+    "release": "npm run build && npm run release:react && npm run release:server && echo 'Do not forget to update version in package.json'"
   },
   "repository": {
     "type": "git",
