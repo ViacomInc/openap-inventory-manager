@@ -13,10 +13,11 @@ for use:
 
 ## Requirements
 
-- Nodejs >= 14
+- Nodejs >= 16
 - PostgresQL >= 10
-- Next JS >= 10
 - Typescript >= 4
+- Next JS >= 11
+- React >= 17 (we recommend Redux Toolkit >= 1.4)
 - Redux >= 4 (we recommend Redux Toolkit >= 1.4)
 
 ## Installation
