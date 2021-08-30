@@ -350,11 +350,11 @@ function parseDecimal(str: string): number {
 
 function getBack(value: DateTime, view: CalendarView): DateTime {
   if (view === CalendarView.Day) {
-    return value.minus({ month: 1 });
+    return value.minus({ months: 1 });
   }
 
   if (view === CalendarView.Month) {
-    return value.minus({ year: 1 });
+    return value.minus({ years: 1 });
   }
 
   if (view === CalendarView.Year) {
@@ -366,11 +366,11 @@ function getBack(value: DateTime, view: CalendarView): DateTime {
 
 function getForward(value: DateTime, view: CalendarView): DateTime {
   if (view === CalendarView.Day) {
-    return value.plus({ month: 1 });
+    return value.plus({ months: 1 });
   }
 
   if (view === CalendarView.Month) {
-    return value.plus({ year: 1 });
+    return value.plus({ years: 1 });
   }
 
   if (view === CalendarView.Year) {
@@ -403,7 +403,7 @@ function getQuarterWeeks(date: DateTime, weeks: CalendarWeeks): string[] {
         ? getBroadcastQW(weekDate)
         : getISOQW(weekDate);
     res.push(qw);
-    weekDate = weekDate.plus({ week: 1 });
+    weekDate = weekDate.plus({ weeks: 1 });
   }
 
   return res;
