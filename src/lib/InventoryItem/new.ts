@@ -12,6 +12,7 @@ import {
   parseNYDateTime,
   getSqlDateTimeFromIsoInput,
   getIsoDateFromSql,
+  isDateTime,
 } from "../dateHelpers";
 
 import {
@@ -45,16 +46,16 @@ type CreateNewInventoryItem = Pick<InventoryItemInput, "publisherId"> &
 export function createNewInventoryItem(
   item: CreateNewInventoryItem
 ): InventoryItemInput {
-  const startDatetime = DateTime.isDateTime(item.startDatetime)
+  const startDatetime = isDateTime(item.startDatetime)
     ? item.startDatetime
     : parseNYDateTime(item.startDatetime) ||
       getStartDateTime(DateTime.local().setZone(BroadcastTimeZone));
 
-  const endDatetime = DateTime.isDateTime(item.endDatetime)
+  const endDatetime = isDateTime(item.endDatetime)
     ? item.endDatetime
     : parseNYDateTime(item.endDatetime) || getEndDateTime(startDatetime);
 
-  const validUntil = DateTime.isDateTime(item.validUntil)
+  const validUntil = isDateTime(item.validUntil)
     ? item.validUntil
     : parseNYDate(item.validUntil) || getValidUntil(startDatetime);
 

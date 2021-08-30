@@ -1,3 +1,4 @@
+import { ApolloError } from "apollo-server-micro";
 import { request as graphqlFetch } from "graphql-request";
 
 import {
@@ -61,8 +62,9 @@ describe("External data import", () => {
     try {
       await callImport(apiURL);
       fail("Failed to fail");
-    } catch (e) {
-      expect(e.response.errors[0].extensions.code).toBe("NOT_IMPLEMENTED");
+    } catch (e: unknown) {
+      const err = e as ApolloError;
+      expect(err.response.errors[0].extensions.code).toBe("NOT_IMPLEMENTED");
     }
 
     await stopGraphQLServer(server);

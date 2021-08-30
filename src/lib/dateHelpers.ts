@@ -14,6 +14,14 @@ const datePattern = /^(20\d{2})-([0]\d|1[0-2])-([0-2]\d|3[01])$/;
 const dateTimePattern =
   /^(20\d{2})-([0]\d|1[0-2])-([0-2]\d|3[01]).(\d{1,2}):(\d{2}):(\d{2})(\.\d{3})?(Z)?$/;
 
+export function isDateTime(d: DateTime | string | undefined): d is DateTime {
+  if (!d || typeof d === "string") {
+    return false;
+  }
+
+  return DateTime.isDateTime(d);
+}
+
 export function getNow(): DateTime {
   return DateTime.local().setZone(BroadcastTimeZone);
 }
@@ -189,7 +197,7 @@ export function differenceInHours(
   leftDate: DateOrString,
   rightDate: DateOrString
 ): number {
-  return parseDateTime(leftDate).diff(parseDateTime(rightDate), "hour").hours;
+  return parseDateTime(leftDate).diff(parseDateTime(rightDate), "hours").hours;
 }
 
 export function isDateTimeEqual(a: string, b: string): boolean {
@@ -216,7 +224,7 @@ export function differenceInWeeks(
   rightDate: DateOrString
 ): number {
   return Math.floor(
-    parseDateTime(leftDate).diff(parseDateTime(rightDate), "week").weeks
+    parseDateTime(leftDate).diff(parseDateTime(rightDate), "weeks").weeks
   );
 }
 
