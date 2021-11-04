@@ -147,7 +147,7 @@
     "postcss": "^8.2.10",
     "postcss-modules": "^4.0.0",
     "prettier": "^2.3.2",
-    "release-it": "^14.11.5",
+    "release-it": "^14.11.6",
     "rimraf": "^3.0.2",
     "rollup": "^2.42.3",
     "rollup-plugin-analyzer": "^4.0.0",
