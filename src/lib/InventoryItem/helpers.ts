@@ -65,7 +65,7 @@ export function isFutureItem(item: ItemDateTimeRange): boolean {
 
 export function isLessThan(item: ItemDateTimeRange, maxHours: number): boolean {
   const hours = differenceInHours(item.endDatetime, item.startDatetime);
-  return Math.abs(hours) <= maxHours;
+  return hours > 0 && hours <= maxHours;
 }
 
 export function isValidUntilBeforeStart(item: ItemDateTimeRange): boolean {
