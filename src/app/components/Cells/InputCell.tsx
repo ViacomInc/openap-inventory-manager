@@ -25,8 +25,9 @@ export default function createInputCell({
   ): string | number | JSX.Element | null {
     const dispatch = useDispatch();
     const handleOnChange = useCallback(
-      (newValue: string | number) =>
-        dispatch(actions.update({ [name]: newValue })),
+      (newValue: string | number) => {
+        dispatch(actions.update({ [name]: newValue }));
+      },
       [name]
     );
     const { value, isSelected, isUpdating } = useCellData<

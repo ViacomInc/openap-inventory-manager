@@ -5,7 +5,7 @@ export default function TotalCell({
   column,
 }: InventoryTableCell): string {
   if (column.format) {
-    return column.format(value);
+    return column.format(value as number);
   }
   return String(value);
 }
