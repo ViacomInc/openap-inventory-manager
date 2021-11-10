@@ -5,9 +5,11 @@ import {
 } from "../../graphql/__generated__/types";
 import { openAPDate } from "../dateHelpers";
 
-import { addJobs, runJobs, TaskName } from "../worker";
+import { runJobs, TaskName } from "../worker";
 import { CleanDatePayload } from "../worker/cleanDate";
 import { getAllForDateRange } from "../InventoryItem";
+
+import logger from "../logger";
 
 export async function cleanup(
   userId: string,
@@ -27,10 +29,18 @@ export async function cleanup(
     });
   }
 
-  const jobs = await addJobs({
+  logger.info(
+    { dates: cleanDateJobs.map(({ date }) => date) },
+    "Cleaning dates"
+  );
+
+  const failedJobs = await runJobs({
     [TaskName.CleanDate]: cleanDateJobs,
   });
-  await runJobs(jobs);
+
+  if (failedJobs) {
+    logger.error({ failedJobs }, "Failed Jobs");
+  }
 
   return getAllForDateRange({
     dateRange,

@@ -43,3 +43,9 @@ export type OAPRates = {
   validFrom: string;
   items: OAPRate[];
 };
+
+export type OAPError = {
+  error: {
+    [key: string]: unknown;
+  };
+};

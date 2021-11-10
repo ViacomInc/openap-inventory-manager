@@ -14,7 +14,7 @@ export interface Status {
   removed: number;
 }
 
-function selectStatus(items: InventoryItemsSliceState): Status {
+export function selectStatus(items: InventoryItemsSliceState): Status {
   return Object.values(items).reduce(
     (res, item) => {
       switch (item.status) {

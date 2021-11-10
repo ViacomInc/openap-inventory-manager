@@ -59,7 +59,7 @@ export default function BodyRow({ row, onClick }: BodyRowProps): JSX.Element {
               {
                 [Styles.CellInvalid]:
                   typedColumn.validate &&
-                  !typedColumn.validate(typedCell.value),
+                  !typedColumn.validate(typedCell.value as string | number),
               }
             )}
             {...cell.getCellProps()}

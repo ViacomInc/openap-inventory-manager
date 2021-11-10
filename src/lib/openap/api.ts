@@ -1,8 +1,9 @@
 import got, { NormalizedOptions, RequestError } from "got";
 import formUrlEncoded from "form-urlencoded";
+import flattern from "flat";
 
 import logger from "../logger";
-import { OAPInventory, OAPRates, OAPPublisher } from "./types";
+import { OAPInventory, OAPRates, OAPPublisher, OAPError } from "./types";
 
 type Tokens = {
   access_token: string;
@@ -80,13 +81,26 @@ async function logRequest({
   );
 }
 
+interface ErrorMessage {
+  code?: string;
+  statusCode?: number;
+  body?: unknown;
+}
+
 function normalizeResponseErrors(error: RequestError) {
-  const { response } = error;
+  const { code, response } = error;
+  const message: ErrorMessage = {
+    code,
+  };
+
   if (response) {
-    const errorBody = response.rawBody.toString("utf8");
-    error.message = `${response.statusCode}: "${errorBody}"`;
+    const errorBody = response.body as OAPError;
+    message.statusCode = response.statusCode;
+    message.body = flattern(errorBody.error);
   }
 
+  // error message goes to job.last_error column
+  error.message = JSON.stringify(message);
   return error;
 }
 

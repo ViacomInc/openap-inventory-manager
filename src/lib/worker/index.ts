@@ -4,73 +4,94 @@ import {
   makeWorkerUtils,
   Logger,
   LogFunctionFactory,
+  Job,
   TaskList,
 } from "graphile-worker";
 import logger from "../logger";
 
 import { WORKER_CONCURRENCY } from "../constants";
 
-import { TaskName, Tasks } from "./tasks";
+import { Tasks, TaskName, TasksPayloads } from "./tasks";
 export { TaskName } from "./tasks";
 
 const logFactory: LogFunctionFactory = (scope) => {
   const workerLogger = logger.child({ ...scope, name: "worker" });
 
   return (level, message, meta?) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     workerLogger[level]({ ...meta }, message);
   };
 };
 
-export interface Job {
-  id: string;
-  taskName: TaskName;
+function getTaskId(taskId: string, taskName: string): string {
+  return `${taskName}.${taskId}`;
 }
 
-export type Tasks = Partial<Record<TaskName, unknown[]>>;
-
-function getTaskName(id: string, taskName: TaskName): string {
-  return `${taskName}.${id}`;
-}
-
-function createTaskList(taskList: TaskList, job: Job): TaskList {
-  taskList[getTaskName(job.id, job.taskName)] = Tasks[job.taskName];
-  return taskList;
-}
-
-export async function runJobs(jobs: Job[]): Promise<void> {
+export async function runJobsOnce(taskList: TaskList): Promise<void> {
   return runOnce({
     concurrency: WORKER_CONCURRENCY,
     pollInterval: 5000,
     logger: new Logger(logFactory),
     connectionString: process.env.POSTGRES_URI ?? "",
-    taskList: jobs.reduce(createTaskList, {}),
+    taskList,
   });
 }
 
-export async function addJobs(tasks: Tasks): Promise<Job[]> {
+type FailedJobs = Array<{
+  id: string;
+  taskName: TaskName;
+  payload: unknown;
+  error: unknown;
+}>;
+
+export async function runJobs(
+  tasksPayloads: TasksPayloads
+): Promise<FailedJobs | null> {
   const utils = await makeWorkerUtils({
     connectionString: process.env.POSTGRES_URI ?? "",
   });
 
-  const runnerId = uuid();
-  const jobs: Job[] = [];
   try {
-    for await (const [taskName, payloads] of Object.entries(tasks)) {
-      if (payloads === undefined) {
+    const id = uuid();
+    const jobsIds: string[] = [];
+    const taskList: TaskList = {};
+
+    for await (const [taskName, payloads] of Object.entries(tasksPayloads)) {
+      if (!(payloads && payloads.length)) {
         continue;
       }
-      const taskId = getTaskName(runnerId, taskName as TaskName);
+
+      const taskId = getTaskId(id, taskName);
+      taskList[taskId] = Tasks[taskName as TaskName];
       for await (const payload of payloads) {
-        await utils.addJob(taskId, payload);
+        const job = await utils.addJob(taskId, payload);
+        jobsIds.push(job.id);
       }
-      jobs.push({
-        id: runnerId,
-        taskName: taskName as TaskName,
-      });
     }
+
+    await runJobsOnce(taskList);
+
+    // deletes and returns failed jobs
+    const failedJobs = await utils.completeJobs(jobsIds);
+    if (!failedJobs.length) {
+      return null;
+    }
+
+    return failedJobs.reduce(makeResults, []);
   } finally {
     await utils.release();
   }
+}
 
-  return jobs;
+function makeResults(
+  results: FailedJobs,
+  { id, task_identifier, last_error, payload }: Job
+): FailedJobs {
+  results.push({
+    id,
+    taskName: task_identifier.split(".")[1] as TaskName,
+    error: last_error ? JSON.parse(last_error) : "",
+    payload,
+  });
+  return results;
 }

@@ -6,7 +6,7 @@ import { getAll, getAllForPublisherByStatuses } from "../InventoryItem";
 import logger from "../logger";
 import { collectRatesDates, collectBroadcastDates } from "./helpers";
 
-import { addJobs, runJobs, TaskName } from "../worker";
+import { runJobs, TaskName } from "../worker";
 import { SyncRatesForDatePayload } from "../worker/syncRatesForDate";
 import { SyncInventoryForDatePayload } from "../worker/syncInventoryForDate";
 
@@ -66,11 +66,14 @@ export async function submit(
     "Submitting to OpenAP..."
   );
 
-  const jobs = await addJobs({
+  const failedJobs = await runJobs({
     [TaskName.SyncRatesForDate]: syncRatesJobs,
     [TaskName.SyncInventoryForDate]: syncInventoryForDateJobs,
   });
-  await runJobs(jobs);
+
+  if (failedJobs) {
+    logger.error({ failedJobs }, "Failed Jobs");
+  }
 
   return getAll({ ids: items.map((item) => item.id) });
 }

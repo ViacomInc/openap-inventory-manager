@@ -1,7 +1,6 @@
 .Container {
   display: flex;
   padding: 1.5em 1em 1.5em 1.25em;
-  font-size: 0.88em;
   box-sizing: border-box;
   border-radius: 2px;
   border-width: 1px;
@@ -19,7 +18,7 @@
 }
 
 .Icon {
-  margin: 0.25em 1em 0 0;
+  margin: 0 1em 0 0;
 }
 
 .Info {

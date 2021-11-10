@@ -32,7 +32,7 @@ import { moveWeeks } from "../../lib/InventoryItem/helpers";
 import { isEmpty, getDiff } from "../../lib/helpers";
 
 import { State, Dispatch } from "../store/";
-import { Error, FilterType } from "../store/types";
+import { Error, FilterType, NotificationType } from "../store/types";
 import {
   selectTransaction,
   selectRepeatUntilNumber,
@@ -46,6 +46,7 @@ import {
   graphqlRequest,
   clearRequest,
   removeTableFilter,
+  addNotification,
 } from "../store/actions";
 import { Request, RequestWithData, RequestAction } from "../store/requests";
 import {
@@ -59,6 +60,8 @@ import {
   CreateInventoryItemRequestKey,
   CreateInventoryItemsRequestKey,
 } from "../store/constants";
+
+import { selectStatus } from "../components/useInventoryStatus";
 
 export const getAllInventoryItemsRequest = (
   publisherId: number
@@ -279,13 +282,27 @@ export const submitInventoryItemsRequest =
         publisherId,
       },
       dispatchTo: setInventoryItems,
-      didDispatchTo: removeStatusTableFilter,
+      didDispatchTo: checkInventoryItemsStatus,
     })(dispatch);
   };
 
-const removeStatusTableFilter = () => (dispatch: Dispatch) => {
-  dispatch(removeTableFilter({ type: FilterType.Status }));
-};
+const checkInventoryItemsStatus =
+  () => (dispatch: Dispatch, getState: () => State) => {
+    dispatch(removeTableFilter({ type: FilterType.Status }));
+
+    const state = getState();
+    const { inserted, updated, conflicted, removed } = selectStatus(
+      state.inventoryItems
+    );
+    if (inserted || updated || conflicted || removed) {
+      dispatch(
+        addNotification({
+          type: NotificationType.Warning,
+          message: `Not all items were published due to mistakes. Please check all unsubmitted inventory items.`,
+        })
+      );
+    }
+  };
 
 export const clearSubmitInventoryItemsRequest = (): RequestAction =>
   clearRequest(SubmitInventoryItemsRequestKey);

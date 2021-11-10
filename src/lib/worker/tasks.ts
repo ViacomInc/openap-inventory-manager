@@ -1,3 +1,5 @@
+import { JobHelpers } from "graphile-worker";
+
 import cleanDate from "./cleanDate";
 import syncRatesForDate from "./syncRatesForDate";
 import syncInventoryForDate from "./syncInventoryForDate";
@@ -8,8 +10,12 @@ export enum TaskName {
   SyncRatesForDate = "syncRatesForDate",
 }
 
-export const Tasks = {
+type Task = (payload: unknown, jobHelpers: JobHelpers) => Promise<void>;
+
+export const Tasks: Record<TaskName, Task> = {
   [TaskName.CleanDate]: cleanDate,
   [TaskName.SyncRatesForDate]: syncRatesForDate,
   [TaskName.SyncInventoryForDate]: syncInventoryForDate,
 };
+
+export type TasksPayloads = Partial<Record<TaskName, unknown[]>>;
