@@ -6,7 +6,10 @@ import { InventoryTableCell, Alignment } from "./types";
 
 const TOTAL_SKIP_COLUMNS = ["total", "actions", "name", "networkId"];
 
-function makeTotal(a: number, [key, value]: [string, number | null]): number {
+function makeTotal(
+  a: number,
+  [key, value]: [string, number | string | null]
+): number {
   if (TOTAL_SKIP_COLUMNS.includes(key) || !value) {
     return a;
   }
@@ -28,10 +31,12 @@ function TotalColumnCell(cell: InventoryTableCell): JSX.Element {
 }
 
 type FormatFn = (v: string | number) => string;
+const defaultFormatFn: FormatFn = (value) => String(value);
+
 export const useTotalColumn: (
   fn: FormatFn | undefined
 ) => PluginHook<InventoryItem> =
-  (format = (v: string | number) => String(v)) =>
+  (format = defaultFormatFn) =>
   (hooks) => {
     hooks.allColumns.push((columns) => [
       ...columns,

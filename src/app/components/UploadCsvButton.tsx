@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useDispatch } from "../store";
+import { useSelector, useDispatch } from "../store";
 import { Publisher } from "../graphql";
 import { setCsv } from "../store/actions";
 import { selectCSVIsLoading } from "../store/csv";
@@ -47,6 +47,7 @@ export default function UploadCsvButton({
   const [imperssionUnits, setImperssionUnits] =
     useState<ImperssionUnits | null>(null);
   const refInput = useRef<HTMLInputElement>(null);
+  const isCSVLoading = useSelector(selectCSVIsLoading);
 
   function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const units = imperssionUnits;
@@ -95,7 +96,7 @@ export default function UploadCsvButton({
         disabled={disabled}
         icon={Icons.Upload}
         secondary
-        isLoadingSelector={selectCSVIsLoading}
+        isLoading={isCSVLoading}
         onClick={() => setIsOpen(true)}
       />
       <Modal

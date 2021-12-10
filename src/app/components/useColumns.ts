@@ -1,10 +1,7 @@
 import { useMemo } from "react";
-import { Column } from "react-table";
+import { BroadcastTimeZone } from "@viacomcbs/broadcast-calendar";
 
 import IdCell from "./Cells/IdCell";
-import createSelectCell from "./Cells/SelectCell";
-import createDateTimeCell from "./Cells/DateTimeCell";
-import createInputCell from "./Cells/InputCell";
 import StatusCell from "./Cells/StatusCell";
 
 import { InventoryItem } from "../graphql";
@@ -14,11 +11,19 @@ import { onlyNewEditable } from "./InventoryTable";
 import { Alignment } from "./InventoryTable/types";
 import { biggerThanZero } from "./InventoryTable/";
 
-import { toOption, InputType } from "./ui";
+import {
+  createSelectCell,
+  createDateTimeCell,
+  SelectDateTimeValue,
+  createInputCell,
+  TableColumnOptions,
+} from "./Table";
+
+import { toOption, InputType, CalendarWeeks } from "./ui";
 
 export default function useColumns(
   networks: Array<OAPNetwork>
-): Array<Column<InventoryItem>> {
+): Array<TableColumnOptions<InventoryItem>> {
   return useMemo(
     () => [
       {
@@ -53,8 +58,10 @@ export default function useColumns(
         accessor: "startDatetime",
         Cell: createDateTimeCell({
           name: "startDatetime",
-          selectTime: true,
+          select: SelectDateTimeValue.DateTime,
+          showWeeks: CalendarWeeks.Broadcast,
           isEditable: onlyNewEditable,
+          timezone: BroadcastTimeZone,
         }),
       },
       {
@@ -62,8 +69,10 @@ export default function useColumns(
         accessor: "endDatetime",
         Cell: createDateTimeCell({
           name: "endDatetime",
-          selectTime: true,
+          select: SelectDateTimeValue.DateTime,
+          showWeeks: CalendarWeeks.Broadcast,
           isEditable: onlyNewEditable,
+          timezone: BroadcastTimeZone,
         }),
       },
       {
@@ -97,6 +106,8 @@ export default function useColumns(
         accessor: "validUntil",
         Cell: createDateTimeCell({
           name: "validUntil",
+          select: SelectDateTimeValue.Date,
+          showWeeks: CalendarWeeks.Broadcast,
         }),
       },
       {

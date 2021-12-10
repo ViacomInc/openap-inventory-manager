@@ -8,9 +8,10 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import { faCloudDownloadAlt } from "@fortawesome/free-solid-svg-icons/faCloudDownloadAlt";
 import { faCloudUploadAlt } from "@fortawesome/free-solid-svg-icons/faCloudUploadAlt";
+import { faCopy } from "@fortawesome/free-solid-svg-icons/faCopy";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
-import { faFileDownload } from "@fortawesome/free-solid-svg-icons/faFileDownload";
+import { faArrowDown } from "@fortawesome/free-solid-svg-icons/faArrowDown";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons/faInfoCircle";
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons/faPaperclip";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
@@ -32,6 +33,7 @@ export enum Icons {
   Close = "close",
   Collapse = "collapse",
   Conflicted = "conflicted",
+  Copy = "copy",
   Delete = "delete",
   Done = "done",
   Download = "download",
@@ -61,9 +63,10 @@ const IconsMap: Record<Icons, IconDefinition> = {
   [Icons.Close]: faTimes,
   [Icons.Collapse]: faChevronUp,
   [Icons.Conflicted]: faExclamationCircle,
+  [Icons.Copy]: faCopy,
   [Icons.Delete]: faTrashAlt,
   [Icons.Done]: faCheck,
-  [Icons.Download]: faFileDownload,
+  [Icons.Download]: faArrowDown,
   [Icons.Error]: faExclamationCircle,
   [Icons.Expand]: faChevronDown,
   [Icons.Fetch]: faCloudDownloadAlt,
@@ -72,9 +75,9 @@ const IconsMap: Record<Icons, IconDefinition> = {
   [Icons.New]: faCheckCircle,
   [Icons.Removed]: faTrashAlt,
   [Icons.RepeatItem]: faCalendarPlus,
-  [Icons.Sort]: faSort,
   [Icons.SortDown]: faSortDown,
   [Icons.SortUp]: faSortUp,
+  [Icons.Sort]: faSort,
   [Icons.Success]: faCheck,
   [Icons.Sync]: faCloudUploadAlt,
   [Icons.Undo]: faUndo,
@@ -83,7 +86,7 @@ const IconsMap: Record<Icons, IconDefinition> = {
   [Icons.Warning]: faExclamationTriangle,
 };
 
-function IconsLibrary(): JSX.Element {
+function IconsDefinition(): JSX.Element {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" className={Styles.Definitions}>
       {Object.entries(IconsMap).map(([name, { icon }]) => {
@@ -119,4 +122,4 @@ function IconsLibrary(): JSX.Element {
   );
 }
 
-export default React.memo(IconsLibrary);
+export default React.memo(IconsDefinition);

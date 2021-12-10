@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { DateTime, Interval } from "luxon";
 
-import { selectIsLoadingFlushInventoryItemsRequest } from "../api/inventoryItems";
+import { useSelector } from "../store";
+import { selectFlushInventoryItemsRequest } from "../api/inventoryItems";
 
 import { SlowButton, Button, Icons, Modal, InputDateTime } from "./ui";
 
@@ -40,6 +41,8 @@ export default function FlushInventoryButton({
 
   const canSubmit = !error && range;
 
+  const { loading } = useSelector(selectFlushInventoryItemsRequest());
+
   return (
     <>
       <SlowButton
@@ -48,7 +51,7 @@ export default function FlushInventoryButton({
         secondary
         disabled={disabled}
         icon={Icons.Flush}
-        isLoadingSelector={selectIsLoadingFlushInventoryItemsRequest}
+        isLoading={loading}
         onClick={() => setIsOpen(true)}
       />
       <Modal

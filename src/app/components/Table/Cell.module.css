@@ -1,0 +1,72 @@
+.Container {
+  margin-left: -0.5em;
+  margin-right: -0.5em;
+}
+
+.New {
+  color: #3bcc33;
+}
+.Removed {
+  color: #f24c36;
+}
+.Conflicted {
+  color: #f06c00;
+}
+.Updated {
+  color: #006ad2;
+}
+
+.Actions {
+  width: 4.5em;
+  display: flex;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.ActionsCenter {
+  justify-content: center;
+}
+
+.EditRowActions {
+}
+
+.DuplicateRowActions {
+  width: 2em;
+}
+
+.Confirm:hover,
+.Copy:hover {
+  color: #006ad2;
+}
+
+.Cancel:hover,
+.Delete:hover {
+  color: #db241a;
+}
+
+.Sort {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.89em;
+  line-height: 1.2em;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  color: inherit;
+}
+
+.Sort:active {
+  color: inherit;
+}
+
+.SortIcon {
+  margin-left: 0.89em;
+}
+
+.SortNotActive {
+  color: #c8ced0;
+}

@@ -38,7 +38,7 @@ export default function ImportButton({
         disabled={disabled}
         icon={Icons.Fetch}
         secondary
-        isLoadingSelector={selectIsLoadingImportItemsRequest}
+        isLoading={isLoading}
         onClick={() => onClick()}
       />
       <Modal

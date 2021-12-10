@@ -1,22 +1,24 @@
 import React from "react";
 import ReactSelect, {
-  NamedProps,
-  OptionTypeBase,
-  GroupTypeBase,
-  OptionsType,
+  Props,
+  GroupBase,
   components,
+  MultiValue,
+  SingleValue,
 } from "react-select";
 
-export interface Option extends OptionTypeBase {
+export interface Option {
   label: string;
   value: string | number;
   type?: string;
 }
-export type GroupedOption = GroupTypeBase<Option>;
+export type GroupedOption = GroupBase<Option>;
+
+export type SelectValue<O = Option> = MultiValue<O> | SingleValue<O>;
 
 // with piece of shit styling
 export default function Select(
-  props: NamedProps<Option, boolean, GroupedOption>
+  props: Props<Option, boolean, GroupedOption>
 ): JSX.Element {
   return (
     <ReactSelect
@@ -29,7 +31,7 @@ export default function Select(
           borderRadius: "4px",
           background: "#fff",
           outline: "none",
-          padding: "0.5em 1em 0.4em",
+          padding: "0.5em 0.5em 0.4em",
           boxShadow: "none",
           minHeight: "auto",
         }),
@@ -40,8 +42,9 @@ export default function Select(
         input: (styles) => ({
           ...styles,
           margin: 0,
-          padding: "0 0 0 0.5em",
+          padding: "0",
           fontSize: "inherit",
+          fontFamiliy: "inherit",
           color: "#151c1e",
         }),
         placeholder: (styles) => ({
@@ -123,8 +126,8 @@ export function toOption(item: { id: number | string; name: string }): Option {
 }
 
 export function isMultiOptions<O extends Option>(
-  values: O | OptionsType<O> | null
-): values is OptionsType<O> {
+  values: SelectValue<O> | null
+): values is MultiValue<O> {
   if (!values || !Array.isArray(values)) {
     return false;
   }

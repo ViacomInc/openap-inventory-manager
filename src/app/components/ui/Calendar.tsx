@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import classnames from "classnames";
 import { DateTime, Info } from "luxon";
+
+import Styles from "./Calendar.module.css";
 import { getBroadcastQuarterWeek } from "@viacomcbs/broadcast-calendar";
 
-import Styles from "./InputDateTime.module.css";
-
-import {
-  DISPLAY_CALENDAR_DAY_TITLE,
-  DISPLAY_CALENDAR_MONTH_TITLE,
-} from "../../config";
+const DISPLAY_CALENDAR_DAY_TITLE = "MMMM yyyy";
+const DISPLAY_CALENDAR_MONTH_TITLE = "yyyy";
 
 export enum CalendarView {
   Day,
@@ -21,20 +19,25 @@ export enum CalendarWeeks {
   Broadcast,
 }
 
+export enum CalendarSelect {
+  Day,
+  Week,
+}
+
 function NextCalendarView(view: CalendarView): CalendarView {
-  if (view === CalendarView.Day) {
-    return CalendarView.Month;
-  }
+  switch (view) {
+    case CalendarView.Day:
+      return CalendarView.Month;
 
-  if (view === CalendarView.Month) {
-    return CalendarView.Year;
-  }
+    case CalendarView.Month:
+      return CalendarView.Year;
 
-  if (view === CalendarView.Year) {
-    return CalendarView.Day;
-  }
+    case CalendarView.Year:
+      return CalendarView.Day;
 
-  return CalendarView.Day;
+    default:
+      return CalendarView.Day;
+  }
 }
 
 const CalendarViews = {
@@ -48,28 +51,35 @@ interface CalendarProps {
   calendarClassName?: string;
   showWeeks?: CalendarWeeks;
   onChange: (date: DateTime, view: CalendarView) => void;
+  select: CalendarSelect;
 }
 
-export default function InputDateTimeCalendar(
-  props: CalendarProps
-): JSX.Element {
+export default function Calendar({
+  value,
+  calendarClassName,
+  showWeeks,
+  onChange,
+  select,
+}: CalendarProps): JSX.Element {
   const [view, setView] = useState<CalendarView>(CalendarView.Day);
-  const [value, setValue] = useState<DateTime>(props.value || DateTime.utc());
+  const [internalValue, setInternalValue] = useState<DateTime>(
+    value || DateTime.utc()
+  );
   const [displayValue, setDisplayValue] = useState<DateTime>(
-    props.value || DateTime.utc()
+    value || DateTime.utc()
   );
   const title = useTitle({ view, displayValue });
 
   useEffect(() => {
-    if (!props.value) {
+    if (!value) {
       return;
     }
 
-    setValue(props.value);
-    setDisplayValue(props.value);
-  }, [props.value && props.value.toMillis()]);
+    setInternalValue(value);
+    setDisplayValue(value);
+  }, [value && value.toMillis()]);
 
-  const select = useCallback(
+  const selectValue = useCallback(
     (year?: number, month?: number, day?: number) => {
       let newValue = displayValue;
       if (year !== undefined) {
@@ -85,18 +95,18 @@ export default function InputDateTimeCalendar(
       }
 
       setDisplayValue(newValue);
-      setValue(newValue);
+      setInternalValue(newValue);
 
       if (view === CalendarView.Year) {
         setView(CalendarView.Month);
       } else {
         setView(CalendarView.Day);
-        if (value !== newValue) {
-          props.onChange(newValue, view);
+        if (internalValue !== newValue) {
+          onChange(newValue, view);
         }
       }
     },
-    [displayValue.toMillis(), view, props.onChange]
+    [displayValue.toMillis(), view, onChange]
   );
 
   const clickHandler = useCallback(
@@ -125,16 +135,16 @@ export default function InputDateTimeCalendar(
           break;
 
         case "select":
-          select(...parts.slice(2).map(parseDecimal));
+          selectValue(...parts.slice(2).map(parseDecimal));
           break;
       }
     },
-    [displayValue.valueOf(), view, select]
+    [displayValue.valueOf(), view, selectValue]
   );
 
   return (
     <div
-      className={classnames(Styles.Calendar, props.calendarClassName)}
+      className={classnames(Styles.Calendar, calendarClassName)}
       onClick={clickHandler}
     >
       <div className={Styles.CalendarHeader}>
@@ -149,15 +159,13 @@ export default function InputDateTimeCalendar(
         </a>
       </div>
       <div className={Styles.CalendarDisplay}>
-        {props.showWeeks !== undefined && view === CalendarView.Day && (
-          <CalendarQuarterWeeks
-            weeks={props.showWeeks}
-            displayValue={displayValue}
-          />
+        {showWeeks !== undefined && view === CalendarView.Day && (
+          <CalendarQuarterWeeks weeks={showWeeks} displayValue={displayValue} />
         )}
         {CalendarViews[view]({
-          value,
+          value: internalValue,
           displayValue,
+          select,
         })}
       </div>
     </div>
@@ -191,9 +199,10 @@ function CalendarQuarterWeeks({
 interface ViewProps {
   value: DateTime;
   displayValue: DateTime;
+  select: CalendarSelect;
 }
 
-function CalendarDays({ value, displayValue }: ViewProps) {
+function CalendarDays({ value, displayValue, select }: ViewProps) {
   const firstDay = displayValue.startOf("month").weekday;
   const days = displayValue.daysInMonth;
 
@@ -212,16 +221,21 @@ function CalendarDays({ value, displayValue }: ViewProps) {
   }
 
   const { year, month } = displayValue;
+  const valueStartOfWeek = value.startOf("week");
   let day = 1;
   for (let i = 0; i < 9; i++) {
-    for (let j = 1; j <= 7; j++) {
-      if (day <= days && ((j >= firstDay && i === 0) || i > 0)) {
+    for (let weekday = 1; weekday <= 7; weekday++) {
+      if (day <= days && ((weekday >= firstDay && i === 0) || i > 0)) {
+        const weekend = isWeekend(weekday);
         elDays.push(
           <li
             key={`${year}${month}${day}`}
             className={classnames({
-              [Styles.CalendarWeekend]: isWeekend(j),
-              [Styles.CalendarSelected]: isDayActive(value, displayValue, day),
+              [Styles.CalendarWeekend]: weekend,
+              [Styles.CalendarSelected]:
+                select === CalendarSelect.Day
+                  ? isDayActive(value, displayValue, day)
+                  : isWeekActive(valueStartOfWeek, displayValue, day),
             })}
           >
             <a href={`#/select/${year}/${month}/${day}`}>{day}</a>
@@ -231,7 +245,7 @@ function CalendarDays({ value, displayValue }: ViewProps) {
       } else if (day > days) {
         break;
       } else {
-        elDays.push(<li key={`${i}${j}`}></li>);
+        elDays.push(<li key={`${i}${weekday}`}></li>);
       }
     }
 
@@ -295,30 +309,50 @@ function useTitle({ view, displayValue }: UseTitle) {
   const [title, setTitle] = useState<string>("");
   useEffect(() => {
     switch (view) {
-      case CalendarView.Day:
+      case CalendarView.Day: {
         setTitle(displayValue.toFormat(DISPLAY_CALENDAR_DAY_TITLE));
         break;
-
-      case CalendarView.Month:
+      }
+      case CalendarView.Month: {
         setTitle(displayValue.toFormat(DISPLAY_CALENDAR_MONTH_TITLE));
         break;
-
-      case CalendarView.Year:
-        // eslint-disable-next-line no-case-declarations
+      }
+      case CalendarView.Year: {
         const year = getStartYear(displayValue.year);
         setTitle(`${year} – ${year + SHOW_YEARS - 1}`);
         break;
+      }
     }
   }, [view, displayValue]);
   return title;
 }
 
-function isDayActive(valueDate: DateTime, viewDate: DateTime, day: number) {
+function isDayActive(
+  valueDate: DateTime,
+  viewDate: DateTime,
+  day: number
+): boolean {
   return (
     viewDate.year === valueDate.year &&
     viewDate.month === valueDate.month &&
     day === valueDate.day
   );
+}
+
+function isWeekActive(
+  valueStartOfWeek: DateTime,
+  viewDate: DateTime,
+  day: number
+): boolean {
+  const viewStartOfWeek = viewDate.set({ day }).startOf("week");
+
+  const yearActive = viewStartOfWeek.year === valueStartOfWeek.year;
+  const monthActive = viewStartOfWeek.month === valueStartOfWeek.month;
+  if (!yearActive || !monthActive) {
+    return false;
+  }
+
+  return viewStartOfWeek.day === valueStartOfWeek.day;
 }
 
 function isMonthActive(valueDate: DateTime, viewDate: DateTime, month: number) {
@@ -389,6 +423,7 @@ function getQuarterWeeks(date: DateTime, weeks: CalendarWeeks): string[] {
   const yearStart = date.startOf("year");
   const end = date.endOf("month");
   const res: string[] = [];
+  const getQW = weeks === CalendarWeeks.Broadcast ? getBroadcastQW : getISOQW;
 
   while (
     (weekDate.year === end.year &&
@@ -398,11 +433,7 @@ function getQuarterWeeks(date: DateTime, weeks: CalendarWeeks): string[] {
       end.weekNumber === 1) ||
     weekDate.equals(yearStart)
   ) {
-    const qw =
-      weeks === CalendarWeeks.Broadcast
-        ? getBroadcastQW(weekDate)
-        : getISOQW(weekDate);
-    res.push(qw);
+    res.push(getQW(weekDate));
     weekDate = weekDate.plus({ weeks: 1 });
   }
 

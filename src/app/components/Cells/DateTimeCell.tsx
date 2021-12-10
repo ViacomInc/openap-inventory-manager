@@ -55,7 +55,7 @@ export default function createDateTimeCell({
 
     return (
       <InputDateTime
-        error={error}
+        error={Boolean(error)}
         value={dt}
         onChange={(date) => {
           dispatch(actions.update({ [name]: getValue(date) }));

@@ -101,10 +101,10 @@ function ActionsCell({ row, selectedFlatRows }: InventoryTableCell) {
         className={Styles.Confirm}
         icon={Icons.Done}
         title={isDraft ? "Create Item" : "Update Item"}
-        onClick={() =>
-          isDraft
-            ? dispatch(createInventoryItemRequest())
-            : dispatch(updateInventoryItemRequest())
+        onClick={
+          () => isDraft
+          /*  ? dispatch(createInventoryItemRequest())
+            : dispatch(updateInventoryItemRequest())*/
         }
       />
       <Button

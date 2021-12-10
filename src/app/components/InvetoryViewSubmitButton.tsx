@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-import { selectIsLoadingSubmitInventoryItemsRequest } from "../api/inventoryItems";
+import { useSelector } from "../store";
+import { selectSubmitInventoryItemsRequest } from "../api/inventoryItems";
 import useInventoryStatus from "./useInventoryStatus";
 import { SlowButton, Button, Icons, Modal } from "./ui";
 
@@ -15,6 +16,7 @@ export default function InvetoryViewSubmitButton({
 }: Props): JSX.Element {
   const { conflicted } = useInventoryStatus();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { loading } = useSelector(selectSubmitInventoryItemsRequest());
 
   return (
     <>
@@ -22,7 +24,7 @@ export default function InvetoryViewSubmitButton({
         title="Submit Updates"
         icon={Icons.Sync}
         disabled={disabled}
-        isLoadingSelector={selectIsLoadingSubmitInventoryItemsRequest}
+        isLoading={loading}
         onClick={() => setIsOpen(true)}
       />
       {conflicted > 1 ? (

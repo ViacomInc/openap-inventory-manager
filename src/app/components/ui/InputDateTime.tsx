@@ -1,27 +1,28 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import classnames from "classnames";
 import debounce from "debounce";
+import { DateTime } from "luxon";
 
 import useDidMountEffect from "./useDidMountEffect";
 
-import { Error } from "../../store/types";
-
 import Pop from "./Pop";
-import Calendar, { CalendarView, CalendarWeeks } from "./InputDateTimeCalendar";
-export { CalendarWeeks } from "./InputDateTimeCalendar";
+import Calendar, {
+  CalendarView,
+  CalendarWeeks,
+  CalendarSelect,
+} from "./Calendar";
 
 import InputStyles from "./Input.module.css";
 import Styles from "./InputDateTime.module.css";
-import { DateTime } from "luxon";
 
 type ValidateFunction = (value: DateTime) => boolean;
-type FormateFunction = (value: DateTime) => string;
-type ParseFunction = (value: string) => DateTime | null;
+type FormatFunction = (value: DateTime) => string;
+type ParseFunction = (value: string, timezone?: string) => DateTime | null;
 
-interface InputDateTimeProps {
+export interface InputDateTimeProps {
   value?: DateTime | null;
   validate?: ValidateFunction;
-  format: FormateFunction;
+  format: FormatFunction;
   parse: ParseFunction;
   containerClassName?: string;
   inputClassName?: string;
@@ -32,87 +33,100 @@ interface InputDateTimeProps {
   error?: boolean | Error;
   autoHide?: boolean;
   showWeeks?: CalendarWeeks;
+  select?: CalendarSelect;
+  timezone?: string;
 }
 
-export default function InputDateTime(props: InputDateTimeProps): JSX.Element {
-  const [value, setValue] = useState<DateTime>(
-    !props.value ? DateTime.utc() : props.value
+export default function InputDateTime({
+  value,
+  validate,
+  format,
+  parse,
+  containerClassName,
+  inputClassName,
+  errorClassName,
+  disabled,
+  onChange,
+  error,
+  autoHide,
+  showWeeks,
+  select = CalendarSelect.Day,
+  timezone,
+}: InputDateTimeProps): JSX.Element {
+  const [internalValue, setInternalValue] = useState<DateTime>(
+    !value ? DateTime.utc() : value
   );
   const [active, setActive] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(Boolean(props.error));
+  const [internalError, setInternalError] = useState<boolean>(Boolean(error));
 
-  useEffect(() => setError(Boolean(props.error)), [props.error]);
+  useEffect(() => setInternalError(Boolean(error)), [error]);
   useEffect(() => {
     if (!active) {
-      !props.error && setError(false);
+      !error && setInternalError(false);
     }
-  }, [active, props.error]);
+  }, [active, error]);
 
   const debouncedParseAndSetValue = useCallback(
     debounce((inputValue: string) => {
-      const date = props.parse(inputValue);
+      const date = parse(inputValue, timezone);
       if (date === null) {
-        setError(true);
+        setInternalError(true);
         return;
       }
 
-      if (props.validate && !props.validate(date)) {
-        setError(true);
+      if (validate && !validate(date)) {
+        setInternalError(true);
         return;
       }
 
-      !props.error && setError(false);
-      setValue(date);
+      !error && setInternalError(false);
+      setInternalValue(date);
     }, 300),
-    [props.validate]
+    [validate]
   );
 
   const handleOnChange = useCallback(
-    (value: DateTime, view: CalendarView) => {
-      setValue(value);
-      if (
-        props.autoHide &&
-        view === CalendarView.Day &&
-        !props.error &&
-        !error
-      ) {
+    (newValue: DateTime, view: CalendarView) => {
+      setInternalValue(newValue);
+      if (autoHide && view === CalendarView.Day && !error && !internalError) {
         setActive(false);
       }
     },
-    [props.autoHide, props.error, error]
+    [autoHide, error, internalError]
   );
 
   const inputRef = useRef<HTMLInputElement>(null);
   useDidMountEffect(() => {
     updateInputValueAndKeepCarretPosition(
       inputRef.current,
-      props.format(value),
+      format(internalValue),
       active
     );
-    props.onChange(value);
-  }, [value.valueOf()]);
+    onChange(internalValue);
+  }, [internalValue.valueOf()]);
 
   return (
     <Pop
       active={[active, setActive]}
-      className={classnames(Styles.Container, props.containerClassName, {
-        [props.errorClassName || Styles.Error]: error,
+      className={classnames(Styles.Container, containerClassName, {
+        [errorClassName || Styles.Error]: internalError,
       })}
       target={
         <input
           ref={inputRef}
-          className={classnames(InputStyles.Input, props.inputClassName)}
+          className={classnames(InputStyles.Input, inputClassName)}
           type="text"
-          defaultValue={props.format(value)}
+          defaultValue={format(internalValue)}
           onChange={(e) => debouncedParseAndSetValue(e.target.value)}
-          disabled={props.disabled}
+          disabled={disabled}
         />
       }
     >
       <Calendar
-        value={value}
+        value={internalValue}
         onChange={handleOnChange}
-        showWeeks={props.showWeeks}
+        showWeeks={showWeeks}
+        select={select}
       />
     </Pop>
   );

@@ -89,21 +89,19 @@ export const selectGetAllInventoryItemsRequest = (
 
 // this is for user created items
 export const createInventoryItemRequest =
-  () =>
+  (newItem: InventoryItemInput) =>
   (dispatch: Dispatch, getState: () => State): void => {
     const state = getState();
-    const newItem = selectTransaction(state).data;
     if (!newItem) {
       return;
     }
 
     const number = selectRepeatUntilNumber(state);
-    const { id, status, ...newItemData } = newItem;
-    const inventoryItems = [newItemData];
+    const inventoryItems = [newItem];
 
     if (number > 0) {
       for (let i = 1; i <= number; i++) {
-        inventoryItems.push(moveWeeks(newItemData, i));
+        inventoryItems.push(moveWeeks(newItem, i));
       }
     }
 
@@ -205,10 +203,9 @@ export type InventoryItemUpdate = Pick<InventoryItem, "id"> &
   InventoryItemUpdateInput;
 
 export const updateInventoryItemRequest =
-  (update?: InventoryItemUpdate) =>
+  (updatedItem: InventoryItemUpdate) =>
   (dispatch: Dispatch, getState: () => State): void => {
     const state = getState();
-    const updatedItem = update || selectTransaction(state).data;
     if (!updatedItem) {
       return;
     }
@@ -307,10 +304,6 @@ const checkInventoryItemsStatus =
 export const clearSubmitInventoryItemsRequest = (): RequestAction =>
   clearRequest(SubmitInventoryItemsRequestKey);
 
-export const selectIsLoadingSubmitInventoryItemsRequest = (
-  state: State
-): boolean => (state.requests[SubmitInventoryItemsRequestKey] || {}).loading;
-
 export const selectSubmitInventoryItemsRequest =
   () =>
   (state: State): Request =>
@@ -334,10 +327,6 @@ export const flushInventoryItemsRequest =
       dispatchTo: setInventoryItems,
     })(dispatch);
   };
-
-export const selectIsLoadingFlushInventoryItemsRequest = (
-  state: State
-): boolean => (state.requests[FlushInventoryItemsRequestKey] || {}).loading;
 
 export const selectFlushInventoryItemsRequest =
   () =>

@@ -1,0 +1,214 @@
+.Table {
+  width: 100%;
+  font-size: 0.93em;
+  position: relative;
+  border-spacing: 1px;
+  border-collapse: separate;
+  z-index: 1;
+  margin: 2em 0;
+}
+
+.EmptyData {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Paginator {
+  margin-top: 3em;
+  z-index: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.PaginatorSelector {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.PaginatorSelector > * {
+  margin: 0 0.25em;
+}
+
+.Head {
+  color: #798386;
+}
+
+.Cell {
+  padding: 0.25em 0.75em;
+  height: 3.57em;
+}
+
+.HeadCell {
+  padding: 1em 0.75em;
+  text-align: left;
+  font-size: 0.89em;
+  /*background: #eee;*/
+}
+
+.HeadCellHasChildren {
+  border-bottom: 1px solid #e4f4e8;
+}
+
+.HeadCellRightDelimeter {
+  border-right: 1px solid #e4f4e8;
+}
+
+.HeadCellCaption {
+  display: inline-block;
+  width: 80%;
+}
+
+.Sort {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 0.89em;
+  line-height: 1.2em;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  color: inherit;
+}
+
+.Sort:active {
+  color: inherit;
+}
+
+.SortIcon {
+  margin-left: 0.89em;
+}
+
+.SortNotActive {
+  color: #c8ced0;
+}
+
+.Actions {
+  width: 100px;
+  display: flex;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.ActionsCenter {
+  justify-content: center;
+}
+
+.RepeatPop {
+  margin-right: 1em;
+}
+
+.Repeat:hover,
+.Confirm:hover {
+  color: #006ad2;
+}
+
+.Repeat:disabled,
+.Confirm:disabled {
+  color: #adb5b8;
+}
+.Undo:hover,
+.Cancel:hover,
+.Delete:hover {
+  color: #db241a;
+}
+
+.Row {
+  cursor: pointer;
+}
+.Row:nth-child(odd) {
+  background: #f4f5f6;
+}
+.Row:hover {
+  outline: 1px solid #dcdcdc;
+  outline-offset: -1px;
+}
+.RowNew {
+  background: #f2fdf2;
+}
+.RowNew:nth-child(odd) {
+  background: #e4f4e8;
+}
+.RowNew:hover {
+  outline-color: #c7e6cc;
+}
+.RowRemoved {
+  background: #fdeeed;
+}
+.RowRemoved:nth-child(odd) {
+  background: #f5e3e4;
+}
+.RowRemoved:hover {
+  outline-color: #ffc8c8;
+}
+.RowDeleted {
+  background: #f50000;
+}
+.RowDeleted:nth-child(odd) {
+  background: #f00000;
+}
+.RowDeleted:hover {
+  outline-color: #ff0000;
+}
+.RowUpdated {
+  background: #ebf5ff;
+}
+.RowUpdated:nth-child(odd) {
+  background: #deebf7;
+}
+.RowUpdated:hover {
+  outline-color: #c9e6ff;
+}
+.RowCommitted:hover {
+  outline: none;
+  cursor: auto;
+}
+
+.EditRow {
+  background: #ebf5ff !important;
+  outline: 1px solid #99ccff !important;
+  outline-offset: -1px;
+  z-index: 1;
+}
+
+.CellLeading {
+  text-align: left;
+}
+
+.CellTrailing {
+  text-align: right;
+  justify-content: flex-end;
+}
+.CellInvalid {
+  background-color: #ffe3cd;
+}
+
+.Select {
+  width: 150px;
+}
+
+.ExpandIcon {
+  width: 0.5em;
+  margin-right: 0.5em;
+}
+
+.Width1 {
+  width: 2em;
+}
+.Width2 {
+  width: 4.5em;
+}
+.Width3 {
+  width: 6em;
+}
+.Width4 {
+  width: 8em;
+}
+.Width5 {
+  width: 10em;
+}
+.Width6 {
+  width: 12em;
+}
