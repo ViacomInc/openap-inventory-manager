@@ -26,3 +26,30 @@
 .Updated {
   color: #006ad2;
 }
+
+.Day,
+.StartDay,
+.EndDay,
+.Time,
+.StartTime,
+.EndTime {
+  display: inline-block;
+}
+
+.StartDay,
+.EndDay,
+.Day {
+  width: 7em;
+  margin: auto 0.5em auto 2em;
+}
+
+.EndDay {
+  margin-left: 1em;
+}
+
+.Time {
+}
+
+.StartTime {
+  margin-right: 1em;
+}

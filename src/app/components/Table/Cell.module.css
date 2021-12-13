@@ -3,19 +3,6 @@
   margin-right: -0.5em;
 }
 
-.New {
-  color: #3bcc33;
-}
-.Removed {
-  color: #f24c36;
-}
-.Conflicted {
-  color: #f06c00;
-}
-.Updated {
-  color: #006ad2;
-}
-
 .Actions {
   width: 4.5em;
   display: flex;
@@ -69,4 +56,9 @@
 
 .SortNotActive {
   color: #c8ced0;
+}
+
+.ExpandIcon {
+  width: 0.5em;
+  margin-right: 0.5em;
 }

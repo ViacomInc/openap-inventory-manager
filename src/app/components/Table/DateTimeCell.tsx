@@ -171,6 +171,7 @@ export default function createDateTimeCell<
     const date = getDateFromValue(value);
     if (
       !row.isEditing ||
+      row.canExpand ||
       (typeof isEditable === "function" && !isEditable(row.original)) ||
       (typeof isEditable === "boolean" && !isEditable)
     ) {

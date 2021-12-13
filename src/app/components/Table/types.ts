@@ -69,8 +69,8 @@ export type TableColumn<R extends RowData> = Column<R> &
   UseGroupByColumnProps<R> &
   WithPlaceholderRenderer<R> & {
     align?: Alignment;
-    format?: (value: string | number) => string;
-    validate?: (value: string | number) => boolean;
+    format?: (value: any) => string;
+    validate?: (value: any) => boolean;
   };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -80,6 +80,8 @@ export type TableCell<R extends RowData, V = any> = Cell<R, V> &
     row: TableRow<R>;
     column: TableColumn<R> & {
       accessor: (row: R) => string;
+      format?: (value: V) => string;
+      validate?: (value: V) => boolean;
     };
     original?: R;
     values: Partial<R>;
@@ -87,7 +89,7 @@ export type TableCell<R extends RowData, V = any> = Cell<R, V> &
     useEditRowTransactionValue: boolean;
   };
 
-interface CellRenderer<R extends RowData> {
+export interface CellRenderer<R extends RowData> {
   cell: TableCell<R>;
 }
 

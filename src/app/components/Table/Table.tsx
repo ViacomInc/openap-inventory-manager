@@ -4,7 +4,7 @@ import {
   // useSortBy,
   useGroupBy,
   useExpanded,
-  usePagination,
+  // usePagination,
   PluginHook,
 } from "react-table";
 
@@ -67,6 +67,7 @@ export default function Table<R extends RowData>({
   if (isDuplicateRowEnabled) {
     plugins.push(useDuplicateRow);
   }
+
   if (isEditRowEnabled) {
     plugins.push(useEditRow);
   }

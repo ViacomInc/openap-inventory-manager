@@ -4,9 +4,14 @@ import { useDispatch, useSelector } from "../store";
 import { setTablePage, setTablePageSize } from "../store/actions";
 import { selectTableState } from "../store/table";
 
-import { Pagination } from "./InventoryTable/types";
-
 import { DEFAULT_PAGE_SIZE } from "../config";
+
+export type Pagination = {
+  pageIndex: number;
+  pageSize: number;
+  setPageIndex: (index: number) => void;
+  setPageSize: (size: number) => void;
+};
 
 export default function useInventoryTablePage(): Pagination {
   const dispatch = useDispatch();

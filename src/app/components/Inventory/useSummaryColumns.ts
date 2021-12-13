@@ -1,15 +1,10 @@
 import { useMemo } from "react";
 import { BroadcastTimeZone } from "@viacomcbs/broadcast-calendar";
 
-import IdCell from "./Cells/IdCell";
-import StatusCell from "./Cells/StatusCell";
-
-import { InventoryItem } from "../graphql";
-import type { OAPNetwork } from "../../lib/openap/types";
-import { RateTypeOptions, DemographicsOptions } from "../options";
-import { onlyNewEditable } from "./InventoryTable";
-import { Alignment } from "./InventoryTable/types";
-import { biggerThanZero } from "./InventoryTable/";
+import { InventoryItem } from "../../graphql";
+import type { OAPNetwork } from "../../../lib/openap/types";
+import { RateTypeOptions, DemographicsOptions } from "../../options";
+import { toOption, InputType, CalendarWeeks } from "../ui";
 
 import {
   createSelectCell,
@@ -17,11 +12,15 @@ import {
   SelectDateTimeValue,
   createInputCell,
   TableColumnOptions,
-} from "./Table";
+  Alignment,
+} from "../Table";
 
-import { toOption, InputType, CalendarWeeks } from "./ui";
+import IdCell from "./IdCell";
+import StatusCell from "./StatusCell";
 
-export default function useColumns(
+import { onlyNewEditable, biggerThanZero } from "./helpers";
+
+export default function useInventorySummaryColumns(
   networks: Array<OAPNetwork>
 ): Array<TableColumnOptions<InventoryItem>> {
   return useMemo(

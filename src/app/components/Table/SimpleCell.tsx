@@ -1,8 +1,14 @@
-export default function SimpleCell({
+import { RowData, TableCell } from "./types";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function SimpleCell<R extends RowData, V = any>({
   value,
-}: {
-  value: string | number | null;
-}) {
+  column,
+}: TableCell<R, V>) {
+  if (column.format) {
+    return column.format(value);
+  }
+
   if (value === null) {
     return null;
   }

@@ -28,9 +28,6 @@ export default function BodyRow<R extends RowData>({
       {row.cells.map((cell) => {
         const cellExtended = cell as unknown as TableCell<R>;
         const columnExtended = cell.column as unknown as TableColumn<R>;
-        if (row.isEditing) {
-          console.log(row.editValidationErrors, cell.column.id);
-        }
         const errors = !row.isEditing
           ? null
           : row.editValidationErrors === null
@@ -55,11 +52,7 @@ export default function BodyRow<R extends RowData>({
             )}
             {...cell.getCellProps()}
           >
-            <BodyCell
-              isPlaceholder={cellExtended.isPlaceholder}
-              errors={errors}
-              cell={cellExtended}
-            />
+            <BodyCell errors={errors} cell={cellExtended} />
           </td>
         );
       })}

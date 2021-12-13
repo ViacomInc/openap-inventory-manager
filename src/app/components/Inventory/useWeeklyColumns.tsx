@@ -1,10 +1,12 @@
 import React, { useMemo } from "react";
+import { DateTime } from "luxon";
 
 import {
   Interval,
   getBroadcastWeeksInRange,
   parseIntervalFromISO,
 } from "@viacomcbs/broadcast-calendar";
+
 import {
   formatWeekHeader,
   formatDay,
@@ -15,42 +17,41 @@ import {
   isItemInDateRange,
 } from "../../../lib/InventoryItem/helpers";
 
-import TotalCell from "../Cells/TotalCell";
-import createSelectCell from "../Cells/SelectCell";
-import { toOption, InputType } from "../ui";
-import createInputCell from "../Cells/InputCell";
-
 import { InventoryItem, Network } from "../../graphql";
 
+import { toOption, InputType } from "../ui";
+
 import {
-  InventoryTableColumnOptions,
-  InventoryTableCell,
-  Alignment,
+  createSelectCell,
+  createInputCell,
+  TableColumnOptions,
+  TableCell,
   CellRenderer,
-} from "./types";
+  Alignment,
+  SimpleCell,
+} from "../Table";
 
-import Styles from "./InventoryTable.module.css";
-import { DateTime } from "luxon";
+import Styles from "./Cell.module.css";
 
-type Column = "units" | "rate" | "projectedImpressions";
+export type AggregateColumn = "units" | "rate" | "projectedImpressions";
 
-interface UseGetWeeklyData {
+interface UseGetWeeklyColumns {
   items: InventoryItem[];
   networks: Network[];
-  column: Column;
-  Cell: (cell: InventoryTableCell) => React.ReactNode;
+  aggregateByColumn: AggregateColumn;
+  Cell: (cell: TableCell<InventoryItem>) => React.ReactNode;
   format?: (v: string | number) => string;
 }
 
 export default function useGetWeeklyColumns({
   items,
   networks,
-  column,
+  aggregateByColumn,
   Cell,
   format,
-}: UseGetWeeklyData): InventoryTableColumnOptions[] {
+}: UseGetWeeklyColumns): Array<TableColumnOptions<InventoryItem>> {
   const columns = useMemo(() => {
-    const columns: InventoryTableColumnOptions[] = [
+    const columns: Array<TableColumnOptions<InventoryItem>> = [
       {
         Header: "Network",
         accessor: "networkId",
@@ -75,15 +76,15 @@ export default function useGetWeeklyColumns({
 
     getBroadcastWeeksInRange(range).forEach((weekRange) => {
       columns.push({
-        id: `${weekRange.start.toISODate()}-${weekRange.end.toISODate()}-${column}`,
+        id: `${weekRange.start.toISODate()}-${weekRange.end.toISODate()}-${aggregateByColumn}`,
         Header: formatWeekHeader(weekRange.start),
-        accessor: getDateRangeAccessor(weekRange, column),
+        accessor: getDateRangeAccessor(weekRange, aggregateByColumn),
         Cell,
         aggregate: "sum",
-        Aggregated: TotalCell,
-        align: Alignment.Trailing,
+        Aggregated: SimpleCell,
         format,
-      } as InventoryTableColumnOptions);
+        align: Alignment.Trailing,
+      } as TableColumnOptions<InventoryItem>);
     });
 
     return columns;
@@ -94,11 +95,11 @@ export default function useGetWeeklyColumns({
 
 function getDateRangeAccessor(
   weekRange: Interval,
-  column: Column
+  aggregateByColumn: AggregateColumn
 ): (item: InventoryItem) => number | null {
   return (item: InventoryItem) => {
     if (isItemInDateRange(item, weekRange)) {
-      return item[column];
+      return item[aggregateByColumn];
     }
 
     return null;
@@ -107,7 +108,7 @@ function getDateRangeAccessor(
 
 function DatesRange({
   cell: { isPlaceholder, row },
-}: CellRenderer): React.ReactNode {
+}: CellRenderer<InventoryItem>): React.ReactNode {
   if (isPlaceholder && row.isGrouped) {
     return null;
   }

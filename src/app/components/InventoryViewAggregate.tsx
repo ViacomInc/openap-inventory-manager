@@ -1,11 +1,14 @@
-import React, { useCallback } from "react";
+import React, { useMemo, useCallback } from "react";
 
-import { InventoryItem } from "../graphql";
-import { InventoryViewTabProps } from "./InventoryViewTabs";
-import Table, { DRAFT_ID } from "./Table";
+import { InventoryItem, Network } from "../graphql";
+import { isNotRemoved } from "../../lib/InventoryItem/helpers";
 
-import useSummaryColumns from "./Inventory/useSummaryColumns";
-// import useInventoryTablePage from "./useInventoryTablePage";
+import useWeeklyColumns, {
+  AggregateColumn,
+} from "./Inventory/useWeeklyColumns";
+
+import Table, { createInputCell, DRAFT_ID } from "./Table";
+import { InputType } from "./ui";
 
 import { useDispatch } from "../store";
 import { deleteInventoryItem } from "../store/actions";
@@ -17,15 +20,18 @@ import {
   // restoreInventoryItemRequest,
 } from "../api/inventoryItems";
 
-import validateInvetoryItemRow from "./Inventory/validateInvetoryItemRow";
+export interface InventoryViewAggregateProps {
+  items: InventoryItem[];
+  networks: Network[];
+  aggregateByColumn: AggregateColumn;
+}
 
-export default function InventoryViewSummary({
+export default function InventoryViewAggregate({
   items,
   networks,
-}: InventoryViewTabProps): JSX.Element {
+  aggregateByColumn,
+}: InventoryViewAggregateProps): JSX.Element {
   const dispatch = useDispatch();
-  const columns = useSummaryColumns(networks);
-  // const pagination = useInventoryTablePage();
 
   const handleEditRowCanceled = useCallback(async ({ id }: InventoryItem) => {
     id === DRAFT_ID && dispatch(deleteInventoryItem(id));
@@ -43,9 +49,17 @@ export default function InventoryViewSummary({
     dispatch(removeInventoryItemRequest(item.id));
   }, []);
 
-  // const handleRowRestore = useCallback(async (item: InventoryItem) => {
-  //   dispatch(restoreInventoryItemRequest(item.id));
-  // }, []);
+  const itemsWithNoRemoved = useMemo(() => items.filter(isNotRemoved), [items]);
+
+  const columns = useWeeklyColumns({
+    items: itemsWithNoRemoved,
+    networks,
+    aggregateByColumn,
+    Cell: createInputCell({
+      name: aggregateByColumn,
+      type: InputType.Float,
+    }),
+  });
 
   return (
     <Table
@@ -54,9 +68,9 @@ export default function InventoryViewSummary({
       onEditRowCanceled={handleEditRowCanceled}
       onEditRowConfirmed={handleEditRowConfirmed}
       onEditRowDeleted={handleEditRowDeleted}
-      editRowValidate={validateInvetoryItemRow}
       columns={columns}
-      data={items}
+      data={itemsWithNoRemoved}
+      groupBy={["networkId", "name"]}
     />
   );
 }

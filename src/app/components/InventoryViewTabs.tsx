@@ -4,8 +4,6 @@ import classnames from "classnames";
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
 import TabsStyles from "./ui/Tabs.module.css";
 
-import { InventoryItem, Network } from "../graphql";
-
 import { TableView, FilterType } from "../store/types";
 import { selectTableState } from "../store/table";
 import { setTableView, addTableFilter } from "../store/actions";
@@ -14,6 +12,7 @@ import { useDispatch, useSelector } from "../store";
 import useInventoryUIStatus from "./useInventoryUIStatus";
 
 import NoItems from "./NoItems";
+import { InventoryViewAggregateProps } from "./InventoryViewAggregate";
 import InventoryViewSummary from "./InventoryViewSummary";
 import InventoryViewUnits from "./InventoryViewUnits";
 import InventoryViewRates from "./InventoryViewRates";
@@ -24,10 +23,10 @@ import InventoryStatusPanel from "./InventoryStatusPanel";
 
 import Styles from "./InventoryView.module.css";
 
-export interface InventoryViewTabProps {
-  items: InventoryItem[];
-  networks: Network[];
-}
+export type InventoryViewTabProps = Pick<
+  InventoryViewAggregateProps,
+  "items" | "networks"
+>;
 
 interface InventoryViewTabsDescription {
   slug: TableView;

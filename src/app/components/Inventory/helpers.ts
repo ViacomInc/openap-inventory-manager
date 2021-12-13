@@ -1,30 +1,4 @@
-import { Alignment } from "./types";
 import { InventoryItem, InventoryItemStatus } from "../../graphql";
-
-import Styles from "./InventoryTable.module.css";
-
-export { default } from "./InventoryTable";
-
-export function getRowId(row: InventoryItem): string {
-  return `ii-${row.id}`;
-}
-
-export function getAligmentClass(align?: Alignment): string | undefined {
-  if (align === undefined) {
-    return undefined;
-  }
-
-  switch (align) {
-    case Alignment.Leading:
-      return Styles.CellLeading;
-
-    case Alignment.Trailing:
-      return Styles.CellTrailing;
-
-    default:
-      return undefined;
-  }
-}
 
 export function onlyNewEditable(item?: InventoryItem): boolean {
   if (
@@ -54,6 +28,10 @@ export function hasActions(item?: InventoryItem): boolean {
 
 export function biggerThanZero(value: string | number): boolean {
   return Number(value) > 0;
+}
+
+export function formatFloat(v: number | string) {
+  return typeof v === "number" ? v.toFixed(2) : v;
 }
 
 export function isEditable(item?: InventoryItem): boolean {

@@ -197,7 +197,7 @@ function prepareRow<R extends RowData>(row: Row<R>, meta: MetaBase<R>): void {
     rowExtended.isEditing = false;
   }
 
-  if (!rowExtended.isEditing && rowExtended.original.id === DRAFT_ID) {
+  if (!rowExtended.isEditing && rowExtended.original?.id === DRAFT_ID) {
     instanceExtended.setEditRow(row.id);
   }
 }
