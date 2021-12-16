@@ -18,7 +18,7 @@ import {
 import IdCell from "./IdCell";
 import StatusCell from "./StatusCell";
 
-import { onlyNewEditable, biggerThanZero } from "./helpers";
+import { isNewItem, biggerThanZero } from "./helpers";
 
 export default function useInventorySummaryColumns(
   networks: Array<OAPNetwork>
@@ -40,7 +40,7 @@ export default function useInventorySummaryColumns(
         Cell: createSelectCell({
           name: "networkId",
           options: networks.map(toOption),
-          isEditable: onlyNewEditable,
+          canEdit: isNewItem,
         }),
       },
       {
@@ -49,7 +49,7 @@ export default function useInventorySummaryColumns(
         Cell: createInputCell({
           name: "name",
           type: InputType.String,
-          isEditable: onlyNewEditable,
+          canEdit: isNewItem,
         }),
       },
       {
@@ -59,7 +59,7 @@ export default function useInventorySummaryColumns(
           name: "startDatetime",
           select: SelectDateTimeValue.DateTime,
           showWeeks: CalendarWeeks.Broadcast,
-          isEditable: onlyNewEditable,
+          canEdit: isNewItem,
           timezone: BroadcastTimeZone,
         }),
       },
@@ -70,7 +70,7 @@ export default function useInventorySummaryColumns(
           name: "endDatetime",
           select: SelectDateTimeValue.DateTime,
           showWeeks: CalendarWeeks.Broadcast,
-          isEditable: onlyNewEditable,
+          canEdit: isNewItem,
           timezone: BroadcastTimeZone,
         }),
       },
@@ -115,7 +115,7 @@ export default function useInventorySummaryColumns(
         Cell: createSelectCell({
           name: "projectionsDemographics",
           options: DemographicsOptions,
-          isEditable: onlyNewEditable,
+          canEdit: isNewItem,
         }),
       },
       {

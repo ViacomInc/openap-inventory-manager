@@ -1,4 +1,4 @@
-import { RowData, TableCell } from "./types";
+import { RowData, CellRendererProps } from "./types";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function SimpleEditCell<R extends RowData, V = any>({
@@ -6,7 +6,7 @@ export default function SimpleEditCell<R extends RowData, V = any>({
   column,
   value,
   state: { editRowTransaction },
-}: TableCell<R, V>) {
+}: CellRendererProps<R, V>) {
   const v =
     row.isEditing && editRowTransaction
       ? column.accessor(editRowTransaction)

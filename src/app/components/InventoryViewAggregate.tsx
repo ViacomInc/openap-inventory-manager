@@ -20,6 +20,8 @@ import {
   // restoreInventoryItemRequest,
 } from "../api/inventoryItems";
 
+import { noEditsForNull } from "./Inventory/helpers";
+
 export interface InventoryViewAggregateProps {
   items: InventoryItem[];
   networks: Network[];
@@ -58,6 +60,7 @@ export default function InventoryViewAggregate({
     Cell: createInputCell({
       name: aggregateByColumn,
       type: InputType.Float,
+      canEdit: noEditsForNull,
     }),
   });
 

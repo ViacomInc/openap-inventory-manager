@@ -1,9 +1,9 @@
 import { InventoryItem } from "../../graphql";
-import { TableCell } from "../Table";
+import { CellRendererProps } from "../Table";
 
 export default function IdCell({
   value,
-}: TableCell<InventoryItem, number>): string {
+}: CellRendererProps<InventoryItem, number>): string {
   if (value === -1) {
     return "";
   }

@@ -13,14 +13,19 @@ import {
   parseWeekKeyString,
 } from "./dateTimeParsers";
 
-import { RowData, TableCell, EditableCellOptions } from "./types";
 import {
   InputDateTime,
   InputDateTimeProps,
   CalendarWeeks,
   CalendarSelect,
 } from "../ui";
-import { AtLeastOneProperty } from "./types";
+import {
+  RowData,
+  CellRendererProps,
+  EditableCellOptions,
+  AtLeastOneProperty,
+} from "./types";
+import { shouldEditCell } from "./helpers";
 
 import Styles from "./Cell.module.css";
 
@@ -156,7 +161,7 @@ export default function createDateTimeCell<
   name,
   select = SelectDateTimeValue.DateTime,
   disabled = false,
-  isEditable,
+  canEdit,
   showWeeks,
   timezone,
 }: Options<R, N>) {
@@ -165,16 +170,12 @@ export default function createDateTimeCell<
 
   return function DateTimeCell({
     row,
-    value,
+    cell,
     isEditRowLoading,
-  }: TableCell<R, Pick<R, keyof R>>): Pick<R, N> | JSX.Element | null | string {
-    const date = getDateFromValue(value);
-    if (
-      !row.isEditing ||
-      row.canExpand ||
-      (typeof isEditable === "function" && !isEditable(row.original)) ||
-      (typeof isEditable === "boolean" && !isEditable)
-    ) {
+  }: CellRendererProps<R, R[N]>): R[N] | JSX.Element | null | string {
+    const date = getDateFromValue(cell.value);
+
+    if (!shouldEditCell(cell, canEdit)) {
       return date === null ? null : format(date);
     }
 

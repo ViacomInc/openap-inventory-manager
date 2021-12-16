@@ -1,11 +1,12 @@
 import React, { useMemo } from "react";
+import { Select, Option, getOption, isMultiOptions } from "../ui";
 import {
   RowData,
-  TableCell,
+  CellRendererProps,
   EditableCellOptions,
   AtLeastOneProperty,
 } from "./types";
-import { Select, Option, getOption, isMultiOptions } from "../ui";
+import { shouldEditCell } from "./helpers";
 
 import Styles from "./Cell.module.css";
 
@@ -20,24 +21,20 @@ export default function createSelectCell<R extends RowData, N extends keyof R>({
   placeholder,
   options,
   disabled = false,
-  isEditable,
+  canEdit,
 }: SelecetCellProps<R, N>) {
   return function SelectCell({
     row,
-    value,
+    cell,
     isEditRowLoading,
-  }: TableCell<R>): string | JSX.Element | null {
+    value,
+  }: CellRendererProps<R, string | number>): string | JSX.Element | null {
     const selectedOption = useMemo(
       () => getOption(options, value),
-      [options, value]
+      [options, cell.value]
     );
 
-    if (
-      !row.isEditing ||
-      row.canExpand ||
-      (typeof isEditable === "function" && !isEditable(row.original)) ||
-      (typeof isEditable === "boolean" && !isEditable)
-    ) {
+    if (!shouldEditCell(cell, canEdit)) {
       return selectedOption ? selectedOption.label : null;
     }
 

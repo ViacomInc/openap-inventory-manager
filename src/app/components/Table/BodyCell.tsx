@@ -26,6 +26,10 @@ export default function BodyCell<R extends RowData>({
     );
   }
 
+  if (cell.isAggregated) {
+    return <>{cell.render("Aggregated")}</>;
+  }
+
   if (cell.isPlaceholder) {
     // issue  https://github.com/tannerlinsley/react-table/issues/2829
     const hasPlaceholderRenderer = !!cell.column.Placeholder;

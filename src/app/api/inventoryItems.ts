@@ -33,10 +33,7 @@ import { isEmpty, getDiff } from "../../lib/helpers";
 
 import { State, Dispatch } from "../store/";
 import { Error, FilterType, NotificationType } from "../store/types";
-import {
-  selectTransaction,
-  selectRepeatUntilNumber,
-} from "../store/transaction";
+import { selectRepeatUntilNumber } from "../store/transaction";
 import {
   setNewInventoryItem,
   setInventoryItemsWithNotification,

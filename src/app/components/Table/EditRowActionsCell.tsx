@@ -5,7 +5,7 @@ import { equals } from "ramda";
 import { Button, Icons } from "../ui";
 import LoaderIcon, { LoaderSize } from "../Icons/Loader";
 
-import { TableCell, RowData } from "./types";
+import { CellRendererProps, RowData } from "./types";
 import { DRAFT_ID } from "./useEditRow";
 
 import Styles from "./Cell.module.css";
@@ -30,7 +30,7 @@ export default function EditRowActionsCell<R extends RowData>({
   onEditRowConfirmed,
   onEditRowCanceled,
   onEditRowDeleted,
-}: TableCell<R>) {
+}: CellRendererProps<R>) {
   if (!isEditRowEnabled || !row.original) {
     return <Wrapper />;
   }

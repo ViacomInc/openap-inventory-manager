@@ -1,4 +1,4 @@
-import { Alignment } from "./types";
+import { Alignment, RowData, TableCell, CanEditCell } from "./types";
 import TableStyles from "./Table.module.css";
 import CellStyles from "./Cell.module.css";
 
@@ -13,6 +13,31 @@ export function getAligmentClass(align?: Alignment): string | undefined {
     default:
       return undefined;
   }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function shouldEditCell<R extends RowData, V = any>(
+  cell: TableCell<R, V>,
+  canEdit?: CanEditCell<R, V>
+): boolean {
+  const { row, isAggregated, value } = cell;
+  if (!row.isEditing) {
+    return false;
+  }
+
+  if (isAggregated && value === null) {
+    return false;
+  }
+
+  if (typeof canEdit === "function") {
+    return canEdit(row.original, cell);
+  }
+
+  if (typeof canEdit === "boolean") {
+    return canEdit;
+  }
+
+  return true;
 }
 
 export function rowIdFromRowElement(target: Element): string | undefined {

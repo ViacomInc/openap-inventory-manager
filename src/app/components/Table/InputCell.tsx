@@ -1,11 +1,12 @@
 import React from "react";
+import { Input, InputType } from "../ui";
 import {
   RowData,
-  TableCell,
+  CellRendererProps,
   EditableCellOptions,
   AtLeastOneProperty,
 } from "./types";
-import { Input, InputType } from "../ui";
+import { shouldEditCell } from "./helpers";
 
 import Styles from "./Cell.module.css";
 
@@ -18,23 +19,15 @@ export default function createInputCell<R extends RowData, N extends keyof R>({
   name,
   type,
   disabled = false,
-  isEditable,
+  canEdit,
 }: Options<R, N>) {
-  return function InputCell(
-    cell: TableCell<R, Pick<R, keyof R>>
-  ): Pick<R, N> | JSX.Element | null {
-    const { row, value, isEditRowLoading } = cell;
-
-    if (row.isEditing) {
-      console.log(">>", cell);
-    }
-
-    if (
-      !row.isEditing ||
-      row.canExpand ||
-      (typeof isEditable === "function" && !isEditable(row.original)) ||
-      (typeof isEditable === "boolean" && !isEditable)
-    ) {
+  return function InputCell({
+    row,
+    cell,
+    isEditRowLoading,
+  }: CellRendererProps<R, R[N]>): R[N] | JSX.Element | null {
+    const value = cell.value;
+    if (!shouldEditCell(cell, canEdit)) {
       return value === undefined ? null : value;
     }
 

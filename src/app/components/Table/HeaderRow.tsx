@@ -33,7 +33,7 @@ export default function HeaderRow<R extends RowData>({
           }
         }
 
-        const IconsNumberClass =
+        const WidthClass =
           column.width === undefined ? null : Styles[`Width${column.width}`];
 
         return (
@@ -42,7 +42,7 @@ export default function HeaderRow<R extends RowData>({
           <th
             className={classnames(
               Styles.HeadCell,
-              IconsNumberClass,
+              WidthClass,
               getAligmentClass(extendedColumn.align),
               {
                 [Styles.HeadCellHasChildren]: hasChildren,

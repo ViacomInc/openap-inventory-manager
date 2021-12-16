@@ -19,16 +19,14 @@ import {
 
 import { InventoryItem, Network } from "../../graphql";
 
-import { toOption, InputType } from "../ui";
+import { toOption } from "../ui";
 
 import {
-  createSelectCell,
-  createInputCell,
   TableColumnOptions,
-  TableCell,
-  CellRenderer,
+  CellRendererProps,
   Alignment,
   SimpleCell,
+  createSelectCell,
 } from "../Table";
 
 import Styles from "./Cell.module.css";
@@ -39,7 +37,7 @@ interface UseGetWeeklyColumns {
   items: InventoryItem[];
   networks: Network[];
   aggregateByColumn: AggregateColumn;
-  Cell: (cell: TableCell<InventoryItem>) => React.ReactNode;
+  Cell: (cell: CellRendererProps<InventoryItem>) => React.ReactNode;
   format?: (v: string | number) => string;
 }
 
@@ -57,13 +55,14 @@ export default function useGetWeeklyColumns({
         accessor: "networkId",
         Cell: createSelectCell({
           name: "networkId",
+          canEdit: false,
           options: networks.map(toOption),
         }),
       },
       {
         Header: "Name",
         accessor: "name",
-        Cell: createInputCell({ name: "name", type: InputType.String }),
+        Cell: SimpleCell,
         Placeholder: DatesRange,
       },
     ];
@@ -79,7 +78,7 @@ export default function useGetWeeklyColumns({
         id: `${weekRange.start.toISODate()}-${weekRange.end.toISODate()}-${aggregateByColumn}`,
         Header: formatWeekHeader(weekRange.start),
         accessor: getDateRangeAccessor(weekRange, aggregateByColumn),
-        Cell,
+        Cell: Cell,
         aggregate: "sum",
         Aggregated: SimpleCell,
         format,
@@ -108,7 +107,7 @@ function getDateRangeAccessor(
 
 function DatesRange({
   cell: { isPlaceholder, row },
-}: CellRenderer<InventoryItem>): React.ReactNode {
+}: CellRendererProps<InventoryItem>): React.ReactNode {
   if (isPlaceholder && row.isGrouped) {
     return null;
   }

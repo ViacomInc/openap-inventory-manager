@@ -1,13 +1,13 @@
 import React from "react";
 import { InventoryItem, InventoryItemStatus } from "../../graphql";
-import { TableCell } from "../Table";
+import { CellRendererProps } from "../Table";
 
 import { Icon, Icons } from "../ui";
 import Styles from "./Cell.module.css";
 
 export default function StatusCell({
   value,
-}: TableCell<InventoryItem, InventoryItemStatus>): React.ReactNode {
+}: CellRendererProps<InventoryItem, InventoryItemStatus>): React.ReactNode {
   switch (value) {
     case InventoryItemStatus.New:
       return <Icon icon={Icons.New} className={Styles.New} />;

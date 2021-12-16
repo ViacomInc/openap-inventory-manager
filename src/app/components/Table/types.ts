@@ -48,14 +48,25 @@ export interface RowData {
   id: number;
 }
 
-export interface EditableCellOptions<R extends RowData, N extends keyof R> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type CanEditCell<R extends RowData, V = any> =
+  | boolean
+  | ((value: undefined | R, cell: TableCell<R, V>) => boolean);
+
+export interface EditableCellOptions<
+  R extends RowData,
+  N extends keyof R,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  V = any
+> {
   name: N;
   disabled?: boolean;
-  isEditable?: boolean | ((value?: R) => boolean);
+  canEdit?: CanEditCell<R, V>;
 }
 
-interface WithPlaceholderRenderer<R extends RowData> {
-  Placeholder?: (data: CellRenderer<R>) => React.ReactNode;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface WithPlaceholderRenderer<R extends RowData, V = any> {
+  Placeholder?: (props: CellRendererProps<R, V>) => React.ReactNode;
 }
 
 export type TableRow<R extends RowData> = Row<R> &
@@ -69,29 +80,29 @@ export type TableColumn<R extends RowData> = Column<R> &
   UseGroupByColumnProps<R> &
   WithPlaceholderRenderer<R> & {
     align?: Alignment;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     format?: (value: any) => string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     validate?: (value: any) => boolean;
   };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type TableCell<R extends RowData, V = any> = Cell<R, V> &
-  UseGroupByCellProps<R> &
-  TableInstance<R> & {
-    row: TableRow<R>;
-    column: TableColumn<R> & {
-      accessor: (row: R) => string;
-      format?: (value: V) => string;
-      validate?: (value: V) => boolean;
-    };
-    original?: R;
-    values: Partial<R>;
-    isExpanded: boolean;
-    useEditRowTransactionValue: boolean;
-  };
+export type TableColumnProps<R extends RowData, V = any> = TableColumn<R> & {
+  accessor: (row: R) => V;
+};
 
-export interface CellRenderer<R extends RowData> {
-  cell: TableCell<R>;
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type TableCell<R extends RowData, V = any> = Cell<R, V> & {
+  row: TableRow<R>;
+  column: TableColumnProps<R, V>;
+  value: V;
+} & UseGroupByCellProps<R>;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type CellRendererProps<R extends RowData, V = any> = TableInstance<R> &
+  Pick<TableCell<R, V>, "row" | "column" | "value"> & {
+    cell: TableCell<R, V>;
+  };
 
 export type TableState<R extends RowData> = ReactTableState<R> &
   UseSortByState<R> &

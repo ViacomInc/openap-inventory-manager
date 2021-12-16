@@ -1,6 +1,7 @@
 import { InventoryItem, InventoryItemStatus } from "../../graphql";
+import { TableCell } from "../Table";
 
-export function onlyNewEditable(item?: InventoryItem): boolean {
+export function isNewItem(item?: InventoryItem): boolean {
   if (
     !item ||
     !(
@@ -28,6 +29,13 @@ export function hasActions(item?: InventoryItem): boolean {
 
 export function biggerThanZero(value: string | number): boolean {
   return Number(value) > 0;
+}
+
+export function noEditsForNull(
+  _item: InventoryItem | undefined,
+  cell: TableCell<InventoryItem>
+): boolean {
+  return cell.value !== null;
 }
 
 export function formatFloat(v: number | string) {

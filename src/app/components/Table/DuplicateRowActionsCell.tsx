@@ -3,7 +3,7 @@ import classnames from "classnames";
 
 import { Button, Icons } from "../ui";
 
-import { TableCell, RowData } from "./types";
+import { CellRendererProps, RowData } from "./types";
 
 import Styles from "./Cell.module.css";
 
@@ -22,7 +22,7 @@ const Wrapper: React.FC<{ center?: boolean }> = ({ center, children }) => {
 export default function DuplicateRowActionsCell<R extends RowData>({
   row,
   isDuplicateRowEnabled,
-}: TableCell<R>) {
+}: CellRendererProps<R>) {
   if (!isDuplicateRowEnabled || row.isEditing) {
     return <Wrapper />;
   }
