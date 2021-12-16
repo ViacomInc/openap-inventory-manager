@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 
-import { InventoryItem } from "../graphql";
+import { InventoryItem, InventoryItemStatus } from "../graphql";
 import { InventoryViewTabProps } from "./InventoryViewTabs";
 import Table, { DRAFT_ID } from "./Table";
 
@@ -14,11 +14,15 @@ import {
   createInventoryItemRequest,
   updateInventoryItemRequest,
   removeInventoryItemRequest,
-  // restoreInventoryItemRequest,
+  restoreInventoryItemRequest,
 } from "../api/inventoryItems";
 
 import validateInvetoryItemRow from "./Inventory/validateInvetoryItemRow";
-import { inventoryItemRowClasses } from "./Inventory/helpers";
+import {
+  inventoryItemRowClasses,
+  canEditInventoryItem,
+  canRestoreInventoryItem,
+} from "./Inventory/helpers";
 
 export default function InventoryViewSummary({
   items,
@@ -40,13 +44,16 @@ export default function InventoryViewSummary({
     }
   }, []);
 
-  const handleEditRowDeleted = useCallback(async (item: InventoryItem) => {
-    dispatch(removeInventoryItemRequest(item.id));
-  }, []);
-
-  // const handleRowRestore = useCallback(async (item: InventoryItem) => {
-  //   dispatch(restoreInventoryItemRequest(item.id));
-  // }, []);
+  const handleEditRowDeletedRestored = useCallback(
+    async (item: InventoryItem) => {
+      if (item.status === InventoryItemStatus.Removed) {
+        dispatch(restoreInventoryItemRequest(item.id));
+      } else {
+        dispatch(removeInventoryItemRequest(item.id));
+      }
+    },
+    []
+  );
 
   return (
     <Table
@@ -55,7 +62,11 @@ export default function InventoryViewSummary({
       isEditRowLoading={false}
       onEditRowCanceled={handleEditRowCanceled}
       onEditRowConfirmed={handleEditRowConfirmed}
-      onEditRowDeleted={handleEditRowDeleted}
+      onEditRowDeleted={handleEditRowDeletedRestored}
+      onEditRowRestored={handleEditRowDeletedRestored}
+      canEditRow={canEditInventoryItem}
+      canDeleteRow={true}
+      canRestoreRow={canRestoreInventoryItem}
       editRowValidate={validateInvetoryItemRow}
       columns={columns}
       data={items}

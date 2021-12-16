@@ -140,6 +140,7 @@ export type TableInstance<R extends RowData> = ReactTableInstance<R> &
   UseRowClassInstanceProps<R> &
   UseEditRowInstanceProps<R> & {
     rows: TableRow<R>[];
+    rowsById: Record<string, TableRow<R>>;
     state: TableState<R>;
   };
 

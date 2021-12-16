@@ -18,6 +18,7 @@ export const DRAFT_ID = -1;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type HanlderFunction<R extends RowData> = (row: R) => Promise<any>;
+type CanHandler<R extends RowData> = boolean | ((row: R) => boolean);
 
 // we literally do not care about results
 export interface UseEditRowTableOptions<R extends RowData> {
@@ -26,8 +27,11 @@ export interface UseEditRowTableOptions<R extends RowData> {
   onEditRowConfirmed?: HanlderFunction<R>;
   onEditRowCanceled?: HanlderFunction<R>;
   onEditRowDeleted?: HanlderFunction<R>;
-  canEditRow?: (data: R) => boolean;
-  editRowValidate?: (data: R) => null | EditRowValidationError<R>[];
+  onEditRowRestored?: HanlderFunction<R>;
+  canEditRow?: CanHandler<R>;
+  canDeleteRow?: CanHandler<R>;
+  canRestoreRow?: CanHandler<R>;
+  editRowValidate?: (row: R) => null | EditRowValidationError<R>[];
 }
 
 export default function useEditRow<R extends RowData>(hooks: Hooks<R>) {
@@ -163,25 +167,48 @@ export interface UseEditRowRowProps<R extends RowData> {
   isEditing: boolean;
   editValidationErrors: null | EditRowValidationError<R>[];
   canEdit: () => boolean;
+  canRestore: () => boolean;
+  canDelete: () => boolean;
   edit: () => void;
   resetEdit: () => void;
   updateEdit: (update: AtLeastOneProperty<R>) => void;
 }
 
+function addRowPermissions<R extends RowData>(
+  instance: UseEditRowInstanceProps<R>,
+  row: Row<R> & UseEditRowRowProps<R>,
+  name: "canEdit" | "canDelete" | "canRestore"
+) {
+  const instanceWithIndex = instance as UseEditRowInstanceProps<R> & {
+    [index: string]: CanHandler<R>;
+  };
+  const permission = instanceWithIndex[`${name}Row`];
+  switch (typeof permission) {
+    case "boolean":
+      row[name] = () => permission;
+      return;
+
+    case "function":
+      row[name] = () => permission(row.original);
+      return;
+
+    default:
+      row[name] = name === "canEdit" ? () => true : () => false;
+      return;
+  }
+}
+
 function prepareRow<R extends RowData>(row: Row<R>, meta: MetaBase<R>): void {
   const rowExtended = row as unknown as Row<R> & UseEditRowRowProps<R>;
   const instanceExtended = meta.instance as unknown as TableInstance<R> &
-    UseEditRowInstanceProps<R> & {
+    UseEditRowInstanceProps<R> &
+    UseEditRowTableOptions<R> & {
       state: UseEditRowTableState<R>;
-      canEditRow?: (data: R) => boolean;
     };
 
-  const canEditRow = instanceExtended.canEditRow;
-  if (canEditRow) {
-    rowExtended.canEdit = () => canEditRow(row.original);
-  } else {
-    rowExtended.canEdit = () => true;
-  }
+  addRowPermissions(instanceExtended, rowExtended, "canEdit");
+  addRowPermissions(instanceExtended, rowExtended, "canDelete");
+  addRowPermissions(instanceExtended, rowExtended, "canRestore");
 
   rowExtended.edit = () => instanceExtended.setEditRow(row.id);
   rowExtended.resetEdit = () => instanceExtended.resetEditRow();

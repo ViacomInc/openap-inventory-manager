@@ -5,7 +5,7 @@ import { RowClickHandler, RowData, TableRow, ToggleRowsState } from "./types";
 import { rowIdFromRowElement, isInActionsCell } from "./helpers";
 
 interface UseEditRowClickHandler<R extends RowData> {
-  rows: TableRow<R>[];
+  rowsById: Record<string, TableRow<R>>;
   editRowId?: string;
   setEditRow: (rowId: string) => void;
   isEditRowEnabled?: boolean;
@@ -13,7 +13,7 @@ interface UseEditRowClickHandler<R extends RowData> {
 }
 
 export default function useEditRowClickHandler<R extends RowData>({
-  rows,
+  rowsById,
   editRowId,
   setEditRow,
   isEditRowEnabled,
@@ -36,7 +36,7 @@ export default function useEditRowClickHandler<R extends RowData>({
       if (!rowId) {
         return;
       }
-      const row = rows.find((row) => row.id === rowId);
+      const row = rowsById[rowId];
       if (!row) {
         return;
       }
@@ -48,6 +48,6 @@ export default function useEditRowClickHandler<R extends RowData>({
 
       row.canEdit() && row.edit();
     },
-    [rows, editRowId, setEditRow, isEditRowEnabled]
+    [rowsById, editRowId, setEditRow, isEditRowEnabled]
   );
 }

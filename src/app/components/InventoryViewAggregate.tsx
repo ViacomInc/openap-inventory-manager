@@ -16,8 +16,6 @@ import { deleteInventoryItem } from "../store/actions";
 import {
   createInventoryItemRequest,
   updateInventoryItemRequest,
-  removeInventoryItemRequest,
-  // restoreInventoryItemRequest,
 } from "../api/inventoryItems";
 
 import { noEditsForNull } from "./Inventory/helpers";
@@ -47,10 +45,6 @@ export default function InventoryViewAggregate({
     }
   }, []);
 
-  const handleEditRowDeleted = useCallback(async (item: InventoryItem) => {
-    dispatch(removeInventoryItemRequest(item.id));
-  }, []);
-
   const itemsWithNoRemoved = useMemo(() => items.filter(isNotRemoved), [items]);
 
   const columns = useWeeklyColumns({
@@ -70,7 +64,7 @@ export default function InventoryViewAggregate({
       isEditRowLoading={false}
       onEditRowCanceled={handleEditRowCanceled}
       onEditRowConfirmed={handleEditRowConfirmed}
-      onEditRowDeleted={handleEditRowDeleted}
+      canDeleteRow={false}
       columns={columns}
       data={itemsWithNoRemoved}
       groupBy={["networkId", "name"]}

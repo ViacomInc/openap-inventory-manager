@@ -37,34 +37,17 @@ export type TableProps<R extends RowData> = UseEditRowTableOptions<R> &
   };
 
 export default function Table<R extends RowData>({
-  columns,
-  data,
   empty,
   isEditRowEnabled,
-  isEditRowLoading,
-  editRowValidate,
-  onEditRowConfirmed,
-  onEditRowCanceled,
-  onEditRowDeleted,
   isDuplicateRowEnabled,
-  onDuplicateRow,
   groupBy,
-  rowClass,
+  ...options
 }: TableProps<R>) {
   const tableOptions: TableOptions<R> = {
-    columns,
-    data,
-    getRowId,
-    initialState: {},
+    ...options,
     isEditRowEnabled,
-    isEditRowLoading,
-    editRowValidate,
-    onEditRowConfirmed,
-    onEditRowCanceled,
-    onEditRowDeleted,
     isDuplicateRowEnabled,
-    onDuplicateRow,
-    rowClass,
+    initialState: {},
   };
 
   const plugins: PluginHook<R>[] = [useRowClass];
@@ -84,6 +67,7 @@ export default function Table<R extends RowData>({
 
   const {
     rows,
+    rowsById,
     getTableProps,
     getTableBodyProps,
     headerGroups,
@@ -94,7 +78,7 @@ export default function Table<R extends RowData>({
   } = useTable<R>(tableOptions, ...plugins) as TableInstance<R>;
 
   const rowClickHandler = useEditRowClickHandler<R>({
-    rows,
+    rowsById,
     editRowId,
     setEditRow,
     isEditRowEnabled,

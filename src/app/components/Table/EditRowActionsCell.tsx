@@ -30,6 +30,7 @@ export default function EditRowActionsCell<R extends RowData>({
   onEditRowConfirmed,
   onEditRowCanceled,
   onEditRowDeleted,
+  onEditRowRestored,
 }: CellRendererProps<R>) {
   if (!isEditRowEnabled || !row.original) {
     return <Wrapper />;
@@ -47,18 +48,37 @@ export default function EditRowActionsCell<R extends RowData>({
   }
 
   if (!row.isEditing || !editRowTransaction) {
-    return (
-      <Wrapper>
-        <Button
-          className={Styles.Delete}
-          icon={Icons.Delete}
-          onClick={() => {
-            onEditRowDeleted && onEditRowDeleted(row.original);
-          }}
-          title="Delete Row"
-        />
-      </Wrapper>
-    );
+    if (row.canRestore()) {
+      return (
+        <Wrapper>
+          <Button
+            className={Styles.Restore}
+            icon={Icons.Undo}
+            onClick={() => {
+              onEditRowRestored && onEditRowRestored(row.original);
+            }}
+            title="Restore Row"
+          />
+        </Wrapper>
+      );
+    }
+
+    if (row.canDelete()) {
+      return (
+        <Wrapper>
+          <Button
+            className={Styles.Delete}
+            icon={Icons.Delete}
+            onClick={() => {
+              onEditRowDeleted && onEditRowDeleted(row.original);
+            }}
+            title="Delete Row"
+          />
+        </Wrapper>
+      );
+    }
+
+    return null;
   }
 
   return (

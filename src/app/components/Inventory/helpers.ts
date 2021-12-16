@@ -67,7 +67,11 @@ export function formatFloat(v: number | string) {
   return typeof v === "number" ? v.toFixed(2) : v;
 }
 
-export function isEditable(item?: InventoryItem): boolean {
+export function canRestoreInventoryItem(item: InventoryItem): boolean {
+  return item.status === InventoryItemStatus.Removed;
+}
+
+export function canEditInventoryItem(item?: InventoryItem): boolean {
   return Boolean(
     item &&
       !(

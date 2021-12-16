@@ -26,6 +26,7 @@
   color: #006ad2;
 }
 
+.Restore:hover,
 .Cancel:hover,
 .Delete:hover {
   color: #db241a;
