@@ -27,6 +27,7 @@ import {
   Alignment,
   SimpleCell,
   createSelectCell,
+  createTotalRowCell,
 } from "../Table";
 
 import Styles from "./Cell.module.css";
@@ -85,6 +86,16 @@ export default function useGetWeeklyColumns({
         align: Alignment.Trailing,
       } as TableColumnOptions<InventoryItem>);
     });
+
+    columns.push({
+      id: `total-${aggregateByColumn}`,
+      Header: "Total",
+      Cell: createTotalRowCell({
+        skipColumns: ["networkId", "name"],
+      }),
+      align: Alignment.Trailing,
+      format,
+    } as TableColumnOptions<InventoryItem>);
 
     return columns;
   }, [items, networks]);

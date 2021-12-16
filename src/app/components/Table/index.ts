@@ -5,6 +5,7 @@ export {
   SelectDateTimeValue,
 } from "./DateTimeCell";
 export { default as createInputCell } from "./InputCell";
+export { default as createTotalRowCell } from "./TotalRowCell";
 export { default as SimpleCell } from "./SimpleCell";
 export { default as SimpleEditCell } from "./SimpleEditCell";
 export { DRAFT_ID } from "./useEditRow";
