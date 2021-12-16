@@ -59,43 +59,6 @@
   width: 80%;
 }
 
-.Sort {
-  background: transparent;
-  border: none;
-  outline: none;
-  font-size: 0.89em;
-  line-height: 1.2em;
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  color: inherit;
-}
-
-.Sort:active {
-  color: inherit;
-}
-
-.SortIcon {
-  margin-left: 0.89em;
-}
-
-.SortNotActive {
-  color: #c8ced0;
-}
-
-.Actions {
-  width: 100px;
-  display: flex;
-  justify-content: flex-end;
-  margin-left: auto;
-}
-
-.ActionsCenter {
-  justify-content: center;
-}
-
 .RepeatPop {
   margin-right: 1em;
 }
@@ -160,11 +123,6 @@
 
 .Select {
   min-width: 150px;
-}
-
-.ExpandIcon {
-  width: 0.5em;
-  margin-right: 0.5em;
 }
 
 .Width1 {
