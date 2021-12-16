@@ -39,6 +39,12 @@ import {
   UseDuplicateRowRowProps,
 } from "./useDuplicateRow";
 
+import {
+  UseRowClassTableOptions,
+  UseRowClassInstanceProps,
+  UseRowClassRowProps,
+} from "./useRowClass";
+
 export enum Alignment {
   Leading,
   Trailing,
@@ -73,7 +79,8 @@ export type TableRow<R extends RowData> = Row<R> &
   UseGroupByRowProps<R> &
   UseExpandedRowProps<R> &
   UseEditRowRowProps<R> &
-  UseDuplicateRowRowProps;
+  UseDuplicateRowRowProps &
+  UseRowClassRowProps;
 
 export type TableColumn<R extends RowData> = Column<R> &
   UseSortByColumnProps<R> &
@@ -117,6 +124,7 @@ export type TableOptions<R extends RowData> = ReactTableOptions<R> &
   UseExpandedOptions<R> &
   UsePaginationOptions<R> &
   UseEditRowTableOptions<R> &
+  UseRowClassTableOptions<R> &
   UseDuplicateRowTableOptions<R> & {
     initialState: Partial<TableState<R>>;
   };
@@ -129,6 +137,7 @@ export type TableInstance<R extends RowData> = ReactTableInstance<R> &
   UseDuplicateRowTableOptions<R> &
   UseDuplicateRowInstanceProps<R> &
   UseEditRowTableOptions<R> &
+  UseRowClassInstanceProps<R> &
   UseEditRowInstanceProps<R> & {
     rows: TableRow<R>[];
     state: TableState<R>;

@@ -20,8 +20,10 @@ export default function BodyRow<R extends RowData>({
     <tr
       id={row.id}
       onClick={onClick}
-      className={classnames(Styles.Row, {
+      className={row.classNames(Styles.Row, {
         [Styles.EditRow]: row.isEditing,
+        [Styles.RowGrouped]: row.isGrouped,
+        [Styles.RowExpanded]: row.isExpanded,
       })}
       {...row.getRowProps()}
     >

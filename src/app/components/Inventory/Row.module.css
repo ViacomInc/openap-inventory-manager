@@ -1,0 +1,52 @@
+.RowNew {
+  background: #f2fdf2;
+}
+.RowNew:nth-child(odd) {
+  background: #e4f4e8;
+}
+.RowNew:hover {
+  outline-color: #c7e6cc;
+}
+.RowRemoved {
+  background: #fdeeed;
+}
+.RowRemoved:nth-child(odd) {
+  background: #f5e3e4;
+}
+.RowRemoved:hover {
+  outline-color: #ffc8c8;
+}
+.RowDeleted {
+  background: #f50000;
+}
+.RowDeleted:nth-child(odd) {
+  background: #f00000;
+}
+.RowDeleted:hover {
+  outline-color: #ff0000;
+}
+.RowUpdated {
+  background: #ebf5ff;
+}
+.RowUpdated:nth-child(odd) {
+  background: #deebf7;
+}
+.RowUpdated:hover {
+  outline-color: #c9e6ff;
+}
+
+.RowCommitted {
+  /*color: #979797;*/
+}
+
+.RowCommitted:hover {
+  outline: none;
+  cursor: auto;
+}
+
+.RowExpired {
+  background: #f9f9f9;
+}
+.RowExpired:nth-child(odd) {
+  background: #f5f5f5;
+}

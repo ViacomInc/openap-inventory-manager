@@ -10,4 +10,5 @@ export { default as SimpleCell } from "./SimpleCell";
 export { default as SimpleEditCell } from "./SimpleEditCell";
 export { DRAFT_ID } from "./useEditRow";
 export type { EditRowValidationError } from "./useEditRow";
+export type { ClassNames } from "./useRowClass";
 export * from "./types";

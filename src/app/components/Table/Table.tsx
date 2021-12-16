@@ -18,6 +18,7 @@ import useEditRow, { UseEditRowTableOptions } from "./useEditRow";
 import useDuplicateRow, {
   UseDuplicateRowTableOptions,
 } from "./useDuplicateRow";
+import useRowClass, { UseRowClassTableOptions } from "./useRowClass";
 import useEditRowClickHandler from "./useEditRowClickHandler";
 
 import Styles from "./Table.module.css";
@@ -27,6 +28,7 @@ export function getRowId(row: RowData): string {
 }
 
 export type TableProps<R extends RowData> = UseEditRowTableOptions<R> &
+  UseRowClassTableOptions<R> &
   UseDuplicateRowTableOptions<R> & {
     columns: TableOptions<R>["columns"];
     data: R[];
@@ -47,6 +49,7 @@ export default function Table<R extends RowData>({
   isDuplicateRowEnabled,
   onDuplicateRow,
   groupBy,
+  rowClass,
 }: TableProps<R>) {
   const tableOptions: TableOptions<R> = {
     columns,
@@ -61,9 +64,10 @@ export default function Table<R extends RowData>({
     onEditRowDeleted,
     isDuplicateRowEnabled,
     onDuplicateRow,
+    rowClass,
   };
 
-  const plugins: PluginHook<R>[] = [];
+  const plugins: PluginHook<R>[] = [useRowClass];
   if (isDuplicateRowEnabled) {
     plugins.push(useDuplicateRow);
   }

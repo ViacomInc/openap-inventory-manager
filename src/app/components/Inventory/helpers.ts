@@ -1,5 +1,30 @@
 import { InventoryItem, InventoryItemStatus } from "../../graphql";
-import { TableCell } from "../Table";
+import { TableCell, ClassNames } from "../Table";
+import { isExpired } from "../../../lib/InventoryItem/helpers";
+
+import Styles from "./Row.module.css";
+
+const ItemStatusToCSSClassMap = {
+  [InventoryItemStatus.Draft]: Styles.RowDraft,
+  [InventoryItemStatus.New]: Styles.RowNew,
+  [InventoryItemStatus.Updated]: Styles.RowUpdated,
+  [InventoryItemStatus.Removed]: Styles.RowRemoved,
+  [InventoryItemStatus.Deleted]: Styles.RowDeleted,
+  [InventoryItemStatus.Committed]: Styles.RowCommitted,
+};
+
+export function inventoryItemRowClasses(item?: InventoryItem): ClassNames {
+  if (!item) {
+    return [];
+  }
+
+  return [
+    ItemStatusToCSSClassMap[item.status],
+    {
+      [Styles.RowExpired]: isExpired(item),
+    },
+  ];
+}
 
 export function isNewItem(item?: InventoryItem): boolean {
   if (

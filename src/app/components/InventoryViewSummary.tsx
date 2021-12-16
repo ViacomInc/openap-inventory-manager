@@ -18,6 +18,7 @@ import {
 } from "../api/inventoryItems";
 
 import validateInvetoryItemRow from "./Inventory/validateInvetoryItemRow";
+import { inventoryItemRowClasses } from "./Inventory/helpers";
 
 export default function InventoryViewSummary({
   items,
@@ -49,6 +50,7 @@ export default function InventoryViewSummary({
 
   return (
     <Table
+      rowClass={inventoryItemRowClasses}
       isEditRowEnabled={true}
       isEditRowLoading={false}
       onEditRowCanceled={handleEditRowCanceled}
