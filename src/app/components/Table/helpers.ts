@@ -1,14 +1,13 @@
 import { Alignment, RowData, TableCell, CanEditCell } from "./types";
-import TableStyles from "./Table.module.css";
-import CellStyles from "./Cell.module.css";
+import Styles from "./Cell.module.css";
 
 export function getAligmentClass(align?: Alignment): string | undefined {
   switch (align) {
     case Alignment.Leading:
-      return TableStyles.CellLeading;
+      return Styles.Leading;
 
     case Alignment.Trailing:
-      return TableStyles.CellTrailing;
+      return Styles.Trailing;
 
     default:
       return undefined;
@@ -53,7 +52,7 @@ export function rowIdFromRowElement(target: Element): string | undefined {
   return rowEl.id;
 }
 
-const ActionsCellElementSelector = `.${CellStyles.Actions}`;
+const ActionsCellElementSelector = `.${Styles.Actions}`;
 
 export function isInActionsCell(el: Element): boolean {
   if (el.closest(ActionsCellElementSelector)) {
@@ -62,7 +61,7 @@ export function isInActionsCell(el: Element): boolean {
 
   if (
     el.firstElementChild &&
-    el.firstElementChild.classList.contains(CellStyles.Actions)
+    el.firstElementChild.classList.contains(Styles.Actions)
   ) {
     return true;
   }

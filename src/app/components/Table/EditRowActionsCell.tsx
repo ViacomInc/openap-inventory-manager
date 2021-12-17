@@ -6,7 +6,6 @@ import { Button, Icons } from "../ui";
 import LoaderIcon, { LoaderSize } from "../Icons/Loader";
 
 import { CellRendererProps, RowData } from "./types";
-import { DRAFT_ID } from "./useEditRow";
 
 import Styles from "./Cell.module.css";
 
@@ -25,7 +24,6 @@ const Wrapper: React.FC<{ center?: boolean }> = ({ center, children }) => {
 export default function EditRowActionsCell<R extends RowData>({
   row,
   state: { editRowTransaction, editRowValidationErrors },
-  isEditRowLoading,
   isEditRowEnabled,
   onEditRowConfirmed,
   onEditRowCanceled,
@@ -36,10 +34,7 @@ export default function EditRowActionsCell<R extends RowData>({
     return <Wrapper />;
   }
 
-  const { id } = row.original;
-  const isDraft = id === DRAFT_ID;
-
-  if (isEditRowLoading && editRowTransaction?.id === id) {
+  if (row.isEditLoading) {
     return (
       <Wrapper center>
         <LoaderIcon size={LoaderSize.S} />
@@ -86,12 +81,10 @@ export default function EditRowActionsCell<R extends RowData>({
       <Button
         className={Styles.Confirm}
         icon={Icons.Done}
-        title={isDraft ? "Create Row" : "Update Row"}
-        disabled={Boolean(
-          editRowValidationErrors && editRowValidationErrors.length
-        )}
+        title={row.isEditDraft ? "Create Row" : "Update Row"}
+        disabled={Boolean(editRowValidationErrors?.length)}
         onClick={() => {
-          if (!isDraft && equals(row.original, editRowTransaction)) {
+          if (!row.isEditDraft && equals(row.original, editRowTransaction)) {
             row.resetEdit();
             return;
           }
@@ -108,7 +101,9 @@ export default function EditRowActionsCell<R extends RowData>({
         icon={Icons.Cancel}
         title="Cancel"
         onClick={() => {
-          isDraft && onEditRowCanceled && onEditRowCanceled(editRowTransaction);
+          row.isEditDraft &&
+            onEditRowCanceled &&
+            onEditRowCanceled(editRowTransaction);
           row.resetEdit();
         }}
       />

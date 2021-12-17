@@ -30,9 +30,9 @@ export default function InventoryViewSummary({
   networks,
 }: InventoryViewTabProps): JSX.Element {
   const dispatch = useDispatch();
-  const [transactionId, setTransactionId] = useState<number>();
+  const [editRowId, setEditRowId] = useState<number>();
   const isTransactionLoading = useSelector(
-    selectInventoryItemRequestsStatus(transactionId)
+    selectInventoryItemRequestsStatus(editRowId)
   );
 
   const handleEditRowCanceled = useCallback(async ({ id }: InventoryItem) => {
@@ -40,22 +40,18 @@ export default function InventoryViewSummary({
   }, []);
 
   const handleEditRowConfirmed = useCallback(async (item: InventoryItem) => {
-    setTransactionId(item.id);
-    if (item.id === DRAFT_ID) {
-      dispatch(createInventoryItemRequest(item));
-    } else {
-      dispatch(updateInventoryItemRequest(item));
-    }
+    setEditRowId(item.id);
+    return item.id === DRAFT_ID
+      ? dispatch(createInventoryItemRequest(item))
+      : dispatch(updateInventoryItemRequest(item));
   }, []);
 
   const handleEditRowDeletedRestored = useCallback(
     async (item: InventoryItem) => {
-      setTransactionId(item.id);
-      if (item.status === InventoryItemStatus.Removed) {
-        dispatch(restoreInventoryItemRequest(item.id));
-      } else {
-        dispatch(removeInventoryItemRequest(item.id));
-      }
+      setEditRowId(item.id);
+      return item.status === InventoryItemStatus.Removed
+        ? dispatch(restoreInventoryItemRequest(item.id))
+        : dispatch(removeInventoryItemRequest(item.id));
     },
     []
   );

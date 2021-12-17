@@ -54,7 +54,7 @@ export function graphqlRequest<
   willDispatchTo,
   didDispatchTo,
 }: GraphQLRequest<Results, Variables, Result>) {
-  return (dispatch: Dispatch): void => {
+  return (dispatch: Dispatch): Promise<void> => {
     dispatch(
       actions.set({
         key,
@@ -65,7 +65,7 @@ export function graphqlRequest<
       })
     );
 
-    request<Results>(GRAPHQL_API_URL, document, variables)
+    return request<Results>(GRAPHQL_API_URL, document, variables)
       .then((data) => data[result])
       .then((data) => {
         // for some reason it matters to dispatch

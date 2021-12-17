@@ -44,11 +44,9 @@ export default function InventoryViewAggregate({
 
   const handleEditRowConfirmed = useCallback(async (item: InventoryItem) => {
     setTransactionId(item.id);
-    if (item.id === DRAFT_ID) {
-      dispatch(createInventoryItemRequest(item));
-    } else {
-      dispatch(updateInventoryItemRequest(item));
-    }
+    return item.id === DRAFT_ID
+      ? dispatch(createInventoryItemRequest(item))
+      : dispatch(updateInventoryItemRequest(item));
   }, []);
 
   const itemsWithNoRemoved = useMemo(() => items.filter(isNotRemoved), [items]);

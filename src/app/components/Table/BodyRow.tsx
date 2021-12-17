@@ -6,6 +6,7 @@ import BodyCell from "./BodyCell";
 import { getAligmentClass } from "./helpers";
 
 import Styles from "./Table.module.css";
+import CellStyles from "./Cell.module.css";
 
 interface BodyRowProps<R extends RowData> {
   row: TableRow<R>;
@@ -46,7 +47,7 @@ export default function BodyRow<R extends RowData>({
               Styles.Cell,
               getAligmentClass(columnExtended.align),
               {
-                [Styles.CellInvalid]:
+                [CellStyles.Invalid]:
                   (errors && errors.length > 0) ||
                   (columnExtended.validate &&
                     !columnExtended.validate(cellExtended.value)),

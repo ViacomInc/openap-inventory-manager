@@ -21,6 +21,18 @@
   width: 2em;
 }
 
+.Leading {
+  text-align: left;
+}
+
+.Trailing {
+  text-align: right;
+  justify-content: flex-end;
+}
+.Invalid {
+  background-color: #ffe3cd;
+}
+
 .Confirm:hover,
 .Copy:hover {
   color: #006ad2;

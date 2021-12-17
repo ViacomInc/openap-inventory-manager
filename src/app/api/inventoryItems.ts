@@ -1,3 +1,4 @@
+import { omit } from "ramda";
 import { Interval } from "@viacomcbs/broadcast-calendar";
 import {
   GetAllInventoryItems,
@@ -84,12 +85,14 @@ export const selectGetAllInventoryItemsRequest = (
 
 // this is for user created items
 export const createInventoryItemRequest =
-  (newItem: InventoryItemInput) =>
-  (dispatch: Dispatch, _getState: () => State): void => {
+  (item?: InventoryItem) =>
+  async (dispatch: Dispatch, _getState: () => State): Promise<void> => {
     // const state = getState();
-    if (!newItem) {
-      return;
+    if (!item) {
+      return undefined;
     }
+
+    const newItem = omit(["id", "status"], item);
 
     // const number = selectRepeatUntilNumber(state);
     const inventoryItems = [newItem];
@@ -100,7 +103,7 @@ export const createInventoryItemRequest =
     //   }
     // }
 
-    graphqlRequest<
+    return graphqlRequest<
       CreateInventoryItemsMutationResult,
       CreateInventoryItemsMutationVariables,
       "createInventoryItems"
@@ -118,7 +121,7 @@ export const createInventoryItemRequest =
 // this is for CSV
 export const createInventoryItemsRequest =
   (items: InventoryItemInput[]) =>
-  (dispatch: Dispatch, _getState: () => State): void => {
+  (dispatch: Dispatch, _getState: () => State) =>
     graphqlRequest<
       CreateInventoryItemsMutationResult,
       CreateInventoryItemsMutationVariables,
@@ -132,7 +135,6 @@ export const createInventoryItemsRequest =
       },
       dispatchTo: setInventoryItemsWithNotification("items were created"),
     })(dispatch);
-  };
 
 export const selectCreateInventoryItemsRequest = (state: State): Request => ({
   ...state.requests[CreateInventoryItemsRequestKey],
@@ -191,20 +193,20 @@ export type InventoryItemUpdate = Pick<InventoryItem, "id"> &
 
 export const updateInventoryItemRequest =
   (updatedItem: InventoryItemUpdate) =>
-  (dispatch: Dispatch, getState: () => State): void => {
+  async (dispatch: Dispatch, getState: () => State): Promise<void> => {
     const state = getState();
     if (!updatedItem) {
-      return;
+      return undefined;
     }
 
     const id = updatedItem.id;
     const originalItem = selectInventoryItem(id)(state);
     const inventoryItemUpdate = getDiff(originalItem, updatedItem);
     if (isEmpty(inventoryItemUpdate)) {
-      return;
+      return undefined;
     }
 
-    graphqlRequest<
+    return graphqlRequest<
       UpdateInventoryItemMutationResult,
       UpdateInventoryItemMutationVariables,
       "updateInventoryItem"
@@ -228,8 +230,7 @@ export const selectUpdateInventoryItemRequest =
   });
 
 export const submitInventoryItemsRequest =
-  (publisherId: number) =>
-  (dispatch: Dispatch): void => {
+  (publisherId: number) => (dispatch: Dispatch) =>
     graphqlRequest<
       SubmitInventoryItemsMutationResult,
       SubmitInventoryItemsMutationVariables,
@@ -244,7 +245,6 @@ export const submitInventoryItemsRequest =
       dispatchTo: setInventoryItems,
       didDispatchTo: checkInventoryItemsStatus,
     })(dispatch);
-  };
 
 const checkInventoryItemsStatus =
   () => (dispatch: Dispatch, getState: () => State) => {
@@ -274,7 +274,7 @@ export const selectSubmitInventoryItemsRequest =
 
 export const flushInventoryItemsRequest =
   ({ start, end }: Interval) =>
-  (dispatch: Dispatch): void => {
+  (dispatch: Dispatch) =>
     graphqlRequest<
       FlushInventoryItemsMutationResult,
       FlushInventoryItemsMutationVariables,
@@ -289,7 +289,6 @@ export const flushInventoryItemsRequest =
       },
       dispatchTo: setInventoryItems,
     })(dispatch);
-  };
 
 export const selectFlushInventoryItemsRequest =
   () =>

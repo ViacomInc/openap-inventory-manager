@@ -20,7 +20,9 @@ export default function useRowClickHandler<R extends RowData>({
   toggleRowExpanded,
 }: UseRowClickHandler<R>): RowClickHandler {
   return useCallback(
-    ({ target }: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => {
+    (event: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => {
+      event.preventDefault();
+      const target = event.target;
       // ignore clicks when there is an editing row
       // or click on the action buttons cell
       if (

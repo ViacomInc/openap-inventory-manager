@@ -18,9 +18,8 @@ export const DRAFT_ID = -1;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type HandlerFunction<R extends RowData> = (row: R) => Promise<any>;
-type CanHandler<R extends RowData> = boolean | ((row: R) => boolean);
+type PermissionsHandler<R extends RowData> = (row: R) => boolean;
 
-// we literally do not care about results
 export interface UseEditRowTableOptions<R extends RowData> {
   isEditRowEnabled?: boolean;
   isEditRowLoading?: boolean;
@@ -28,9 +27,9 @@ export interface UseEditRowTableOptions<R extends RowData> {
   onEditRowCanceled?: HandlerFunction<R>;
   onEditRowDeleted?: HandlerFunction<R>;
   onEditRowRestored?: HandlerFunction<R>;
-  canEditRow?: CanHandler<R>;
-  canDeleteRow?: CanHandler<R>;
-  canRestoreRow?: CanHandler<R>;
+  canEditRow?: boolean | PermissionsHandler<R>;
+  canDeleteRow?: boolean | PermissionsHandler<R>;
+  canRestoreRow?: boolean | PermissionsHandler<R>;
   editRowValidate?: (row: R) => null | EditRowValidationError<R>[];
 }
 
@@ -123,6 +122,9 @@ export interface UseEditRowInstanceProps<R extends RowData> {
   setEditRow: (rowId: string) => void;
   resetEditRow: () => void;
   updateEditRow: (update: AtLeastOneProperty<R>) => void;
+  canEditRow: PermissionsHandler<R>;
+  canDeleteRow: PermissionsHandler<R>;
+  canRestoreRow: PermissionsHandler<R>;
 }
 
 function useInstance<R extends RowData>(instance: TableInstance<R>) {
@@ -165,6 +167,8 @@ function useInstance<R extends RowData>(instance: TableInstance<R>) {
 
 export interface UseEditRowRowProps<R extends RowData> {
   isEditing: boolean;
+  isEditLoading: boolean;
+  isEditDraft: boolean;
   editValidationErrors: null | EditRowValidationError<R>[];
   canEdit: () => boolean;
   canRestore: () => boolean;
@@ -174,27 +178,20 @@ export interface UseEditRowRowProps<R extends RowData> {
   updateEdit: (update: AtLeastOneProperty<R>) => void;
 }
 
-function addRowPermissions<R extends RowData>(
-  instance: UseEditRowInstanceProps<R>,
-  row: Row<R> & UseEditRowRowProps<R>,
+export function getPermissionsHandler<R extends RowData>(
+  options: UseEditRowTableOptions<R>,
   name: "canEdit" | "canDelete" | "canRestore"
-) {
-  const instanceWithIndex = instance as UseEditRowInstanceProps<R> & {
-    [index: string]: CanHandler<R>;
-  };
-  const permission = instanceWithIndex[`${name}Row`];
+): PermissionsHandler<R> {
+  const permission = options[`${name}Row`];
   switch (typeof permission) {
     case "boolean":
-      row[name] = () => permission;
-      return;
+      return () => permission;
 
     case "function":
-      row[name] = () => permission(row.original);
-      return;
+      return permission;
 
     default:
-      row[name] = name === "canEdit" ? () => true : () => false;
-      return;
+      return name === "canEdit" ? () => true : () => false;
   }
 }
 
@@ -206,9 +203,11 @@ function prepareRow<R extends RowData>(row: Row<R>, meta: MetaBase<R>): void {
       state: UseEditRowTableState<R>;
     };
 
-  addRowPermissions(instanceExtended, rowExtended, "canEdit");
-  addRowPermissions(instanceExtended, rowExtended, "canDelete");
-  addRowPermissions(instanceExtended, rowExtended, "canRestore");
+  rowExtended.isEditDraft = row.original?.id === DRAFT_ID;
+
+  rowExtended.canEdit = () => instanceExtended.canEditRow(row.original);
+  rowExtended.canDelete = () => instanceExtended.canDeleteRow(row.original);
+  rowExtended.canRestore = () => instanceExtended.canRestoreRow(row.original);
 
   rowExtended.edit = () => instanceExtended.setEditRow(row.id);
   rowExtended.resetEdit = () => instanceExtended.resetEditRow();
@@ -219,12 +218,14 @@ function prepareRow<R extends RowData>(row: Row<R>, meta: MetaBase<R>): void {
     rowExtended.editValidationErrors =
       instanceExtended.state.editRowValidationErrors ?? null;
     rowExtended.isEditing = true;
+    rowExtended.isEditLoading = Boolean(instanceExtended.isEditRowLoading);
   } else {
     rowExtended.editValidationErrors = null;
     rowExtended.isEditing = false;
+    rowExtended.isEditLoading = false;
   }
 
-  if (!rowExtended.isEditing && rowExtended.original?.id === DRAFT_ID) {
+  if (!rowExtended.isEditing && rowExtended.isEditDraft) {
     instanceExtended.setEditRow(row.id);
   }
 }

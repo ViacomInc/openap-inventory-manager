@@ -14,7 +14,10 @@ import BodyRow from "./BodyRow";
 import HeaderRow from "./HeaderRow";
 import { RowData } from "./types";
 
-import useEditRow, { UseEditRowTableOptions } from "./useEditRow";
+import useEditRow, {
+  UseEditRowTableOptions,
+  getPermissionsHandler,
+} from "./useEditRow";
 import useDuplicateRow, {
   UseDuplicateRowTableOptions,
 } from "./useDuplicateRow";
@@ -56,6 +59,9 @@ export default function Table<R extends RowData>({
   }
 
   if (isEditRowEnabled) {
+    tableOptions.canEditRow = getPermissionsHandler(options, "canEdit");
+    tableOptions.canDeleteRow = getPermissionsHandler(options, "canDelete");
+    tableOptions.canRestoreRow = getPermissionsHandler(options, "canRestore");
     plugins.push(useEditRow);
   }
 

@@ -109,18 +109,6 @@
   outline-offset: 2px;*/
 }
 
-.CellLeading {
-  text-align: left;
-}
-
-.CellTrailing {
-  text-align: right;
-  justify-content: flex-end;
-}
-.CellInvalid {
-  background-color: #ffe3cd;
-}
-
 .Select {
   min-width: 150px;
 }
