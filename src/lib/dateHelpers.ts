@@ -114,7 +114,9 @@ export const makeFormatter =
   (format: string) =>
   (dateConfig: DateOrString): string =>
     typeof dateConfig === "string"
-      ? DateTime.fromSQL(dateConfig).setZone(BroadcastTimeZone).toFormat(format)
+      ? DateTime.fromSQL(dateConfig, { zone: BroadcastTimeZone }).toFormat(
+          format
+        )
       : dateConfig.setZone(BroadcastTimeZone).toFormat(format);
 
 // UI Date Helpers
@@ -190,7 +192,9 @@ export function getSqlDateTimeFromSql(date: DateOrString): string {
 }
 
 export function parseDateTime(value: DateOrString): DateTime {
-  return typeof value === "string" ? DateTime.fromSQL(value) : value;
+  return typeof value === "string"
+    ? DateTime.fromSQL(value, { zone: BroadcastTimeZone })
+    : value;
 }
 
 export function differenceInHours(
