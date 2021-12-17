@@ -19,7 +19,7 @@ import useDuplicateRow, {
   UseDuplicateRowTableOptions,
 } from "./useDuplicateRow";
 import useRowClass, { UseRowClassTableOptions } from "./useRowClass";
-import useEditRowClickHandler from "./useEditRowClickHandler";
+import useRowClickHandler from "./useRowClickHandler";
 
 import Styles from "./Table.module.css";
 
@@ -77,7 +77,7 @@ export default function Table<R extends RowData>({
     state: { editRowId },
   } = useTable<R>(tableOptions, ...plugins) as TableInstance<R>;
 
-  const rowClickHandler = useEditRowClickHandler<R>({
+  const rowClickHandler = useRowClickHandler<R>({
     rowsById,
     editRowId,
     setEditRow,

@@ -4,7 +4,7 @@ import { RowClickHandler, RowData, TableRow, ToggleRowsState } from "./types";
 
 import { rowIdFromRowElement, isInActionsCell } from "./helpers";
 
-interface UseEditRowClickHandler<R extends RowData> {
+interface UseRowClickHandler<R extends RowData> {
   rowsById: Record<string, TableRow<R>>;
   editRowId?: string;
   setEditRow: (rowId: string) => void;
@@ -12,13 +12,13 @@ interface UseEditRowClickHandler<R extends RowData> {
   toggleRowExpanded?: ToggleRowsState;
 }
 
-export default function useEditRowClickHandler<R extends RowData>({
+export default function useRowClickHandler<R extends RowData>({
   rowsById,
   editRowId,
   setEditRow,
   isEditRowEnabled,
   toggleRowExpanded,
-}: UseEditRowClickHandler<R>): RowClickHandler {
+}: UseRowClickHandler<R>): RowClickHandler {
   return useCallback(
     ({ target }: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => {
       // ignore clicks when there is an editing row
