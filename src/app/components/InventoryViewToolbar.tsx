@@ -46,7 +46,7 @@ export default function InventoryViewToolbar({
 }: InventoryViewToolbarProps): JSX.Element {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  const { canAddNewItems, canSubmitItems, canUseFilters } =
+  const { canCreateNewItem, canAddNewItems, canSubmitItems, canUseFilters } =
     useInventoryUIStatus();
 
   const { allOptions, selectedOptions } = useFilters(publisher);
@@ -82,7 +82,7 @@ export default function InventoryViewToolbar({
         <Button
           secondary
           icon={Icons.Add}
-          disabled={!canAddNewItems}
+          disabled={!canCreateNewItem}
           onClick={() =>
             dispatch(createInventoryItem({ publisherId: publisher.id }))
           }

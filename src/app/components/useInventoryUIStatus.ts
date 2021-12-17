@@ -7,8 +7,10 @@ import {
   FlushInventoryItemsRequestKey,
   ImportItemsRequestKey,
 } from "../store/constants";
+import { TableView } from "../store/types";
 
 interface Status {
+  canCreateNewItem: boolean;
   canAddNewItems: boolean;
   canSubmitItems: boolean;
   canUseFilters: boolean;
@@ -35,9 +37,11 @@ function getUIStatus(state: State): Status {
   // TODO: get the actual state from Table component
   const isTransactionEmpty = true;
 
+  const isSummaryView = state.table.view === TableView.Items;
   const hasItems = !!Object.keys(state.inventoryItems).length;
 
   return {
+    canCreateNewItem: isSummaryView && !isLoading && isTransactionEmpty,
     canAddNewItems: !isLoading && isTransactionEmpty,
     canUseFilters: hasItems && !isLoading && isTransactionEmpty,
     canSubmitItems:
