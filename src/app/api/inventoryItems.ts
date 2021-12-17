@@ -28,18 +28,16 @@ import type {
   FlushInventoryItemsMutationVariables,
 } from "../graphql";
 
-import { moveWeeks } from "../../lib/InventoryItem/helpers";
+// import { moveWeeks } from "../../lib/InventoryItem/helpers";
 import { isEmpty, getDiff } from "../../lib/helpers";
 
 import { State, Dispatch } from "../store/";
-import { Error, FilterType, NotificationType } from "../store/types";
-import { selectRepeatUntilNumber } from "../store/transaction";
+import { FilterType, NotificationType } from "../store/types";
 import {
   setNewInventoryItem,
   setInventoryItemsWithNotification,
   setInventoryItem,
   setInventoryItems,
-  clearTransaction,
   graphqlRequest,
   clearRequest,
   removeTableFilter,
@@ -87,20 +85,20 @@ export const selectGetAllInventoryItemsRequest = (
 // this is for user created items
 export const createInventoryItemRequest =
   (newItem: InventoryItemInput) =>
-  (dispatch: Dispatch, getState: () => State): void => {
-    const state = getState();
+  (dispatch: Dispatch, _getState: () => State): void => {
+    // const state = getState();
     if (!newItem) {
       return;
     }
 
-    const number = selectRepeatUntilNumber(state);
+    // const number = selectRepeatUntilNumber(state);
     const inventoryItems = [newItem];
 
-    if (number > 0) {
-      for (let i = 1; i <= number; i++) {
-        inventoryItems.push(moveWeeks(newItem, i));
-      }
-    }
+    // if (number > 0) {
+    //   for (let i = 1; i <= number; i++) {
+    //     inventoryItems.push(moveWeeks(newItem, i));
+    //   }
+    // }
 
     graphqlRequest<
       CreateInventoryItemsMutationResult,
@@ -113,7 +111,6 @@ export const createInventoryItemRequest =
       variables: {
         inventoryItems,
       },
-      didDispatchTo: clearTransaction,
       dispatchTo: setNewInventoryItem,
     })(dispatch);
   };
@@ -136,13 +133,6 @@ export const createInventoryItemsRequest =
       dispatchTo: setInventoryItemsWithNotification("items were created"),
     })(dispatch);
   };
-
-export const selectCreateInventoryItemRequest = (
-  state: State
-): RequestWithData<InventoryItem | null> => ({
-  ...state.requests[CreateInventoryItemRequestKey],
-  data: state.transaction.data,
-});
 
 export const selectCreateInventoryItemsRequest = (state: State): Request => ({
   ...state.requests[CreateInventoryItemsRequestKey],
@@ -227,7 +217,6 @@ export const updateInventoryItemRequest =
         inventoryItem: inventoryItemUpdate,
       },
       dispatchTo: setInventoryItemsWithNotification("items were updated"),
-      didDispatchTo: clearTransaction,
     })(dispatch);
   };
 
@@ -237,29 +226,6 @@ export const selectUpdateInventoryItemRequest =
     ...state.requests[makeUpdateKey(id)],
     data: state.inventoryItems[id],
   });
-
-type SelectInventoryItemTransaction = {
-  isUpdating: boolean;
-  item?: InventoryItem;
-  errors?: Error[];
-};
-
-export const selectInventoryItemTransaction =
-  (id: number) =>
-  ({ requests, transaction }: State): SelectInventoryItemTransaction => {
-    const removeRequest = requests[makeRemoveKey(id)];
-    const updateRequest = requests[makeUpdateKey(id)];
-    const res: SelectInventoryItemTransaction = {
-      isUpdating: removeRequest?.loading || updateRequest?.loading,
-    };
-
-    if (transaction.data && transaction.data.id === id) {
-      res.item = transaction.data;
-      res.errors = transaction.errors;
-    }
-
-    return res;
-  };
 
 export const submitInventoryItemsRequest =
   (publisherId: number) =>
@@ -329,6 +295,22 @@ export const selectFlushInventoryItemsRequest =
   () =>
   (state: State): Request =>
     state.requests[FlushInventoryItemsRequestKey] || {};
+
+export const selectInventoryItemRequestsStatus =
+  (id?: number) =>
+  ({ requests }: State): boolean => {
+    if (id === undefined) {
+      return false;
+    }
+
+    const createRequest = requests[CreateInventoryItemRequestKey];
+    const updateRequest = requests[makeUpdateKey(id)];
+    const removeRequest = requests[makeRemoveKey(id)];
+
+    return (
+      createRequest?.loading || updateRequest?.loading || removeRequest?.loading
+    );
+  };
 
 const makeUpdateKey = (id: number) => `updateInventoryItemRequest${id}`;
 const makeRemoveKey = (id: number) => `removeInventoryItemRequest${id}`;

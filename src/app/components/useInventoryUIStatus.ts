@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { useSelector, State, selectState } from "../store";
 import { selectIsAllInventoryItemsPublished } from "../store/inventoryItems";
-import { TransactionStatus } from "../store/transaction";
 import {
   GetAllInventoryItemsRequestKey,
   SubmitInventoryItemsRequestKey,
@@ -33,8 +32,8 @@ function getUIStatus(state: State): Status {
     isFlushItemsLoading ||
     isImportItemsLoading;
 
-  const isTransactionEmpty =
-    state.transaction.status === TransactionStatus.Empty;
+  // TODO: get the actual state from Table component
+  const isTransactionEmpty = true;
 
   const hasItems = !!Object.keys(state.inventoryItems).length;
 

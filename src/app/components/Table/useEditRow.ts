@@ -17,17 +17,17 @@ import EditRowActionsCell from "./EditRowActionsCell";
 export const DRAFT_ID = -1;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type HanlderFunction<R extends RowData> = (row: R) => Promise<any>;
+type HandlerFunction<R extends RowData> = (row: R) => Promise<any>;
 type CanHandler<R extends RowData> = boolean | ((row: R) => boolean);
 
 // we literally do not care about results
 export interface UseEditRowTableOptions<R extends RowData> {
   isEditRowEnabled?: boolean;
   isEditRowLoading?: boolean;
-  onEditRowConfirmed?: HanlderFunction<R>;
-  onEditRowCanceled?: HanlderFunction<R>;
-  onEditRowDeleted?: HanlderFunction<R>;
-  onEditRowRestored?: HanlderFunction<R>;
+  onEditRowConfirmed?: HandlerFunction<R>;
+  onEditRowCanceled?: HandlerFunction<R>;
+  onEditRowDeleted?: HandlerFunction<R>;
+  onEditRowRestored?: HandlerFunction<R>;
   canEditRow?: CanHandler<R>;
   canDeleteRow?: CanHandler<R>;
   canRestoreRow?: CanHandler<R>;

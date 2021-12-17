@@ -4,7 +4,6 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch as useDispatchHook } from "react-redux";
 
 import inventoryItemsReducer from "./inventoryItems";
-import transactionReducer from "./transaction";
 import requestsReducer from "./requests";
 import publishersReducer from "./publishers";
 import csvReducer from "./csv";
@@ -17,7 +16,6 @@ export { useSelector } from "react-redux";
 
 export const openAPReducer = {
   inventoryItems: inventoryItemsReducer,
-  transaction: transactionReducer,
   requests: requestsReducer,
   publishers: publishersReducer,
   csv: csvReducer,

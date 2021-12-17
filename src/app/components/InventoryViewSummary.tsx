@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useState, useCallback } from "react";
 
 import { InventoryItem, InventoryItemStatus } from "../graphql";
 import { InventoryViewTabProps } from "./InventoryViewTabs";
@@ -7,7 +7,7 @@ import Table, { DRAFT_ID } from "./Table";
 import useSummaryColumns from "./Inventory/useSummaryColumns";
 // import useInventoryTablePage from "./useInventoryTablePage";
 
-import { useDispatch } from "../store";
+import { useDispatch, useSelector } from "../store";
 import { deleteInventoryItem } from "../store/actions";
 
 import {
@@ -15,6 +15,7 @@ import {
   updateInventoryItemRequest,
   removeInventoryItemRequest,
   restoreInventoryItemRequest,
+  selectInventoryItemRequestsStatus,
 } from "../api/inventoryItems";
 
 import validateInvetoryItemRow from "./Inventory/validateInvetoryItemRow";
@@ -29,14 +30,17 @@ export default function InventoryViewSummary({
   networks,
 }: InventoryViewTabProps): JSX.Element {
   const dispatch = useDispatch();
-  const columns = useSummaryColumns(networks);
-  // const pagination = useInventoryTablePage();
+  const [transactionId, setTransactionId] = useState<number>();
+  const isTransactionLoading = useSelector(
+    selectInventoryItemRequestsStatus(transactionId)
+  );
 
   const handleEditRowCanceled = useCallback(async ({ id }: InventoryItem) => {
     id === DRAFT_ID && dispatch(deleteInventoryItem(id));
   }, []);
 
   const handleEditRowConfirmed = useCallback(async (item: InventoryItem) => {
+    setTransactionId(item.id);
     if (item.id === DRAFT_ID) {
       dispatch(createInventoryItemRequest(item));
     } else {
@@ -46,6 +50,7 @@ export default function InventoryViewSummary({
 
   const handleEditRowDeletedRestored = useCallback(
     async (item: InventoryItem) => {
+      setTransactionId(item.id);
       if (item.status === InventoryItemStatus.Removed) {
         dispatch(restoreInventoryItemRequest(item.id));
       } else {
@@ -55,11 +60,14 @@ export default function InventoryViewSummary({
     []
   );
 
+  const columns = useSummaryColumns(networks);
+  // const pagination = useInventoryTablePage();
+
   return (
     <Table
       rowClass={inventoryItemRowClasses}
       isEditRowEnabled={true}
-      isEditRowLoading={false}
+      isEditRowLoading={isTransactionLoading}
       onEditRowCanceled={handleEditRowCanceled}
       onEditRowConfirmed={handleEditRowConfirmed}
       onEditRowDeleted={handleEditRowDeletedRestored}

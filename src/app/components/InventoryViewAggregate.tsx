@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 
 import { InventoryItem, Network } from "../graphql";
 import { isNotRemoved } from "../../lib/InventoryItem/helpers";
@@ -10,12 +10,13 @@ import useWeeklyColumns, {
 import Table, { createInputCell, DRAFT_ID } from "./Table";
 import { InputType } from "./ui";
 
-import { useDispatch } from "../store";
+import { useDispatch, useSelector } from "../store";
 import { deleteInventoryItem } from "../store/actions";
 
 import {
   createInventoryItemRequest,
   updateInventoryItemRequest,
+  selectInventoryItemRequestsStatus,
 } from "../api/inventoryItems";
 
 import { noEditsForNull } from "./Inventory/helpers";
@@ -32,12 +33,17 @@ export default function InventoryViewAggregate({
   aggregateByColumn,
 }: InventoryViewAggregateProps): JSX.Element {
   const dispatch = useDispatch();
+  const [transactionId, setTransactionId] = useState<number>();
+  const isTransactionLoading = useSelector(
+    selectInventoryItemRequestsStatus(transactionId)
+  );
 
   const handleEditRowCanceled = useCallback(async ({ id }: InventoryItem) => {
     id === DRAFT_ID && dispatch(deleteInventoryItem(id));
   }, []);
 
   const handleEditRowConfirmed = useCallback(async (item: InventoryItem) => {
+    setTransactionId(item.id);
     if (item.id === DRAFT_ID) {
       dispatch(createInventoryItemRequest(item));
     } else {
@@ -46,7 +52,6 @@ export default function InventoryViewAggregate({
   }, []);
 
   const itemsWithNoRemoved = useMemo(() => items.filter(isNotRemoved), [items]);
-
   const columns = useWeeklyColumns({
     items: itemsWithNoRemoved,
     networks,
@@ -61,7 +66,7 @@ export default function InventoryViewAggregate({
   return (
     <Table
       isEditRowEnabled={true}
-      isEditRowLoading={false}
+      isEditRowLoading={isTransactionLoading}
       onEditRowCanceled={handleEditRowCanceled}
       onEditRowConfirmed={handleEditRowConfirmed}
       canDeleteRow={false}
