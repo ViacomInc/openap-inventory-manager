@@ -1,4 +1,5 @@
-export { default } from "./Table";
+export { default as Table } from "./Table";
+export { default as IdCell } from "./IdCell";
 export { default as createSelectCell } from "./SelectCell";
 export {
   default as createDateTimeCell,

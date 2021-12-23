@@ -50,8 +50,10 @@ export enum Alignment {
   Trailing,
 }
 
+export type RowDataId = number | string;
+
 export interface RowData {
-  id: number;
+  id: RowDataId;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

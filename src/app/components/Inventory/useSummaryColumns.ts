@@ -7,6 +7,7 @@ import { RateTypeOptions, DemographicsOptions } from "../../options";
 import { toOption, InputType, CalendarWeeks } from "../ui";
 
 import {
+  IdCell,
   createSelectCell,
   createDateTimeCell,
   SelectDateTimeValue,
@@ -15,7 +16,6 @@ import {
   Alignment,
 } from "../Table";
 
-import IdCell from "./IdCell";
 import StatusCell from "./StatusCell";
 
 import { isNewItem, biggerThanZero } from "./helpers";

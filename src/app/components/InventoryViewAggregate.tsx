@@ -7,7 +7,7 @@ import useWeeklyColumns, {
   AggregateColumn,
 } from "./Inventory/useWeeklyColumns";
 
-import Table, { createInputCell, DRAFT_ID } from "./Table";
+import { Table, createInputCell, DRAFT_ID } from "./Table";
 import { InputType } from "./ui";
 
 import { useDispatch, useSelector } from "../store";

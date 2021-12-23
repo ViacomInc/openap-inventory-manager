@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 
 import { InventoryItem, InventoryItemStatus } from "../graphql";
 import { InventoryViewTabProps } from "./InventoryViewTabs";
-import Table, { DRAFT_ID } from "./Table";
+import { Table, DRAFT_ID } from "./Table";
 
 import useSummaryColumns from "./Inventory/useSummaryColumns";
 // import useInventoryTablePage from "./useInventoryTablePage";
