@@ -14,7 +14,7 @@ import tableReducer from "./table";
 
 export { useSelector } from "react-redux";
 
-export const openAPReducer = {
+export const managerReducer = {
   inventoryItems: inventoryItemsReducer,
   requests: requestsReducer,
   publishers: publishersReducer,
@@ -26,7 +26,7 @@ export const openAPReducer = {
 };
 
 const store = configureStore({
-  reducer: openAPReducer,
+  reducer: managerReducer,
 });
 
 export default store;
