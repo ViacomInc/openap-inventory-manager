@@ -104,7 +104,7 @@ function normalizeResponseErrors(error: RequestError) {
   return error;
 }
 
-const openApClient = got.extend({
+export const openApClient = got.extend({
   prefixUrl: process.env.OPENAP_API_URL,
   responseType: "json",
   hooks: {
@@ -113,7 +113,7 @@ const openApClient = got.extend({
   },
 });
 
-type OAPResponse = {
+type OAPUploadResponse = {
   itemCount: number;
   warnings: string[];
 };
@@ -121,8 +121,8 @@ type OAPResponse = {
 export async function uploadInventory(
   inventory: OAPInventory,
   deleteInventory?: boolean
-): Promise<OAPResponse> {
-  const response = await openApClient.post<OAPResponse>(
+): Promise<OAPUploadResponse> {
+  const response = await openApClient.post<OAPUploadResponse>(
     `inventory_bank/inventories${
       deleteInventory === undefined
         ? ""
@@ -139,8 +139,8 @@ export async function uploadInventory(
 export async function uploadRates(
   rates: OAPRates,
   deleteRate?: boolean
-): Promise<OAPResponse> {
-  const response = await openApClient.post<OAPResponse>(
+): Promise<OAPUploadResponse> {
+  const response = await openApClient.post<OAPUploadResponse>(
     `inventory_bank/rates${
       deleteRate === undefined ? "" : `?delete_rate=${String(deleteRate)}`
     }`,
