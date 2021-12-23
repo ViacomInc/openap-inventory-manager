@@ -1,0 +1,16 @@
+.Container {
+  margin-top: 3em;
+  z-index: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Selector {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-width: 6.5em;
+}
+.Selector > * {
+  margin: 0 0.25em;
+}

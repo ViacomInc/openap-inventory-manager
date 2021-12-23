@@ -72,6 +72,8 @@ export default function InventoryViewSummary({
       canDeleteRow={true}
       canRestoreRow={canRestoreInventoryItem}
       editRowValidate={validateInvetoryItemRow}
+      initialPageIndex={0}
+      initialPageSize={30}
       columns={columns}
       data={items}
     />

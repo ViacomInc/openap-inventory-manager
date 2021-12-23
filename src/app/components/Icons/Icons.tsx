@@ -1,5 +1,8 @@
 import React from "react";
 import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
+import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
+import { faArrowDown } from "@fortawesome/free-solid-svg-icons/faArrowDown";
 import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons/faCalendarPlus";
 import { faCalendarTimes } from "@fortawesome/free-solid-svg-icons/faCalendarTimes";
 import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
@@ -11,7 +14,6 @@ import { faCloudUploadAlt } from "@fortawesome/free-solid-svg-icons/faCloudUploa
 import { faCopy } from "@fortawesome/free-solid-svg-icons/faCopy";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
-import { faArrowDown } from "@fortawesome/free-solid-svg-icons/faArrowDown";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons/faInfoCircle";
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons/faPaperclip";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
@@ -43,6 +45,8 @@ export enum Icons {
   Flush = "flush",
   Info = "Info",
   New = "new",
+  Next = "next",
+  Previous = "previous",
   Removed = "removed",
   RepeatItem = "repeatitem",
   Sort = "sort",
@@ -73,11 +77,13 @@ const IconsMap: Record<Icons, IconDefinition> = {
   [Icons.Flush]: faCalendarTimes,
   [Icons.Info]: faInfoCircle,
   [Icons.New]: faCheckCircle,
+  [Icons.Next]: faAngleRight,
+  [Icons.Previous]: faAngleLeft,
   [Icons.Removed]: faTrashAlt,
   [Icons.RepeatItem]: faCalendarPlus,
+  [Icons.Sort]: faSort,
   [Icons.SortDown]: faSortDown,
   [Icons.SortUp]: faSortUp,
-  [Icons.Sort]: faSort,
   [Icons.Success]: faCheck,
   [Icons.Sync]: faCloudUploadAlt,
   [Icons.Undo]: faUndo,

@@ -14,22 +14,6 @@
   justify-content: center;
 }
 
-.Paginator {
-  margin-top: 3em;
-  z-index: 0;
-  display: flex;
-  justify-content: space-between;
-}
-
-.PaginatorSelector {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.PaginatorSelector > * {
-  margin: 0 0.25em;
-}
-
 .Head {
   color: #798386;
 }

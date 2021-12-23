@@ -4,7 +4,7 @@ import {
   // useSortBy,
   useGroupBy,
   useExpanded,
-  // usePagination,
+  usePagination,
   PluginHook,
 } from "react-table";
 
@@ -23,6 +23,7 @@ import useDuplicateRow, {
 } from "./useDuplicateRow";
 import useRowClass, { UseRowClassTableOptions } from "./useRowClass";
 import useRowClickHandler from "./useRowClickHandler";
+import Paginator from "./Paginator";
 
 import Styles from "./Table.module.css";
 
@@ -37,6 +38,8 @@ export type TableProps<R extends RowData> = UseEditRowTableOptions<R> &
     data: R[];
     empty?: JSX.Element;
     groupBy?: TableState<R>["groupBy"];
+    initialPageIndex?: number;
+    initialPageSize?: number;
   };
 
 export default function Table<R extends RowData>({
@@ -44,6 +47,8 @@ export default function Table<R extends RowData>({
   isEditRowEnabled,
   isDuplicateRowEnabled,
   groupBy,
+  initialPageIndex,
+  initialPageSize,
   ...options
 }: TableProps<R>) {
   const tableOptions: TableOptions<R> = {
@@ -71,6 +76,14 @@ export default function Table<R extends RowData>({
     plugins.push(useGroupBy, useExpanded);
   }
 
+  const isPaginationEnabled =
+    initialPageIndex !== undefined || initialPageSize !== undefined;
+  if (isPaginationEnabled) {
+    plugins.push(usePagination);
+    tableOptions.initialState.pageIndex = initialPageIndex;
+    tableOptions.initialState.pageSize = initialPageSize;
+  }
+
   const {
     rows,
     rowsById,
@@ -80,7 +93,18 @@ export default function Table<R extends RowData>({
     prepareRow,
     setEditRow,
     toggleRowExpanded,
-    state: { editRowId },
+    state: { editRowId, pageIndex, pageSize },
+
+    //these will be available only when pagination is used
+    page, // Instead of using 'rows', we'll use page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
   } = useTable<R>(tableOptions, ...plugins) as TableInstance<R>;
 
   const rowClickHandler = useRowClickHandler<R>({
@@ -94,6 +118,8 @@ export default function Table<R extends RowData>({
   if (rows.length === 0) {
     return empty ? <div className={Styles.EmptyData}>{empty}</div> : null;
   }
+
+  const visibleRows = isPaginationEnabled ? page : rows;
 
   return (
     <>
@@ -111,7 +137,7 @@ export default function Table<R extends RowData>({
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {visibleRows.map((row) => {
             prepareRow(row);
             // Work around to fix type issues with React Table and plugins
             const rowExtended = row as unknown as TableRow<R>;
@@ -125,6 +151,21 @@ export default function Table<R extends RowData>({
           })}
         </tbody>
       </table>
+      {isPaginationEnabled && (
+        <Paginator
+          disabled={editRowId !== undefined}
+          pageIndex={pageIndex}
+          pageSize={pageSize}
+          canPreviousPage={canPreviousPage}
+          canNextPage={canNextPage}
+          pageOptions={pageOptions}
+          pageCount={pageCount}
+          gotoPage={gotoPage}
+          nextPage={nextPage}
+          previousPage={previousPage}
+          setPageSize={setPageSize}
+        />
+      )}
     </>
   );
 }
