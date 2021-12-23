@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useCallback } from "react";
+import { useRouter } from "next/router";
 
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
 import TabsStyles from "../components/ui/Tabs.module.css";
@@ -69,9 +70,15 @@ interface PublishersProps {
 }
 
 function Publishers({ publishers }: PublishersProps): JSX.Element {
+  const router = useRouter();
   const dispatch = useDispatch();
   // url <> state sync
-  const urlStateSync = useMemo(() => getUrlSyncState(publishers), [publishers]);
+  const urlStateSync = useMemo(() => {
+    const route = router.route.split("/");
+    const index = route.findIndex((path) => path === "[[...match]]");
+    const basePath = route.slice(0, index).join("/");
+    return getUrlSyncState(basePath, publishers);
+  }, [publishers]);
   useSyncUrlState(urlStateSync);
 
   useEffect(() => {
@@ -162,6 +169,7 @@ function getPublisherIndex(
 }
 
 function getUrlSyncState(
+  root: string,
   publishers: PublishersSlice
 ): UseSyncUrlState<TableSlice> {
   const publisherIndices = publishers.reduce(
@@ -178,7 +186,7 @@ function getUrlSyncState(
   );
 
   return {
-    url: "/:publisher?/:view?/:pageSize?/:page?",
+    url: `${root}/:publisher?/:view?/:pageSize?/:page?`,
     selector: selectTableState,
     queryString: "filters",
     parameters: {
