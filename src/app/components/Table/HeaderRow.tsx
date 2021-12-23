@@ -4,6 +4,7 @@ import { HeaderGroup } from "react-table";
 
 import { getAligmentClass } from "./helpers";
 import { RowData, TableColumn } from "./types";
+import SortButton from "./SortButton";
 
 import Styles from "./Table.module.css";
 
@@ -49,9 +50,23 @@ export default function HeaderRow<R extends RowData>({
                 [Styles.HeadCellRightDelimeter]: hasChildren || isLastChild,
               }
             )}
-            {...column.getHeaderProps()}
+            {...column.getHeaderProps(
+              extendedColumn.canSort
+                ? extendedColumn.getSortByToggleProps()
+                : undefined
+            )}
           >
-            {column.render("Header")}
+            {extendedColumn.canSort ? (
+              <SortButton
+                align={extendedColumn.align}
+                isActive={extendedColumn.isSorted}
+                isDesc={extendedColumn.isSortedDesc}
+              >
+                {column.render("Header")}
+              </SortButton>
+            ) : (
+              column.render("Header")
+            )}
           </th>
         );
       })}

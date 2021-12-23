@@ -28,6 +28,7 @@ export default function useInventorySummaryColumns(
       {
         accessor: "status",
         Cell: StatusCell,
+        disableSortBy: true,
       },
       {
         Header: "Id",

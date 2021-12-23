@@ -74,6 +74,7 @@ export default function InventoryViewSummary({
       editRowValidate={validateInvetoryItemRow}
       initialPageIndex={0}
       initialPageSize={30}
+      sortByColumn={true}
       columns={columns}
       data={items}
     />

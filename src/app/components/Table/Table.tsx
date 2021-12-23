@@ -1,7 +1,7 @@
 import React from "react";
 import {
   useTable,
-  // useSortBy,
+  useSortBy,
   useGroupBy,
   useExpanded,
   usePagination,
@@ -40,6 +40,7 @@ export type TableProps<R extends RowData> = UseEditRowTableOptions<R> &
     groupBy?: TableState<R>["groupBy"];
     initialPageIndex?: number;
     initialPageSize?: number;
+    sortByColumn?: boolean;
   };
 
 export default function Table<R extends RowData>({
@@ -49,6 +50,7 @@ export default function Table<R extends RowData>({
   groupBy,
   initialPageIndex,
   initialPageSize,
+  sortByColumn,
   ...options
 }: TableProps<R>) {
   const tableOptions: TableOptions<R> = {
@@ -73,7 +75,16 @@ export default function Table<R extends RowData>({
   if (groupBy) {
     tableOptions.autoResetExpanded = false;
     tableOptions.initialState.groupBy = groupBy;
-    plugins.push(useGroupBy, useExpanded);
+
+    if (sortByColumn) {
+      plugins.push(useGroupBy, useSortBy, useExpanded);
+      tableOptions.autoResetSortBy = false;
+    } else {
+      plugins.push(useGroupBy, useExpanded);
+    }
+  } else if (sortByColumn) {
+    tableOptions.autoResetSortBy = false;
+    plugins.push(useSortBy);
   }
 
   const isPaginationEnabled =

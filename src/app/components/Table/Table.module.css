@@ -27,7 +27,8 @@
   padding: 1em 0.75em;
   text-align: left;
   font-size: 0.89em;
-  /*background: #eee;*/
+  line-height: 1.2em;
+  font-weight: normal;
 }
 
 .HeadCellHasChildren {

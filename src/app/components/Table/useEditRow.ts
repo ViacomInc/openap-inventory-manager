@@ -43,6 +43,7 @@ export default function useEditRow<R extends RowData>(hooks: Hooks<R>) {
       id: "editRowActions",
       width: 2,
       Cell: EditRowActionsCell,
+      disableSortBy: true,
     },
   ]);
 }

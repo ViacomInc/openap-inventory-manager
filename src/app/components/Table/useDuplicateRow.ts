@@ -17,6 +17,7 @@ export default function useDuplicateRow<R extends RowData>(hooks: Hooks<R>) {
       id: "rowDuplicate",
       width: 1,
       Cell: DuplicateRowActionsCell,
+      disableSortBy: true,
     },
   ]);
 }
