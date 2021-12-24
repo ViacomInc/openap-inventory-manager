@@ -57,7 +57,8 @@ export default function useGetWeeklyColumns({
         Cell: createSelectCell({
           name: "networkId",
           canEdit: false,
-          options: networks.map(toOption),
+          options: networks,
+          toOption,
         }),
       },
       {

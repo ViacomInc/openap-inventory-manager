@@ -40,7 +40,8 @@ export default function useInventorySummaryColumns(
         accessor: "networkId",
         Cell: createSelectCell({
           name: "networkId",
-          options: networks.map(toOption),
+          options: networks,
+          toOption,
           canEdit: isNewItem,
         }),
       },

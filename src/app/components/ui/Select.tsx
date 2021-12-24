@@ -118,7 +118,18 @@ export default function Select(
   );
 }
 
-export function toOption(item: { id: number | string; name: string }): Option {
+export function isOption(o: Option | undefined): o is Option {
+  return Boolean(o && o.value !== undefined);
+}
+
+export function toOption(item?: {
+  id: number | string;
+  name: string;
+}): undefined | Option {
+  if (!item) {
+    return undefined;
+  }
+
   return {
     value: item.id,
     label: item.name,
@@ -137,7 +148,10 @@ export function isMultiOptions<O extends Option>(
 
 export function getOption(
   options: Option[],
-  value: number | string
+  value?: Pick<Option, "value">
 ): Option | undefined {
-  return options.find((o) => o.value === value);
+  if (!value) {
+    return undefined;
+  }
+  return options.find((o) => o.value === value.value);
 }

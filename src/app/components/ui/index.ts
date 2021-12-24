@@ -14,6 +14,7 @@ export {
   getOption,
   isMultiOptions,
   toOption,
+  isOption,
 } from "./Select";
 export type { Option, GroupedOption } from "./Select";
 export { default as SlowButton } from "./SlowButton";
