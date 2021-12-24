@@ -86,7 +86,7 @@ export default function MuliSelect({
                 className={classnames(Styles.Select, {
                   [Styles.Error]: key === error,
                 })}
-                defaultValue={getOption(options, key)}
+                defaultValue={getOption(options, { value: key })}
                 options={options}
                 onChange={(selected) =>
                   selected &&
