@@ -10,13 +10,17 @@ import { shouldEditCell } from "./helpers";
 
 import Styles from "./Cell.module.css";
 
+type ToOptionFn<V = any> = (value?: V) => Option | undefined;
+type FilterOptionFn<R, V = any> = (option: V | undefined, row: R) => boolean;
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface SelecetCellProps<R extends RowData, N extends keyof R, V = any>
   extends EditableCellOptions<R, N> {
   placeholder?: string;
   options: V[] | Option[];
-  toOption?: (value?: V) => Option | undefined;
+  toOption?: ToOptionFn<V>;
   toValue?: (option: Option) => V | undefined;
+  filterOption?: FilterOptionFn<R, V>;
 }
 
 export default function createSelectCell<
@@ -30,6 +34,7 @@ export default function createSelectCell<
   options,
   toOption,
   toValue,
+  filterOption,
   disabled = false,
   canEdit,
 }: SelecetCellProps<R, N, V>) {
@@ -40,17 +45,17 @@ export default function createSelectCell<
     value,
   }: CellRendererProps<R, V>): string | JSX.Element | null {
     const selectOptions = useMemo(
-      () => makeOptions(options, toOption),
-      [options, toOption]
+      () => makeOptions(options, toOption, filterOption, row.original),
+      [options, toOption, filterOption, row.original]
     );
 
-    const selectValue = useMemo(
+    const selectedValue = useMemo(
       () => getOption(selectOptions, makeOption(value, toOption)),
       [selectOptions, value]
     );
 
     if (!shouldEditCell(cell, canEdit)) {
-      return selectValue ? selectValue.label : null;
+      return selectedValue ? selectedValue.label : null;
     }
 
     return (
@@ -58,13 +63,13 @@ export default function createSelectCell<
         className={Styles.Container}
         isDisabled={disabled || isEditRowLoading}
         placeholder={placeholder}
-        defaultValue={selectValue}
+        defaultValue={selectedValue}
         options={selectOptions}
         onChange={(selected) => {
           if (
             !selected ||
             isMultiOptions(selected) ||
-            selected.value === selectValue?.value
+            selected.value === selectedValue?.value
           ) {
             return;
           }
@@ -80,7 +85,7 @@ export default function createSelectCell<
 
 function makeOption<V>(
   value?: V,
-  toOption?: (value?: V) => Option | undefined
+  toOption?: ToOptionFn<V>
 ): Pick<Option, "value"> | undefined {
   switch (typeof value) {
     case "string":
@@ -97,12 +102,18 @@ function makeOption<V>(
   };
 }
 
-function makeOptions<V>(
+function makeOptions<R, V>(
   options: V[] | Option[],
-  toOption?: (value?: V) => Option | undefined
+  toOption: ToOptionFn<V> | undefined,
+  filterOption: FilterOptionFn<R, V> = () => true,
+  row: R
 ): Option[] {
   if (toOption) {
-    return (options as V[]).map(toOption).filter(isOption);
+    // we assume that this is values
+    return (options as V[])
+      .filter((v) => filterOption(v, row))
+      .map(toOption)
+      .filter(isOption);
   }
 
   return options as Option[];
