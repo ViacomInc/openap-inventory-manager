@@ -11,7 +11,7 @@ import { shouldEditCell } from "./helpers";
 import Styles from "./Cell.module.css";
 
 type ToOptionFn<V = any> = (value?: V) => Option | undefined;
-type FilterOptionFn<R, V = any> = (option: V | undefined, row: R) => boolean;
+type FilterOptionFn<R, V = any> = (option: V, row?: R) => boolean;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface SelecetCellProps<R extends RowData, N extends keyof R, V = any>
