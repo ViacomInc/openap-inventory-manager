@@ -14,12 +14,14 @@ export interface TopBarProps {
   };
   logo?: React.FC<{ className: string }>;
   title?: string;
+  children?: React.ReactNode;
 }
 
 export default function TopBar({
   auth: { user, logout } = {},
   logo,
   title,
+  children,
 }: TopBarProps): JSX.Element {
   const Logo = logo || OpenAPLogo;
 
@@ -34,6 +36,11 @@ export default function TopBar({
             {title || "Open AP Inventory Manager"}
           </h1>
         </div>
+        {children && (
+          <div className={classnames(Styles.BarItem, Styles.BarItemLinks)}>
+            {children}
+          </div>
+        )}
         {user && user.id && (
           <div className={classnames(Styles.BarItem, Styles.BarItemAccount)}>
             <Icon className={Styles.AccountIcon} icon={Icons.Account} />{" "}

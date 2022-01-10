@@ -51,3 +51,25 @@
   /*to align with button text*/
   margin-top: 0.1em;
 }
+
+.BarItemLinks {
+  color: #003366;
+}
+
+.BarItemLinks a {
+  color: #006ad2;
+  margin-right: 1.5em;
+  margin-left: 1.5em;
+  position: relative;
+}
+
+.BarItemLinks a::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 1em;
+  background-color: #003366;
+  position: absolute;
+  top: 0.25em;
+  right: -1.5em;
+}
