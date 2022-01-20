@@ -1,6 +1,7 @@
+export { default as Icon, Icons } from "../Icons";
+export { default as Loader, LoaderSize } from "../Icons/Loader";
 export { default as Button } from "./Button";
 export { default as BoxLoader } from "./BoxLoader";
-export { default as Icon, Icons } from "../Icons";
 export { default as Input, InputType } from "./Input";
 export { default as InputDateTime } from "./InputDateTime";
 export type { InputDateTimeProps } from "./InputDateTime";
