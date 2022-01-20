@@ -84,6 +84,7 @@ async function logRequest({
 interface ErrorMessage {
   code?: string;
   statusCode?: number;
+  statusMessage?: string;
   body?: unknown;
 }
 
@@ -94,9 +95,14 @@ function normalizeResponseErrors(error: RequestError) {
   };
 
   if (response) {
-    const errorBody = response.body as OAPError;
     message.statusCode = response.statusCode;
-    message.body = flattern(errorBody.error);
+    message.statusMessage = response.statusMessage;
+
+    // if we have more details add them to the message
+    if (typeof response.body === "object") {
+      const errorBody = response.body as OAPError;
+      message.body = flattern(errorBody.error);
+    }
   }
 
   // error message goes to job.last_error column
