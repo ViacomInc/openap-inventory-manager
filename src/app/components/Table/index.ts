@@ -13,3 +13,11 @@ export { DRAFT_ID } from "./useEditRow";
 export type { EditRowValidationError } from "./useEditRow";
 export type { ClassNames } from "./useRowClass";
 export * from "./types";
+export {
+  shouldEditCell,
+  rowIdFromRowElement,
+  isInActionsCell,
+} from "./helpers";
+
+import Styles from "./Cell.module.css";
+export const ActionsCellClass = Styles.Actions;
