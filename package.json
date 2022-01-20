@@ -160,9 +160,9 @@
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-preserve-shebang": "1.0.1",
-    "rollup-plugin-typescript2": "^0.30.0",
+    "rollup-plugin-typescript2": "^0.31.0",
     "ts-jest": "^27.0.4",
     "ts-node": "^10.0.0",
-    "typescript": "^4.2.3"
+    "typescript": "^4.5.4"
   }
 }
