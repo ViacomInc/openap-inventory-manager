@@ -99,9 +99,23 @@ function normalizeResponseErrors(error: RequestError) {
     message.statusMessage = response.statusMessage;
 
     // if we have more details add them to the message
-    if (typeof response.body === "object") {
-      const errorBody = response.body as OAPError;
-      message.body = flattern(errorBody.error);
+    switch (typeof response.body) {
+      case "object":
+        // eslint-disable-next-line no-case-declarations
+        const errorBody = response.body as OAPError;
+        message.body = errorBody.error
+          ? flattern(errorBody.error)
+          : errorBody.message;
+        break;
+
+      case "string":
+        try {
+          const err = JSON.parse(response.body) as OAPError;
+          message.body = err.message;
+        } catch (e) {
+          message.body = response.body;
+        }
+        break;
     }
   }
 

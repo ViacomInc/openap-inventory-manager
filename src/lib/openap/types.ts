@@ -45,6 +45,9 @@ export type OAPRates = {
 };
 
 export type OAPError = {
+  timestamp: string;
+  status: number;
+  message?: string;
   error: {
     [key: string]: unknown;
   };
