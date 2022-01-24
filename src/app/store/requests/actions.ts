@@ -104,10 +104,19 @@ export function graphqlRequest<
       })
       .catch((e: ClientError) => {
         const code = e.response.status;
-        const errors = e.response.errors?.map((error) => ({
-          code,
-          message: error.message,
-        }));
+        const errors = e.response.errors?.map((error) => {
+          const message = error.message;
+
+          try {
+            const details = JSON.parse(message) as { body: string };
+            return { code, message: details.body };
+          } catch (e) {
+            return {
+              code,
+              message,
+            };
+          }
+        });
 
         dispatch(
           actions.set({
