@@ -1,7 +1,5 @@
 export const WORKER_CONCURRENCY = 2;
 
-export const PUBLISHERS_IDS = [101];
-
 export const DEFAULT_VALID_UNTIL_DAYS = 14;
 export const DEFAULT_ITEM_DURATION_HOURS = 2;
 export const MAX_ITEM_DURATION_HOURS = 23;
