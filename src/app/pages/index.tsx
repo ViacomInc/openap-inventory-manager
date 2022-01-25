@@ -39,27 +39,25 @@ export default function Index(): JSX.Element | null {
 
   // get all publishers
   useEffect(() => dispatch(getPublishersRequest()), []);
-  const {
-    loading,
-    data: publishers,
-    errors,
-  } = useSelector(selectGetPublishersRequest());
+  const publishers = useSelector(selectGetPublishersRequest());
 
-  if (useRedirectToLogin(errors)) {
+  if (useRedirectToLogin(publishers.errors)) {
     return null;
   }
 
-  const pageProps = loading
+  const pageProps = publishers.loading
     ? { loading: true }
-    : publishers && publishers.length > 1
+    : (publishers.errors?.length ?? 0) > 0
+    ? {}
+    : (publishers.data?.length ?? 0) > 1
     ? { withTabs: true }
     : { withToolbar: true };
 
   return (
     <Page {...pageProps}>
-      <ErrorNotification errors={errors} />
-      {Boolean(publishers && publishers.length) && (
-        <Publishers publishers={publishers} />
+      <ErrorNotification errors={publishers.errors} />
+      {Boolean(publishers.data && publishers.data.length) && (
+        <Publishers publishers={publishers.data} />
       )}
     </Page>
   );
