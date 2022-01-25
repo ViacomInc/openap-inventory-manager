@@ -7,6 +7,7 @@ import {
   Job,
   TaskList,
 } from "graphile-worker";
+import { LogFn } from "pino";
 import logger from "../logger";
 
 import { WORKER_CONCURRENCY } from "../constants";
@@ -15,7 +16,10 @@ import { Tasks, TaskName, TasksPayloads } from "./tasks";
 export { TaskName } from "./tasks";
 
 const logFactory: LogFunctionFactory = (scope) => {
-  const workerLogger = logger.child({ ...scope, name: "worker" });
+  const workerLogger = logger.child({
+    ...scope,
+    name: "worker",
+  }) as unknown as Record<string, LogFn>; // have to do it :(
 
   return (level, message, meta?) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call

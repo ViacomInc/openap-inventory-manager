@@ -1,9 +1,4 @@
-import {
-  sql,
-  SqlSqlTokenType,
-  ListSqlTokenType,
-  IdentifierSqlTokenType,
-} from "slonik";
+import { sql, SqlSqlToken, ListSqlToken, IdentifierSqlToken } from "slonik";
 import { managerDBConfig } from "./config";
 
 interface SQLSetMap {
@@ -17,9 +12,9 @@ interface SQLSetMap {
     | undefined;
 }
 
-export function sqlSet(setMap: SQLSetMap): ListSqlTokenType {
+export function sqlSet(setMap: SQLSetMap): ListSqlToken {
   const set = Object.entries(setMap).reduce(
-    (update: SqlSqlTokenType[], [key, value]) => {
+    (update: SqlSqlToken[], [key, value]) => {
       if (value !== undefined) {
         const v = Array.isArray(value)
           ? sql`ARRAY[${sql.join(value, sql`,`)}]`
@@ -34,6 +29,6 @@ export function sqlSet(setMap: SQLSetMap): ListSqlTokenType {
   return sql.join(set, sql`,`);
 }
 
-export function table(name: string): IdentifierSqlTokenType {
+export function table(name: string): IdentifierSqlToken {
   return sql.identifier([managerDBConfig.schema, name]);
 }

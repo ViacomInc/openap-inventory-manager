@@ -1,5 +1,4 @@
-import { createPool } from "slonik";
-import type { DatabasePoolType } from "slonik";
+import { createPool, DatabasePool } from "slonik";
 import config from "./config";
 
 export { sql } from "slonik";
@@ -12,13 +11,13 @@ const URLS = {
   [DB.Local]: process.env.DATABASE_URL ?? "",
 };
 
-const clients: Record<string, DatabasePoolType> = {};
+const clients: Record<string, DatabasePool> = {};
 
-function createPgDbPool(db: DB = DB.Local): DatabasePoolType {
+function createPgDbPool(db: DB = DB.Local): DatabasePool {
   return createPool(URLS[db], config);
 }
 
-export default function getClient(db: DB = DB.Local): DatabasePoolType {
+export default function getClient(db: DB = DB.Local): DatabasePool {
   if (!clients[db]) {
     clients[db] = createPgDbPool(db);
   }
