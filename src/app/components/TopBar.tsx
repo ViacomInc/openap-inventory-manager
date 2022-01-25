@@ -36,12 +36,12 @@ export default function TopBar({
             {title || "Open AP Inventory Manager"}
           </h1>
         </div>
-        {children && (
+        {user?.id && children && (
           <div className={classnames(Styles.BarItem, Styles.BarItemLinks)}>
             {children}
           </div>
         )}
-        {user && user.id && (
+        {user?.id && (
           <div className={classnames(Styles.BarItem, Styles.BarItemAccount)}>
             <Icon className={Styles.AccountIcon} icon={Icons.Account} />{" "}
             <span className={Styles.User}>
