@@ -61,6 +61,7 @@ _All environments_
 - `LOG_LEVEL` - error, info, debug, silent.
 - `DATABASE_URL` - The url of your database, e.g.,
   `postgres://user:pwd@host:port/my_database`
+- `OPENAP_PUBLISHERS_IDS` - supported Open AP publishers ids, e.g., `1` or `1,2`
 - `OPENAP_API_URL` - the base Open AP url for the env, e.g.,
   `https://api-uat.openap-acn.com/v1`
 - `OPENAP_API_CLIENT_ID` - your Open AP client ID
