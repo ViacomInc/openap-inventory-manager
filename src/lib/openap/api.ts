@@ -3,7 +3,14 @@ import formUrlEncoded from "form-urlencoded";
 import flattern from "flat";
 
 import logger from "../logger";
-import { OAPInventory, OAPRates, OAPPublisher, OAPError } from "./types";
+import {
+  OAPInventory,
+  OAPRates,
+  OAPPublisher,
+  OAPError,
+  OAPAuthError,
+  isOAPAuthError,
+} from "./types";
 
 type Tokens = {
   access_token: string;
@@ -98,24 +105,28 @@ function normalizeResponseErrors(error: RequestError) {
     message.statusCode = response.statusCode;
     message.statusMessage = response.statusMessage;
 
-    // if we have more details add them to the message
-    switch (typeof response.body) {
-      case "object":
-        // eslint-disable-next-line no-case-declarations
-        const errorBody = response.body as OAPError;
-        message.body = errorBody.error
-          ? flattern(errorBody.error)
-          : errorBody.message;
-        break;
+    if (isOAPAuthError(response.body)) {
+      message.body = response.body.error_description;
+    } else {
+      // if we have more details add them to the message
+      switch (typeof response.body) {
+        case "object":
+          // eslint-disable-next-line no-case-declarations
+          const errorBody = response.body as OAPError;
+          message.body = errorBody.error
+            ? flattern(errorBody.error)
+            : errorBody.message;
+          break;
 
-      case "string":
-        try {
-          const err = JSON.parse(response.body) as OAPError;
-          message.body = err.message;
-        } catch (e) {
-          message.body = response.body;
-        }
-        break;
+        case "string":
+          try {
+            const err = JSON.parse(response.body) as OAPError;
+            message.body = err.message;
+          } catch (e) {
+            message.body = response.body;
+          }
+          break;
+      }
     }
   }
 

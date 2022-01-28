@@ -52,3 +52,20 @@ export type OAPError = {
     [key: string]: unknown;
   };
 };
+
+export type OAPAuthError = {
+  error_description: string; // this is actual error message
+  error: string; // this is error code
+};
+
+export function isOAPAuthError(error: unknown): error is OAPAuthError {
+  if (!error) {
+    return false;
+  }
+
+  if (typeof error !== "object" || error === null) {
+    return false;
+  }
+
+  return "error_description" in error && "error" in error;
+}
