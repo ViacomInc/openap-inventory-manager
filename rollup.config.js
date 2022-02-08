@@ -1,5 +1,4 @@
-import peerDepsExternal from "rollup-plugin-peer-deps-external";
-import autoExternal from "rollup-plugin-auto-external";
+import externals from "rollup-plugin-node-externals";
 import inject from "@rollup/plugin-inject";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
@@ -21,6 +20,8 @@ const pkg = require("./package.json");
 const reactPkg = `${pkg.name}-react`;
 const serverPkg = `${pkg.name}-server`;
 
+const bundleESModules = "react-linkify-it";
+
 export default [
   {
     input: "src/index.graphql.ts",
@@ -32,7 +33,7 @@ export default [
       },
     ],
     plugins: [
-      autoExternal(),
+      externals({ exclude: bundleESModules }),
       typescript(),
       json(),
       graphql(),
@@ -83,8 +84,7 @@ export default [
       },
     ],
     plugins: [
-      autoExternal(),
-      peerDepsExternal(),
+      externals({ exclude: bundleESModules }),
       typescript({
         outDir: "app",
       }),

@@ -1,4 +1,5 @@
 import React from "react";
+import { LinkItUrl } from "react-linkify-it";
 import { Error } from "../store/types";
 import { Notification, NotificationType } from "./ui";
 
@@ -21,7 +22,9 @@ export default function ErrorNotification({
   return (
     <Notification type={NotificationType.Error}>
       {errs.map((error, i) => (
-        <p key={i}>{error?.message}</p>
+        <p key={i}>
+          <LinkItUrl>{error?.message}</LinkItUrl>
+        </p>
       ))}
     </Notification>
   );
