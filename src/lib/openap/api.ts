@@ -8,7 +8,6 @@ import {
   OAPRates,
   OAPPublisher,
   OAPError,
-  OAPAuthError,
   isOAPAuthError,
 } from "./types";
 
@@ -135,12 +134,31 @@ function normalizeResponseErrors(error: RequestError) {
   return error;
 }
 
+function logError(error: RequestError): RequestError {
+  const { response } = error;
+  const body = response?.body;
+
+  if (typeof body === "object") {
+    logger.error(
+      { code: error.code, name: error.name, ...body },
+      `Failed request ${error.request?.requestUrl ?? "no request url"}`
+    );
+  } else {
+    logger.error(
+      { code: error.code, name: error.name, message: error.message, body },
+      `Failed request ${error.request?.requestUrl ?? "no request url"}`
+    );
+  }
+
+  return error;
+}
+
 export const openApClient = got.extend({
   prefixUrl: process.env.OPENAP_API_URL,
   responseType: "json",
   hooks: {
     beforeRequest: [setAuthorizationHeaderWhenNeeded, logRequest],
-    beforeError: [normalizeResponseErrors],
+    beforeError: [logError, normalizeResponseErrors],
   },
 });
 
